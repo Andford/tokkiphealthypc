@@ -1,8 +1,8 @@
 # Custom cleaning folders
 
-Custom cleaning folders let you review disposable files in an exact folder on any local drive, including caches used by portable apps. You do not need to edit Kudu's built-in JSON rules or rebuild the app.
+Custom cleaning folders let you review disposable files in an exact folder on any local drive, including caches used by portable apps. You do not need to edit Tokkip Healthy PC's built-in JSON rules or rebuild the app.
 
-The panel's labels follow Kudu's selected display language. Your folder names and filesystem paths are not translated.
+The panel's labels follow Tokkip Healthy PC's selected display language. Your folder names and filesystem paths are not translated.
 
 ## Add and clean a folder
 
@@ -17,14 +17,14 @@ Saved targets persist across app restarts and updates. **Remove target** removes
 
 ## Choose the target carefully
 
-Every eligible regular file in the selected folder and its subfolders appears in the preview. Kudu cannot determine whether these files are disposable. Only add specific cache, temporary-file, or log folders whose purpose you understand. Do not add an entire portable application, documents folder, or a location containing settings, extensions, login tokens, or user content. A folder named `cache` is not automatically safe to empty.
+Every eligible regular file in the selected folder and its subfolders appears in the preview. Tokkip Healthy PC cannot determine whether these files are disposable. Only add specific cache, temporary-file, or log folders whose purpose you understand. Do not add an entire portable application, documents folder, or a location containing settings, extensions, login tokens, or user content. A folder named `cache` is not automatically safe to empty.
 
 Custom folders are **manual only**. They are separate from built-in Cleaner categories, **Clean All**, schedules, the CLI, and Cloud cleanup. The preview includes files of every age; the Cleaner's **Skip recent files** preference does not filter it. Review the modification dates and close the app before selecting files. Custom cleanup always uses the OS Trash; the secure-delete preference does not apply. There is no permanent-delete fallback if Trash is unavailable.
 
 ## Limits and safeguards
 
-- Use exact local absolute paths. Wildcards, template variables, relative paths, network/UNC paths, mapped network drives, and network-mounted folders are not supported. Kudu checks the backing drive or filesystem when adding, scanning, and cleaning a target; unavailable or unknown locality information blocks the operation.
-- Drive roots, home folders, broad standard user folders, system trees, and Kudu recovery folders are blocked. Broad shared Unix roots such as `/var`, `/var/tmp`, `/tmp`, `/opt`, and `/mnt` are also blocked; choose a specific cache descendant beneath an allowed location.
+- Use exact local absolute paths. Wildcards, template variables, relative paths, network/UNC paths, mapped network drives, and network-mounted folders are not supported. Tokkip Healthy PC checks the backing drive or filesystem when adding, scanning, and cleaning a target; unavailable or unknown locality information blocks the operation.
+- Drive roots, home folders, broad standard user folders, system trees, and Tokkip Healthy PC recovery folders are blocked. Broad shared Unix roots such as `/var`, `/var/tmp`, `/tmp`, `/opt`, and `/mnt` are also blocked; choose a specific cache descendant beneath an allowed location.
 - Up to 100 targets can be saved. Targets cannot overlap one another.
 - Settings exclusions apply both during scanning and immediately before cleanup.
 - Symbolic links, junctions, hard-linked files, and mounted filesystems beneath a target are skipped. Empty directories and the target folder itself are left in place.
@@ -33,12 +33,12 @@ Custom folders are **manual only**. They are separate from built-in Cleaner cate
 
 ## Restoring files
 
-Files are staged in a `Kudu Custom Folder Recovery-…` directory beside their original location before being moved to the OS Trash. This protects against a file being replaced between preview and cleanup. When restoring from the OS Trash, the restore destination may be that recovery directory; move the restored file back to its original folder yourself. The empty recovery directory is retained so the restore destination remains available.
+Files are staged in a `Tokkip Healthy PC Custom Folder Recovery-…` directory beside their original location before being moved to the OS Trash. This protects against a file being replaced between preview and cleanup. When restoring from the OS Trash, the restore destination may be that recovery directory; move the restored file back to its original folder yourself. The empty recovery directory is retained so the restore destination remains available.
 
-If Trash fails, Kudu tries to restore the original path without overwriting anything. If that cannot be done safely, it preserves the file in the recovery directory and displays its exact path for manual recovery. Recovery directories are skipped by later custom-folder scans.
+If Trash fails, Tokkip Healthy PC tries to restore the original path without overwriting anything. If that cannot be done safely, it preserves the file in the recovery directory and displays its exact path for manual recovery. Recovery directories are skipped by later custom-folder scans.
 
 ## How this differs from built-in rule JSON
 
-The [Cleaner Rules Guide](rules/RULES.md) describes contributing rules to Kudu's source code. Those JSON files are bundled into the application at build time; they are not user configuration loaded from beside the installed executable. Template variables make contributed rules portable across machines, but the rule path resolver also accepts literal absolute paths. A hardcoded personal drive path is therefore technically valid in a source rule, but is unsuitable for a shared built-in rule.
+The [Cleaner Rules Guide](rules/RULES.md) describes contributing rules to Tokkip Healthy PC's source code. Those JSON files are bundled into the application at build time; they are not user configuration loaded from beside the installed executable. Template variables make contributed rules portable across machines, but the rule path resolver also accepts literal absolute paths. A hardcoded personal drive path is therefore technically valid in a source rule, but is unsuitable for a shared built-in rule.
 
-For personal paths on another drive, use **Custom cleaning folders**. Adding a new drive template variable or editing packaged files is unnecessary. Kudu 3.8.0 did not provide this custom-folder UI or a CLI option for adding personal targets; this feature is available in releases containing the custom-folder implementation.
+For personal paths on another drive, use **Custom cleaning folders**. Adding a new drive template variable or editing packaged files is unnecessary. Tokkip Healthy PC 3.8.0 did not provide this custom-folder UI or a CLI option for adding personal targets; this feature is available in releases containing the custom-folder implementation.

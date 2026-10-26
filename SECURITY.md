@@ -7,13 +7,13 @@
 | Latest release | Yes |
 | Older versions | No |
 
-We recommend always running the latest version of Kudu.
+We recommend always running the latest version of Tokkip Healthy PC.
 
 ## Reporting a Vulnerability
 
-If you discover a security vulnerability in Kudu, **please do not open a public issue.**
+If you discover a security vulnerability in Tokkip Healthy PC, **please do not open a public issue.**
 
-Instead, report it privately via [GitHub Security Advisories](https://github.com/adventdevinc/kudu/security/advisories/new).
+Instead, report it privately via [GitHub Security Advisories](https://github.com/Andford/tokkiphealthypc/security/advisories/new).
 
 Please include:
 
@@ -26,7 +26,7 @@ We will acknowledge your report within 48 hours and aim to release a fix as quic
 
 ## Scope
 
-This policy covers the Kudu desktop application and its source code. It does not cover third-party dependencies — please report those to the respective maintainers.
+This policy covers the Tokkip Healthy PC desktop application and its source code. It does not cover third-party dependencies — please report those to the respective maintainers.
 
 ## Security Design
 

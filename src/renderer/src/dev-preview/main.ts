@@ -14,7 +14,7 @@ const settings = structuredClone(defaultSettings)
 settings.dashboardView =
   localStorage.getItem('kudu-preview-dashboard-view') === 'advanced' ? 'advanced' : 'simple'
 settings.theme = new URLSearchParams(location.search).get('theme') === 'light' ? 'light' : 'dark'
-settings.language = 'en'
+settings.language = new URLSearchParams(location.search).get('lang') === 'es' ? 'es' : 'en'
 settings.schedules = empty
   ? []
   : [

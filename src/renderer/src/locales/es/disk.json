@@ -153,7 +153,7 @@
     "noChanges": "No hay cambios de carpeta en esta comparación.",
     "openCleaner": "Abrir limpiador",
     "openActivity": "Revisar actividad de limpieza",
-    "deleteScopeConfirm": "¿Desea detener las instantáneas automáticas y eliminar el historial local de instantáneas de esta carpeta? La carpeta y los archivos reales no se modificarán.",
+    "deleteScopeConfirm": "¿Quieres detener las instantáneas automáticas y eliminar el historial local de instantáneas de esta carpeta? La carpeta y los archivos reales no se modificarán.",
     "deleteConfirm": "¿Eliminar esta instantánea local? Las comparaciones que la utilicen dejarán de estar disponibles. Los archivos reales no se verán afectados.",
     "daily": "Capturar a diario mientras Tokkip esté en ejecución",
     "dailyHint": "Comprueba cada diez minutos. Espera a que haya alimentación de CA, dos minutos de inactividad y a que finalice el Modo de juego. Como máximo se realiza un intento diario por carpeta; los intentos sin conexión se registran. Las alertas se limitan a una por carpeta al día y respetan las notificaciones de finalización.",

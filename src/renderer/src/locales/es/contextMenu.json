@@ -60,6 +60,6 @@
   "toastApplyFailed": "La acción falló",
   "toastApplyFailedDescription": "No se pudieron aplicar los cambios solicitados.",
   "groupHeading": "{{source}} — {{count}}",
-  "elevationPrompt": "Algunas entradas seleccionadas requieren privilegios de administrador. ¿Desea reiniciar como administrador?",
+  "elevationPrompt": "Algunas entradas seleccionadas requieren privilegios de administrador. ¿Quieres reiniciar como administrador?",
   "elevationRelaunch": "Reiniciar como administrador"
 }

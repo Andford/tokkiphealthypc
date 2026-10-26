@@ -1,16 +1,30 @@
-# Kudu
+# Tokkip Healthy PC
 
-A modern, open-source system cleaner for Windows, macOS, and Linux built with Electron.
+Andy's fork of Kudu (MIT, Advent Development): a system cleaner and optimizer
+for Windows (and Linux/macOS) built with Electron, with Tokkip's look and Tokkip
+himself showing how the PC feels. Part of the Tokkip family (Tokkip on Android
+and Wear OS, Tokkip Notas, Tokkip PC — all in Andford/coucousaltymod).
+
+## Rules for this fork
+
+- No Kudu Cloud and no network calls to Kudu: everything stays on the PC.
+  Network only for what the user asks (software and driver updates, the app's
+  own updates from Andford/tokkiphealthypc releases).
+- Keep Kudu's MIT notice (LICENSE) and the credit in About.
+- English and Spanish only. Spanish speaks with "tú", like Tokkip.
+- Tokkip's pieces live in `src/renderer/src/tokkip/` (drawing, health, party,
+  sounds, shapes, theme in `tokkip.css`). Tokkip PC hears this app through
+  `%APPDATA%/Tokkip/shared/healthy-pc.json` (`src/main/services/tokkip-notice.ts`).
+- Internal names (`window.kudu`, `KuduSettings`, CSS classes `kudu-*`) stay as
+  they are: they're never shown, and renaming them would only make merging
+  Kudu's fixes harder.
+- Builds: `.github/workflows/build.yml` (Windows installer and portable on every
+  push; a `v*` tag publishes a release the updater reads).
 
 ## Releasing
 
-All releases are done via a single command:
-
-```
-npm run release -- patch|minor|major
-```
-
-This handles everything: version bump, changelog generation, commit, tag, push, and triggers CI to build and publish.
+`npm run release -- patch|minor|major` bumps the version, writes the changelog,
+tags and pushes; the tag's build publishes the release.
 
 `conventional-changelog-angular` is pinned to `^8` as a direct devDependency even
 though nothing imports it. This is deliberate: commitlint depends on `^9`, which

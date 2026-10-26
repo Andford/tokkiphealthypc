@@ -1,69 +1,100 @@
 <p align="center">
-  <a href="https://usekudu.com"><img src="logo.png" alt="Kudu" width="128" /></a>
+  <img src="logo.png" alt="Tokkip Healthy PC" width="128" />
 </p>
 
-<h1 align="center">Kudu</h1>
+<h1 align="center">Tokkip Healthy PC</h1>
 
 <p align="center">
-  Free, open-source system cleaner and security scanner for Windows, macOS, and Linux.
-</p>
-
-<p align="center">
-  <a href="https://github.com/adventdevinc/kudu/releases"><img src="https://img.shields.io/github/v/release/adventdevinc/kudu?style=flat-square" alt="Release" /></a>
-  <a href="https://github.com/adventdevinc/kudu/releases"><img src="https://img.shields.io/github/downloads/adventdevinc/kudu/total?style=flat-square&label=Downloads" alt="Downloads" /></a>
-  <a href="https://github.com/adventdevinc/kudu/actions"><img src="https://img.shields.io/github/actions/workflow/status/adventdevinc/kudu/release.yml?style=flat-square&label=Build" alt="Build" /></a>
-  <a href="LICENSE"><img src="https://img.shields.io/github/license/adventdevinc/kudu?style=flat-square" alt="License" /></a>
+  Limpia, cuida y optimiza tu PC con Tokkip. Gratis, de código abierto y sin nube.
 </p>
 
 <p align="center">
-  <a href="https://github.com/adventdevinc/kudu/releases"><b>Download</b></a> &nbsp;&middot;&nbsp;
-  <a href="https://usekudu.com"><b>Website</b></a> &nbsp;&middot;&nbsp;
-  <a href="https://usekudu.com/cleaners"><b>Cleaners</b></a> &nbsp;&middot;&nbsp;
-  <a href="CLI.md"><b>CLI</b></a>
+  <img src="docs/media/inicio.png" alt="Inicio de Tokkip Healthy PC" width="820" />
 </p>
 
-<p align="center">
-  <img src="resources/kudu-animated.gif" alt="Kudu Demo" width="800" />
-</p>
+## Qué es
 
-## Overview
+Tokkip Healthy PC es el limpiador y optimizador de la familia Tokkip (Tokkip en
+el teléfono y el reloj, Tokkip Notas y Tokkip PC). Está hecho a partir de
+[Kudu](https://github.com/adventdevinc/kudu) (MIT), con el diseño de Tokkip y
+sin nada de Kudu Cloud: todo pasa en tu computadora.
 
-Kudu reclaims disk space, removes malware, and protects your privacy — without ads, bundled software, or upsells. Everything runs locally, and every line of code is open for you to audit.
+- **Tokkip te dice cómo se siente tu PC**: en Inicio está dentro de un anillo
+  que se llena con la salud de tu PC (cuándo limpiaste, qué tan llenos van
+  tus discos, la última revisión de malware). Su cara cambia: contento, bien,
+  cansado o mareado. Te dice el porqué y te lleva al siguiente paso.
+- **Fiesta al limpiar**: cuando liberas espacio, Tokkip baila con ojos de
+  estrella sobre una galleta de Material Expressive, con confeti, y te dice
+  cuánto liberaste.
 
-It covers system, browser, app, and game cache cleaning; registry and startup management; a disk analyzer; a malware scanner; privacy controls; a software updater; performance monitoring; scheduled scans; and a scriptable [CLI](CLI.md). See the [website](https://usekudu.com) for the full feature list and the [cleaner directory](https://usekudu.com/cleaners) for every supported app.
+  <img src="docs/media/fiesta.png" alt="La fiesta al limpiar" width="640" />
 
-Available in 30 languages.
+- **Todas las herramientas de Kudu**: limpiador del sistema, navegadores, apps
+  y juegos; registro; programas de inicio; red; rutinas automáticas;
+  escáner de malware (Windows Defender, heurística y tus reglas YARA locales);
+  privacidad; firewall; monitor de rendimiento; servicios; modo juego;
+  actualizaciones de software y controladores; desinstalador; quitar
+  bloatware; menú contextual; análisis de disco, espacio por app, historial de
+  almacenamiento, descargas, duplicados, archivos grandes, carpetas vacías,
+  destructor de archivos, reparación de Windows y mantenimiento de disco;
+  actividad y centro de recuperación.
+- **Con Tokkip PC**: si tienes la isla de Tokkip en Windows, su tarjeta del día
+  muestra cómo se siente tu PC y te avisa cuando limpiaste o cuando necesita
+  un respiro. Se comunican con un archivito local
+  (`%APPDATA%\Tokkip\shared\healthy-pc.json`), nada sale de tu PC.
+- En **Preferencias → Tokkip** escoges su especie (conejito, gatito, perrito,
+  robotito o mapache), su color y si quieres sus sonidos.
+- Español e inglés. Modo claro, oscuro o el de tu sistema.
 
-## Install
+<img src="docs/media/inicio-claro.png" alt="Modo claro" width="640" />
 
-Download the latest release for your platform from [GitHub Releases](https://github.com/adventdevinc/kudu/releases).
+## Qué cambió respecto a Kudu
 
-| Platform | Formats                                    |
-| -------- | ------------------------------------------ |
-| Windows  | `.exe` installer, portable ZIP or EXE (x64, ARM64) |
-| macOS    | `.dmg` (Intel and Apple Silicon)           |
-| Linux    | `.AppImage` or `.deb` (x64, arm64)         |
+- Sin Kudu Cloud: se quitaron la vinculación, el agente y el modo daemon, y las
+  herramientas que solo funcionaban con la nube (monitor de amenazas, escáner
+  de vulnerabilidades, alertas de filtraciones, diagnóstico de rendimiento y
+  las calificaciones de seguridad de programas). Las firmas YARA ya no se
+  descargan de Kudu: el escáner lee los archivos `.yar` que pongas en tu
+  carpeta de firmas (se abre desde la pestaña Base de datos del escáner).
+- Diseño de Tokkip: su paleta, títulos en Fredoka, esquinas redondeadas y
+  formas de Material Expressive; Tokkip en la barra de título y en Inicio.
+- Solo español (de tú) e inglés.
+- Nuevo nombre, ícono, identificador (`mx.loperstack.tokkiphealthypc`) y
+  actualizaciones desde los releases de este repositorio.
 
-The installer is recommended for automatic updates and scheduled scans on startup. Portable builds keep settings in AppData and are updated manually.
+## Instalar
 
-Windows ARM64 builds target Windows 11 on ARM. See [ARM64 build and validation details](docs/windows-arm64.md).
+En la pestaña **Actions** → **Build - Windows** → la última ejecución, descarga
+`TokkipHealthyPC-Windows` (instalador `TokkipHealthyPC-Setup-*.exe` o la versión
+portable). No está firmado, así que Windows SmartScreen te preguntará la
+primera vez: **Más información → Ejecutar de todas formas**. Pide permisos de
+administrador porque limpia y repara partes del sistema.
 
-## Contributing
+Con una etiqueta `v*` el mismo workflow publica un release, y la app instalada
+se actualiza sola desde ahí.
 
-Issues, pull requests, and feature suggestions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for setup and conventions.
+## Compilar
 
-Cleaning rules are plain JSON — no code required to add support for a new app. Start with the [Cleaner Rules Guide](rules/RULES.md).
+Node 22 (ver `.nvmrc`):
 
-For your own cache folders, including portable apps on another local drive, use **Settings → Custom cleaning folders**. See the [custom-folder guide](CUSTOM-FOLDERS.md) for preview, selection, and Trash recovery instructions.
+```bash
+npm install
+npm run dev            # la app en modo desarrollo
+npm run build          # compila
+npx electron-builder --win   # el instalador
+npm run check          # tipos, lint, formato, reglas y pruebas
+npm run dev:ui         # la interfaz en el navegador con datos de ejemplo
+```
 
-## Support
+Las reglas de limpieza son JSON en `rules/` (guía en
+[rules/RULES.md](rules/RULES.md)); la línea de comandos (`--cli`) está en [CLI.md](CLI.md).
 
-Kudu's desktop tools are free for everyone. If it saves you time, consider [sponsoring development](https://usekudu.com/sponsors) or starring the repo.
+## Créditos y licencia
 
-## Disclaimer
+[MIT](LICENSE). Basado en [Kudu](https://github.com/adventdevinc/kudu) de
+Advent Development Inc y su comunidad (MIT) — gracias por todo el trabajo que
+hay debajo. Tokkip y su diseño son de Andy (LoperStack). Fuente Fredoka bajo
+SIL Open Font License ([licenses/OFL-Fredoka.txt](licenses/OFL-Fredoka.txt)).
 
-Kudu removes files from your system by design. Review items before removal; the software is provided "as is" without warranty, and we accept no liability for data loss or system instability.
-
-## License
-
-[MIT](LICENSE)
+Tokkip Healthy PC borra archivos por diseño: revisa lo que vas a limpiar. Se
+ofrece "tal cual", sin garantía.

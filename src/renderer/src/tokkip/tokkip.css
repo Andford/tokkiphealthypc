@@ -495,3 +495,32 @@
   width: 30px;
   height: 30px;
 }
+
+/* ── Inicio's three goals, in Tokkip's colours ───────────────── */
+
+.simple-goal[data-goal] {
+  background: var(--card-bg) !important;
+  border-color: var(--glass-border) !important;
+  color: var(--text-muted) !important;
+}
+.simple-goal[data-goal] p {
+  color: var(--text-muted) !important;
+}
+.simple-goal[data-goal]:hover {
+  border-color: var(--accent-muted-border) !important;
+}
+.simple-goal[data-goal='space'] {
+  background:
+    linear-gradient(160deg, rgba(52, 211, 153, 0.1), transparent 60%), var(--card-bg) !important;
+}
+.simple-goal[data-goal='speed'] {
+  background:
+    linear-gradient(160deg, rgba(167, 139, 250, 0.12), transparent 60%), var(--card-bg) !important;
+}
+.simple-goal[data-goal='protection'] {
+  background:
+    linear-gradient(160deg, rgba(244, 114, 182, 0.1), transparent 60%), var(--card-bg) !important;
+}
+.simple-goal h2 {
+  color: var(--text-primary) !important;
+}

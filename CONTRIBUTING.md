@@ -1,14 +1,14 @@
-# Contributing to Kudu
+# Contributing to Tokkip Healthy PC
 
-Thanks for your interest in contributing! Kudu is a community-driven project and we welcome all contributions — bug reports, feature requests, documentation improvements, and code.
+Thanks for your interest in contributing! Tokkip Healthy PC (based on Kudu) is a community-driven project and we welcome all contributions — bug reports, feature requests, documentation improvements, and code.
 
 ## Getting Started
 
 1. Fork the repository
 2. Clone your fork and create a branch:
    ```bash
-   git clone https://github.com/YOUR_USERNAME/kudu.git
-   cd kudu
+   git clone https://github.com/YOUR_USERNAME/tokkiphealthypc.git
+   cd tokkiphealthypc
    git checkout -b my-feature
    ```
 3. Install dependencies (Node 22 — see `.nvmrc`):

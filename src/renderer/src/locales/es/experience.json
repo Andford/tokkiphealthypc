@@ -7,17 +7,17 @@
     "saveFailed": "No se pudo guardar la vista del panel. Inténtalo de nuevo.",
     "eyebrow": "UN POCO DE CUIDADO. UN DÍA MEJOR.",
     "title": "¿Qué haría que tu PC se sintiera mejor?",
-    "description": "Elige lo que le gustaría mejorar. Le ayudaremos a encontrar el lugar adecuado para empezar.",
-    "chooseGoal": "¿Qué le gustaría hacer?",
-    "yourNextStep": "SU SIGUIENTE PASO",
+    "description": "Elige lo que te gustaría mejorar y te ayudamos a encontrar por dónde empezar.",
+    "chooseGoal": "¿Qué te gustaría hacer?",
+    "yourNextStep": "TU SIGUIENTE PASO",
     "chooseTool": "Elige una herramienta para empezar",
-    "startHere": "EMPIECE AQUÍ",
+    "startHere": "EMPIEZA AQUÍ",
     "routineTitle": "Convierte el cuidado en un pequeño hábito.",
     "routineDescription": "Elige tareas, horarios y condiciones para una rutina periódica.",
     "recoveryTitle": "Revisa un cambio reciente.",
     "recoveryDescription": "Encuentra opciones de restauración para los cambios del sistema compatibles.",
     "reviewFirst": "Abre una herramienta para revisar tus opciones antes de realizar cambios.",
-    "advancedPrompt": "¿Quiere gráficos y detalles del sistema? Cambie a Avanzado",
+    "advancedPrompt": "¿Quieres gráficas y detalles del sistema? Cambia a Avanzado",
     "cloud": {
       "pro": "Cloud Pro",
       "basic": "Cloud Basic"
@@ -25,7 +25,7 @@
     "goals": {
       "space": {
         "title": "Necesito más espacio",
-        "description": "Encuentra el desorden. Conserve lo importante.",
+        "description": "Encuentra el desorden. Conserva lo importante.",
         "count_one": "{{count}} forma de liberar espacio",
         "count_other": "{{count}} formas de liberar espacio",
         "heading": "Vamos a liberar espacio.",
@@ -33,7 +33,7 @@
       },
       "speed": {
         "title": "Se siente un poco lento",
-        "description": "Encuentra qué le está frenando.",
+        "description": "Encuentra qué la está frenando.",
         "count_one": "{{count}} herramienta de rendimiento",
         "count_other": "{{count}} herramientas de rendimiento",
         "heading": "Vamos a encontrar la causa de la lentitud.",
@@ -159,7 +159,7 @@
     "cve": "Convierte los hallazgos de vulnerabilidades en un plan. Revisa los problemas más graves y actualice el software afectado.",
     "gameMode": "Haz espacio para jugar. Revisa las optimizaciones y actívelas cuando esté listo.",
     "performance": "Comprenda qué está haciendo tu PC. Compara tendencias de recursos y encuentre los procesos detrás de la carga.",
-    "uninstaller": "Conserve las aplicaciones que usa. Revisa los detalles de una aplicación antes de desinstalarla o eliminar archivos restantes.",
+    "uninstaller": "Conserva las aplicaciones que usas. Revisa los detalles de una aplicación antes de desinstalarla o eliminar archivos restantes.",
     "history": "Ve qué cambió, qué se recuperó y qué necesita otra revisión. Cada tarea completada deja un registro.",
     "settings": "Haz que Tokkip se adapte a tú. Configura la apariencia, las notificaciones, las exclusiones y las preferencias de limpieza.",
     "about": "Código abierto, creado con cuidado. Encuentra tu versión, busca actualizaciones y conoce el proyecto.",
@@ -178,10 +178,10 @@
     "appSpace": "Ve los tamaños informados de las aplicaciones junto con la caché y los registros medidos y revisables."
   },
   "home": {
-    "eyebrow": "SU SISTEMA, DE UN VISTAZO",
+    "eyebrow": "TU SISTEMA, DE UN VISTAZO",
     "title": "En sintonía con tu PC.",
     "description": "Ve cómo está tu equipo y luego elige qué quieres cuidar.",
-    "next": "¿Qué le gustaría hacer?",
+    "next": "¿Qué te gustaría hacer?",
     "cleanTitle": "Encontrar espacio para recuperar",
     "cleanDescription": "Analiza archivos temporales y cachés. Revisa los resultados antes de limpiar.",
     "cleanAction": "Abrir limpiador",
