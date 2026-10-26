@@ -604,9 +604,9 @@ function NavItem({
           <span
             className="flex h-[16px] min-w-[16px] items-center justify-center rounded-full px-1 text-[9px] font-bold leading-none"
             style={{
-              background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+              background: 'linear-gradient(135deg, #a78bfa, #8b5cf6)',
               color: '#0a0600',
-              boxShadow: '0 0 8px rgba(245,158,11,0.3)'
+              boxShadow: '0 0 8px rgba(167, 139, 250,0.3)'
             }}
             aria-label={`${badgeCount ?? 1}`}
           >
@@ -808,9 +808,9 @@ function FlyoutMenu({
                   <span
                     className="flex h-[16px] min-w-[16px] items-center justify-center rounded-full px-1 text-[9px] font-bold leading-none"
                     style={{
-                      background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                      background: 'linear-gradient(135deg, #a78bfa, #8b5cf6)',
                       color: '#0a0600',
-                      boxShadow: '0 0 6px rgba(245,158,11,0.3)'
+                      boxShadow: '0 0 6px rgba(167, 139, 250,0.3)'
                     }}
                     aria-hidden="true"
                   >
@@ -822,9 +822,9 @@ function FlyoutMenu({
                   <span
                     className="flex h-[16px] min-w-[16px] items-center justify-center rounded-full px-1 text-[8px] font-bold leading-none"
                     style={{
-                      background: 'linear-gradient(135deg, #f59e0b, #d97706)',
+                      background: 'linear-gradient(135deg, #a78bfa, #8b5cf6)',
                       color: '#0a0600',
-                      boxShadow: '0 0 6px rgba(245,158,11,0.3)'
+                      boxShadow: '0 0 6px rgba(167, 139, 250,0.3)'
                     }}
                   >
                     NEW

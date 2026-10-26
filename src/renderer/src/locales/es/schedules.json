@@ -35,7 +35,7 @@
     "monthlyDeepMaintenanceLabel": "Mantenimiento profundo mensual",
     "monthlyDeepMaintenanceDescription": "Limpieza completa + registro, controladores y software el día 1 a las 10:00",
     "customLabel": "Personalizada",
-    "customDescription": "Empiece desde cero con una programación en blanco"
+    "customDescription": "Empieza desde cero con una programación en blanco"
   },
   "dialog": {
     "editTitle": "Editar programación",
@@ -54,8 +54,8 @@
     "cleanerGroup": "Limpiador",
     "maintenanceGroup": "Mantenimiento",
     "autoApplyLabel": "Aplicación automática",
-    "autoApplyDescription": "Limpie archivos, repare problemas del registro e instale actualizaciones automáticamente sin confirmación.",
-    "autoApplyWarning": "Las acciones se ejecutarán automáticamente según la programación. Asegúrese de que su lista de exclusiones esté actualizada.",
+    "autoApplyDescription": "Limpia archivos, repare problemas del registro e instale actualizaciones automáticamente sin confirmación.",
+    "autoApplyWarning": "Las acciones se ejecutarán automáticamente según la programación. Asegúrate de que tu lista de exclusiones esté actualizada.",
     "cancelButton": "Cancelar",
     "saveChangesButton": "Guardar cambios",
     "createScheduleButton": "Crear programación"
@@ -125,8 +125,8 @@
     "findCategories": "Buscar categorías",
     "scanning": "Analizando...",
     "scopeHint": "Solo se incluirán las categorías marcadas. Una selección vacía no ejecuta ninguna limpieza en esta tarea. El análisis detecta las categorías presentes actualmente; no limpia.",
-    "waitForScan": "Espere a que finalice el análisis o la limpieza actuales.",
-    "noCategories": "No se encontraron categorías. Ejecute un nuevo análisis cuando la aplicación tenga datos en caché.",
+    "waitForScan": "Espera a que finalice el análisis o la limpieza actuales.",
+    "noCategories": "No se encontraron categorías. Ejecuta un nuevo análisis cuando la aplicación tenga datos en caché.",
     "scanFailed": "No se pudieron cargar las categorías.",
     "waiting": {
       "idle": "Esperando tiempo de inactividad",
@@ -141,7 +141,7 @@
       "unavailable": "Esperando la ventana de la aplicación",
       "interrupted": "La ejecución perdió su ventana y se registró como fallida; esta ocurrencia no se repetirá."
     },
-    "saveFailed": "No se pudo guardar la programación. Inténtelo de nuevo.",
+    "saveFailed": "No se pudo guardar la programación. Inténtalo de nuevo.",
     "skipped": "Se omitió después de que cambiaran las condiciones."
   }
 }

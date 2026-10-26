@@ -138,7 +138,7 @@ export function DiskRepairPage() {
         style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-default)' }}
       >
         <div className="flex items-start gap-3">
-          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" strokeWidth={1.8} />
+          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-violet-400" strokeWidth={1.8} />
           <div>
             <p className="text-[13px] font-medium text-zinc-200">{t('repairTitle')}</p>
             <p className="mt-1 text-[12px]" style={{ color: 'var(--text-secondary)' }}>
@@ -155,7 +155,7 @@ export function DiskRepairPage() {
           style={{ background: 'var(--card-bg)', border: '1px solid var(--border-default)' }}
         >
           <div className="flex items-center gap-3 mb-3">
-            <RefreshCw className="h-4 w-4 animate-spin text-amber-400" strokeWidth={2} />
+            <RefreshCw className="h-4 w-4 animate-spin text-violet-400" strokeWidth={2} />
             <span className="text-[13px] font-medium text-zinc-200">
               {repairProgress.tool === 'sfc'
                 ? t('repairProgressSfc')
@@ -175,7 +175,7 @@ export function DiskRepairPage() {
               className="h-full rounded-full transition-all duration-500"
               style={{
                 width: `${repairProgress.percent}%`,
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)'
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)'
               }}
             />
           </div>
@@ -196,9 +196,9 @@ export function DiskRepairPage() {
             <div className="flex items-center gap-3 flex-1 min-w-0">
               <div
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                style={{ background: 'rgba(245,158,11,0.1)' }}
+                style={{ background: 'rgba(167, 139, 250,0.1)' }}
               >
-                <ShieldCheck className="h-5 w-5 text-amber-400" strokeWidth={1.8} />
+                <ShieldCheck className="h-5 w-5 text-violet-400" strokeWidth={1.8} />
               </div>
               <div className="min-w-0">
                 <p className="text-[13px] font-medium text-zinc-200">{t('dismCardTitle')}</p>
@@ -218,7 +218,7 @@ export function DiskRepairPage() {
               disabled={repairRunning}
               className="flex shrink-0 items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
               style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                 color: 'var(--text-on-accent)'
               }}
             >
@@ -245,21 +245,21 @@ export function DiskRepairPage() {
                 {dismResult.success ? (
                   <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" strokeWidth={1.8} />
                 ) : dismResult.needsAdmin ? (
-                  <ShieldAlert className="h-4 w-4 text-amber-400 shrink-0" strokeWidth={1.8} />
+                  <ShieldAlert className="h-4 w-4 text-violet-400 shrink-0" strokeWidth={1.8} />
                 ) : (
                   <XCircle className="h-4 w-4 text-red-400 shrink-0" strokeWidth={1.8} />
                 )}
                 <p className="text-[12px] text-zinc-300">{dismResult.summary}</p>
               </div>
               {dismResult.requiresReboot && (
-                <p className="mt-2 flex items-center gap-1.5 text-[11px] text-amber-400">
+                <p className="mt-2 flex items-center gap-1.5 text-[11px] text-violet-400">
                   <AlertTriangle className="h-3 w-3" strokeWidth={2} /> {t('restartRecommended')}
                 </p>
               )}
               {dismResult.log && (
                 <button
                   onClick={() => setShowRepairLog(showRepairLog === 'dism' ? null : 'dism')}
-                  className="mt-2 text-[11px] font-medium text-amber-500 hover:text-amber-400"
+                  className="mt-2 text-[11px] font-medium text-violet-500 hover:text-violet-400"
                 >
                   {showRepairLog === 'dism' ? t('hideLog') : t('showLog')}
                 </button>
@@ -285,9 +285,9 @@ export function DiskRepairPage() {
             <div className="flex items-center gap-3 flex-1 min-w-0">
               <div
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                style={{ background: 'rgba(245,158,11,0.1)' }}
+                style={{ background: 'rgba(167, 139, 250,0.1)' }}
               >
-                <Wrench className="h-5 w-5 text-amber-400" strokeWidth={1.8} />
+                <Wrench className="h-5 w-5 text-violet-400" strokeWidth={1.8} />
               </div>
               <div className="min-w-0">
                 <p className="text-[13px] font-medium text-zinc-200">{t('sfcCardTitle')}</p>
@@ -307,7 +307,7 @@ export function DiskRepairPage() {
               disabled={repairRunning}
               className="flex shrink-0 items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
               style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                 color: 'var(--text-on-accent)'
               }}
             >
@@ -334,21 +334,21 @@ export function DiskRepairPage() {
                 {sfcResult.success ? (
                   <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" strokeWidth={1.8} />
                 ) : sfcResult.needsAdmin ? (
-                  <ShieldAlert className="h-4 w-4 text-amber-400 shrink-0" strokeWidth={1.8} />
+                  <ShieldAlert className="h-4 w-4 text-violet-400 shrink-0" strokeWidth={1.8} />
                 ) : (
                   <XCircle className="h-4 w-4 text-red-400 shrink-0" strokeWidth={1.8} />
                 )}
                 <p className="text-[12px] text-zinc-300">{sfcResult.summary}</p>
               </div>
               {sfcResult.requiresReboot && (
-                <p className="mt-2 flex items-center gap-1.5 text-[11px] text-amber-400">
+                <p className="mt-2 flex items-center gap-1.5 text-[11px] text-violet-400">
                   <AlertTriangle className="h-3 w-3" strokeWidth={2} /> {t('restartRecommended')}
                 </p>
               )}
               {sfcResult.log && (
                 <button
                   onClick={() => setShowRepairLog(showRepairLog === 'sfc' ? null : 'sfc')}
-                  className="mt-2 text-[11px] font-medium text-amber-500 hover:text-amber-400"
+                  className="mt-2 text-[11px] font-medium text-violet-500 hover:text-violet-400"
                 >
                   {showRepairLog === 'sfc' ? t('hideLog') : t('showLog')}
                 </button>
@@ -374,9 +374,9 @@ export function DiskRepairPage() {
             <div className="flex items-center gap-3 flex-1 min-w-0">
               <div
                 className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                style={{ background: 'rgba(245,158,11,0.1)' }}
+                style={{ background: 'rgba(167, 139, 250,0.1)' }}
               >
-                <HardDrive className="h-5 w-5 text-amber-400" strokeWidth={1.8} />
+                <HardDrive className="h-5 w-5 text-violet-400" strokeWidth={1.8} />
               </div>
               <div className="min-w-0">
                 <p className="text-[13px] font-medium text-zinc-200">{t('chkdskCardTitle')}</p>
@@ -396,7 +396,7 @@ export function DiskRepairPage() {
               disabled={repairRunning}
               className="flex shrink-0 items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
               style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                 color: 'var(--text-on-accent)'
               }}
             >
@@ -423,21 +423,21 @@ export function DiskRepairPage() {
                 {chkdskResult.success ? (
                   <CheckCircle2 className="h-4 w-4 text-green-500 shrink-0" strokeWidth={1.8} />
                 ) : chkdskResult.needsAdmin ? (
-                  <ShieldAlert className="h-4 w-4 text-amber-400 shrink-0" strokeWidth={1.8} />
+                  <ShieldAlert className="h-4 w-4 text-violet-400 shrink-0" strokeWidth={1.8} />
                 ) : (
                   <XCircle className="h-4 w-4 text-red-400 shrink-0" strokeWidth={1.8} />
                 )}
                 <p className="text-[12px] text-zinc-300">{chkdskResult.summary}</p>
               </div>
               {chkdskResult.requiresReboot && (
-                <p className="mt-2 flex items-center gap-1.5 text-[11px] text-amber-400">
+                <p className="mt-2 flex items-center gap-1.5 text-[11px] text-violet-400">
                   <AlertTriangle className="h-3 w-3" strokeWidth={2} /> {t('restartRecommended')}
                 </p>
               )}
               {chkdskResult.log && (
                 <button
                   onClick={() => setShowRepairLog(showRepairLog === 'chkdsk' ? null : 'chkdsk')}
-                  className="mt-2 text-[11px] font-medium text-amber-500 hover:text-amber-400"
+                  className="mt-2 text-[11px] font-medium text-violet-500 hover:text-violet-400"
                 >
                   {showRepairLog === 'chkdsk' ? t('hideLog') : t('showLog')}
                 </button>

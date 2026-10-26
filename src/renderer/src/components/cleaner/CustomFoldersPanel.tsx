@@ -224,7 +224,7 @@ export function CustomFoldersPanel() {
               skipped: result.skipped
             })}
           </p>
-          {result.limited && <p className="text-xs text-amber-500">{t('customFolderLimited')}</p>}
+          {result.limited && <p className="text-xs text-violet-500">{t('customFolderLimited')}</p>}
           <p className="text-xs">
             {t('customFolderSelection', {
               count: selectedFiles.length,

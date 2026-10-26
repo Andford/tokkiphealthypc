@@ -20,6 +20,7 @@ import { usePlatform } from '@/hooks/usePlatform'
 import { LANGUAGES } from '@/lib/languages'
 import i18next from 'i18next'
 import { CustomFoldersPanel } from '@/components/cleaner/CustomFoldersPanel'
+import { TokkipSettings } from '@/tokkip/TokkipSettings'
 
 export function SettingsPage() {
   const { t } = useTranslation('settings')
@@ -92,8 +93,8 @@ export function SettingsPage() {
 
       <nav className="pulse-settings-nav" aria-label={t('pageTitle')}>
         {[
+          'sectionTokkip',
           'sectionGeneral',
-          'sectionCloudDashboard',
           'sectionBackups',
           'sectionCleaningPreferences',
           'sectionCustomFolders',
@@ -112,6 +113,10 @@ export function SettingsPage() {
         ))}
       </nav>
       <div className="settings-grid">
+        <Section id="sectionTokkip" title={t('sectionTokkip')}>
+          <TokkipSettings />
+        </Section>
+
         <Section id="sectionGeneral" title={t('sectionGeneral')}>
           <Row
             label={t('themeLabel', 'Theme')}

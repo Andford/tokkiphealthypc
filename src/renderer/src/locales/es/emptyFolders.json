@@ -1,6 +1,6 @@
 {
   "pageTitle": "Limpiador de carpetas vacías",
-  "pageDescription": "Encuentre y elimine directorios vacíos dejados por programas desinstalados",
+  "pageDescription": "Encuentra y elimina directorios vacíos dejados por programas desinstalados",
   "selectDirectory": "Seleccionar directorio",
   "scanButton": "Buscar carpetas vacías",
   "cancelScan": "Cancelar análisis",
@@ -11,7 +11,7 @@
   "duration": "Duración",
   "maxDepth": "Profundidad máxima de análisis",
   "excludePatterns": "Excluir carpetas",
-  "excludePlaceholder": "Añada el nombre de una carpeta para excluir…",
+  "excludePlaceholder": "Añade el nombre de una carpeta para excluir…",
   "settings": "Configuración del análisis",
   "selectAll": "Seleccionar todo",
   "deselectAll": "Deseleccionar todo",
@@ -28,6 +28,6 @@
   "emptyTitle": "No se encontraron carpetas vacías",
   "emptyDescription": "No se encontraron directorios vacíos en la ubicación seleccionada.",
   "idleTitle": "Buscar carpetas vacías",
-  "idleDescription": "Seleccione un directorio para analizar carpetas vacías que se puedan eliminar de forma segura.",
+  "idleDescription": "Selecciona un directorio para analizar carpetas vacías que se puedan eliminar de forma segura.",
   "protectedNote": "Las carpetas del sistema, los directorios del perfil de usuario y las carpetas de control de versiones se protegen automáticamente."
 }

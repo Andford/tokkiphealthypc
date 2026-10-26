@@ -16,7 +16,7 @@
   cursor: pointer;
 }
 .app-space-primary {
-  background: var(--accent, #f59e0b);
+  background: var(--accent, #a78bfa);
   color: #17120a;
 }
 .app-space-primary:disabled,
@@ -40,8 +40,8 @@
   display: inline-flex;
   padding: 22px;
   border-radius: 24px;
-  background: rgba(245, 158, 11, 0.09);
-  color: #d97706;
+  background: rgba(167, 139, 250, 0.09);
+  color: #8b5cf6;
 }
 .app-space-intro h2 {
   margin: 22px 0 12px;
@@ -194,8 +194,8 @@
   background: var(--bg-hover);
 }
 .app-space-row[data-selected='true'] {
-  background: rgba(245, 158, 11, 0.07);
-  box-shadow: inset 3px 0 #d97706;
+  background: rgba(167, 139, 250, 0.07);
+  box-shadow: inset 3px 0 #8b5cf6;
 }
 .app-space-name {
   display: flex;
@@ -314,7 +314,7 @@
 .app-space-page button:focus-visible,
 .app-space-page input:focus-visible,
 .app-space-page select:focus-visible {
-  outline: 2px solid #d97706;
+  outline: 2px solid #8b5cf6;
   outline-offset: 3px;
 }
 @media (max-width: 1100px) {

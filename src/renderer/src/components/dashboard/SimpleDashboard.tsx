@@ -14,11 +14,14 @@ import { usePlatform } from '@/hooks/usePlatform'
 import { pageExperiences } from '@/components/layout/page-experiences'
 import { getGoalTools, type DashboardGoal } from './simple-dashboard-tools'
 import './simple-dashboard.css'
+import { TokkipHealthCard } from '@/tokkip/TokkipHealthCard'
+import { useTokkipHealth } from '@/tokkip/health'
+import { clipFor } from '@/tokkip/shapes'
 
 const goals = [
-  { id: 'space', icon: HardDrive },
-  { id: 'speed', icon: Zap },
-  { id: 'protection', icon: Shield }
+  { id: 'space', icon: HardDrive, shape: 'cookie9', color: 'var(--mint)' },
+  { id: 'speed', icon: Zap, shape: 'sunny', color: 'var(--accent)' },
+  { id: 'protection', icon: Shield, shape: 'clover4', color: '#f472b6' }
 ] as const
 
 export function SimpleDashboard({
@@ -37,16 +40,17 @@ export function SimpleDashboard({
     if (selected) heading.current?.focus({ preventScroll: true })
   }, [selected])
   const selectedTools = selected ? getGoalTools(selected, platform) : []
+  const health = useTokkipHealth()
 
   return (
     <div className="simple-dashboard">
+      <TokkipHealthCard health={health} />
       <header className="simple-dashboard-heading">
-        <span className="pulse-eyebrow">{t('simple.eyebrow')}</span>
-        <h1>{t('simple.title')}</h1>
+        <h2>{t('simple.title')}</h2>
         <p>{t('simple.description')}</p>
       </header>
       <div className="simple-goals" aria-label={t('simple.chooseGoal')}>
-        {goals.map(({ id, icon: Icon }) => (
+        {goals.map(({ id, icon: Icon, shape, color }) => (
           <button
             className="simple-goal"
             data-goal={id}
@@ -56,8 +60,16 @@ export function SimpleDashboard({
             onClick={() => setSelected(id)}
           >
             <span className="simple-goal-top">
-              <span className="simple-goal-icon">
-                <Icon size={25} strokeWidth={1.65} />
+              <span
+                className="simple-goal-icon tokkip-shape"
+                style={{
+                  clipPath: clipFor(shape),
+                  background: color,
+                  color: '#14102a',
+                  borderRadius: 0
+                }}
+              >
+                <Icon size={25} strokeWidth={1.9} />
               </span>
               <ArrowUpRight size={22} />
             </span>

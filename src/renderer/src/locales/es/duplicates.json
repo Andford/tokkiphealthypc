@@ -1,6 +1,6 @@
 {
   "pageTitle": "Buscador de duplicados",
-  "pageDescription": "Encuentre y elimine archivos duplicados para recuperar espacio en disco",
+  "pageDescription": "Encuentra y elimina archivos duplicados para recuperar espacio en disco",
   "selectDirectory": "Seleccionar directorio",
   "noDirectorySelected": "No se ha seleccionado ningún directorio",
   "changeDirectory": "Cambiar",
@@ -12,7 +12,7 @@
   "maxFileSize": "Tamaño máximo de archivo",
   "noLimit": "Sin límite",
   "excludePatterns": "Excluir carpetas",
-  "excludePlaceholder": "Añada el nombre de la carpeta que desea excluir…",
+  "excludePlaceholder": "Añade el nombre de la carpeta que quieres excluir…",
   "extensionFilter": "Tipos de archivo",
   "maxDepth": "Profundidad máxima del análisis",
   "allFiles": "Todos",
@@ -50,6 +50,6 @@
   "emptyTitle": "No se encontraron duplicados",
   "emptyDescription": "No se encontraron archivos duplicados con la configuración actual.",
   "idleTitle": "Buscar archivos duplicados",
-  "idleDescription": "Seleccione un directorio para buscar archivos duplicados y recuperar espacio en disco desperdiciado.",
+  "idleDescription": "Selecciona un directorio para buscar archivos duplicados y recuperar espacio en disco desperdiciado.",
   "scanCancelled": "El análisis se canceló; se muestran resultados parciales."
 }

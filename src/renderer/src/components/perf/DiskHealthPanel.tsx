@@ -17,7 +17,7 @@ interface DiskHealthPanelProps {
 
 const statusConfig = {
   Healthy: { icon: CheckCircle, color: '#22c55e', bg: 'rgba(34,197,94,0.1)' },
-  Caution: { icon: AlertTriangle, color: '#f59e0b', bg: 'rgba(245,158,11,0.1)' },
+  Caution: { icon: AlertTriangle, color: '#a78bfa', bg: 'rgba(167, 139, 250,0.1)' },
   Bad: { icon: XCircle, color: '#ef4444', bg: 'rgba(239,68,68,0.1)' },
   Unknown: { icon: HelpCircle, color: 'var(--text-muted)', bg: 'rgba(110,110,118,0.1)' }
 }
@@ -139,14 +139,14 @@ function StatItem({
   return (
     <div className="flex flex-col gap-0.5">
       <div className="flex items-center gap-1">
-        {icon && <span style={{ color: warn ? '#f59e0b' : 'var(--text-muted)' }}>{icon}</span>}
+        {icon && <span style={{ color: warn ? '#a78bfa' : 'var(--text-muted)' }}>{icon}</span>}
         <span className="text-[10px] font-medium" style={{ color: 'var(--text-muted)' }}>
           {label}
         </span>
       </div>
       <span
         className="text-[15px] font-bold"
-        style={{ color: warn ? '#f59e0b' : 'var(--text-primary)' }}
+        style={{ color: warn ? '#a78bfa' : 'var(--text-primary)' }}
       >
         {value}
       </span>

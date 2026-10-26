@@ -7,9 +7,9 @@
   --color-overlay: var(--bg-overlay);
   --color-subtle: var(--bg-subtle);
 
-  --color-accent: #f59e0b;
-  --color-accent-hover: #fbbf24;
-  --color-accent-muted: #451a03;
+  --color-accent: #a78bfa;
+  --color-accent-hover: #c4b5fd;
+  --color-accent-muted: #1a1726;
 
   --color-success: #22c55e;
   --color-warning: #eab308;
@@ -60,10 +60,10 @@
   @keyframes pulse-glow {
     0%,
     100% {
-      box-shadow: 0 0 30px 0 rgba(245, 158, 11, 0.08);
+      box-shadow: 0 0 30px 0 rgba(167, 139, 250, 0.08);
     }
     50% {
-      box-shadow: 0 0 50px 8px rgba(245, 158, 11, 0.16);
+      box-shadow: 0 0 50px 8px rgba(167, 139, 250, 0.16);
     }
   }
   @keyframes scan-stripe {
@@ -157,10 +157,10 @@
   --border-stronger: rgba(255, 255, 255, 0.1);
 
   /* Accent */
-  --accent: #f59e0b;
-  --accent-hover: #fbbf24;
-  --accent-muted-bg: rgba(245, 158, 11, 0.06);
-  --accent-muted-border: rgba(245, 158, 11, 0.15);
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --accent-muted-bg: rgba(167, 139, 250, 0.06);
+  --accent-muted-border: rgba(167, 139, 250, 0.15);
 
   /* Semantic */
   --success: #22c55e;
@@ -187,10 +187,10 @@
   --scrollbar-thumb-hover: rgba(255, 255, 255, 0.12);
 
   /* Selection */
-  --selection-bg: rgba(245, 158, 11, 0.3);
+  --selection-bg: rgba(167, 139, 250, 0.3);
 
   /* Ambient glows */
-  --glow-amber: rgba(245, 158, 11, 0.025);
+  --glow-amber: rgba(167, 139, 250, 0.025);
   --glow-blue: rgba(59, 130, 246, 0.02);
 }
 
@@ -230,8 +230,8 @@
   --border-stronger: rgba(0, 0, 0, 0.16);
 
   /* Accent — slightly deeper for light backgrounds */
-  --accent: #d97706;
-  --accent-hover: #b45309;
+  --accent: #8b5cf6;
+  --accent-hover: #7c3aed;
   --accent-muted-bg: rgba(217, 119, 6, 0.08);
   --accent-muted-border: rgba(217, 119, 6, 0.25);
 
@@ -396,7 +396,7 @@
 }
 
 :focus-visible {
-  outline: 2px solid rgba(245, 158, 11, 0.6);
+  outline: 2px solid rgba(167, 139, 250, 0.6);
   outline-offset: 2px;
 }
 
@@ -552,10 +552,10 @@ summary,
 
 /* ── accent glow variants ────────────────────── */
 .glow-amber:hover {
-  border-color: rgba(245, 158, 11, 0.15);
+  border-color: rgba(167, 139, 250, 0.15);
   box-shadow:
-    inset 0 1px 0 0 rgba(245, 158, 11, 0.05),
-    0 0 30px rgba(245, 158, 11, 0.06),
+    inset 0 1px 0 0 rgba(167, 139, 250, 0.05),
+    0 0 30px rgba(167, 139, 250, 0.06),
     0 8px 40px rgba(0, 0, 0, 0.2);
 }
 .glow-blue:hover {
@@ -598,8 +598,8 @@ summary,
 .light .text-white {
   color: #18181b;
 }
-.light .text-amber-400 {
-  color: #b45309;
+.light .text-violet-400 {
+  color: #7c3aed;
 }
 .light .bg-white\/5 {
   background: rgba(0, 0, 0, 0.04);
@@ -1028,7 +1028,7 @@ thead {
 .light .text-white {
   color: var(--text-primary);
 }
-.light .text-amber-400 {
+.light .text-violet-400 {
   color: #9b6413;
 }
 

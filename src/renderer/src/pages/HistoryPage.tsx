@@ -60,8 +60,8 @@ const typeConfigBase: Record<
   cleaner: {
     labelKey: 'typeLabels.cleaner',
     icon: Sparkles,
-    color: '#f59e0b',
-    bg: 'rgba(245,158,11,0.1)'
+    color: '#a78bfa',
+    bg: 'rgba(167, 139, 250,0.1)'
   },
   registry: {
     labelKey: 'typeLabels.registry',
@@ -140,7 +140,7 @@ function useTypeConfig() {
 }
 
 const PIE_COLORS = [
-  '#f59e0b',
+  '#a78bfa',
   '#3b82f6',
   '#22c55e',
   '#a855f7',
@@ -411,7 +411,7 @@ function OverviewView({
           icon={BarChart3}
           label={t('overview.totalScans')}
           value={stats.totalScans.toString()}
-          color="#f59e0b"
+          color="#a78bfa"
         />
         <MiniStat
           icon={HardDrive}
@@ -451,8 +451,8 @@ function OverviewView({
               <AreaChart data={timelineData}>
                 <defs>
                   <linearGradient id="spaceGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#f59e0b" stopOpacity={0.3} />
-                    <stop offset="100%" stopColor="#f59e0b" stopOpacity={0} />
+                    <stop offset="0%" stopColor="#a78bfa" stopOpacity={0.3} />
+                    <stop offset="100%" stopColor="#a78bfa" stopOpacity={0} />
                   </linearGradient>
                 </defs>
                 <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-line)" />
@@ -482,11 +482,11 @@ function OverviewView({
                 <Area
                   type="monotone"
                   dataKey="space"
-                  stroke="#f59e0b"
+                  stroke="#a78bfa"
                   strokeWidth={2}
                   fill="url(#spaceGrad)"
                   dot={false}
-                  activeDot={{ r: 4, fill: '#f59e0b' }}
+                  activeDot={{ r: 4, fill: '#a78bfa' }}
                 />
               </AreaChart>
             </ResponsiveContainer>
@@ -1252,7 +1252,7 @@ function DeletedFilesSection({ from, to }: { from: string; to: string }) {
                 {r.truncated ? (
                   <span
                     className="shrink-0 rounded-full px-1.5 py-0.5 text-[9.5px] font-medium"
-                    style={{ background: 'rgba(245,158,11,0.1)', color: '#f59e0b' }}
+                    style={{ background: 'rgba(167, 139, 250,0.1)', color: '#a78bfa' }}
                     title={t('detail.deletedFiles.truncatedHint', { count: r.truncated })}
                   >
                     {t('detail.deletedFiles.truncatedBadge', { count: r.truncated })}

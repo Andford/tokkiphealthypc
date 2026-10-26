@@ -53,8 +53,8 @@ function formatRelativeTime(ts: number | null, never: string): string {
 }
 
 function MediaIcon({ type }: { type: TrimMediaType }) {
-  if (type === 'NVMe') return <Cpu className="h-5 w-5 text-amber-400" strokeWidth={1.8} />
-  if (type === 'SSD') return <Database className="h-5 w-5 text-amber-400" strokeWidth={1.8} />
+  if (type === 'NVMe') return <Cpu className="h-5 w-5 text-violet-400" strokeWidth={1.8} />
+  if (type === 'SSD') return <Database className="h-5 w-5 text-violet-400" strokeWidth={1.8} />
   return <HardDrive className="h-5 w-5" strokeWidth={1.8} style={{ color: 'var(--text-muted)' }} />
 }
 
@@ -62,7 +62,7 @@ function StatusPill({ status, reason }: { status: TrimStatus; reason: string }) 
   const styles: Record<TrimStatus, { bg: string; color: string; label: string }> = {
     'recently-trimmed': { bg: 'rgba(34,197,94,0.12)', color: '#22c55e', label: 'Recently trimmed' },
     ok: { bg: 'rgba(63,63,70,0.4)', color: 'var(--text-muted)', label: 'OK' },
-    recommended: { bg: 'rgba(245,158,11,0.12)', color: '#f59e0b', label: 'Recommended' },
+    recommended: { bg: 'rgba(167, 139, 250,0.12)', color: '#a78bfa', label: 'Recommended' },
     'not-applicable': {
       bg: 'rgba(63,63,70,0.4)',
       color: 'var(--text-muted)',
@@ -214,7 +214,7 @@ export function DiskMaintenancePage() {
         style={{ background: 'var(--bg-subtle)', border: '1px solid var(--border-default)' }}
       >
         <div className="flex items-start gap-3">
-          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" strokeWidth={1.8} />
+          <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-violet-400" strokeWidth={1.8} />
           <div>
             <p className="text-[13px] font-medium text-zinc-200">{t('trimInfoTitle')}</p>
             <p className="mt-1 text-[12px]" style={{ color: 'var(--text-secondary)' }}>
@@ -255,7 +255,7 @@ export function DiskMaintenancePage() {
             disabled={selectableSelected.length === 0 || batchRunning}
             className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
             style={{
-              background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+              background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
               color: 'var(--text-on-accent)'
             }}
           >
@@ -355,11 +355,11 @@ function DriveRow({
           onChange={onToggle}
           disabled={!selectable || runState === 'running'}
           aria-label={`Select ${drive.label}`}
-          className="h-4 w-4 shrink-0 cursor-pointer accent-amber-500 disabled:cursor-not-allowed disabled:opacity-30"
+          className="h-4 w-4 shrink-0 cursor-pointer accent-violet-500 disabled:cursor-not-allowed disabled:opacity-30"
         />
         <div
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-          style={{ background: 'rgba(245,158,11,0.1)' }}
+          style={{ background: 'rgba(167, 139, 250,0.1)' }}
         >
           <MediaIcon type={drive.mediaType} />
         </div>
@@ -407,7 +407,7 @@ function DriveRow({
           className="mt-3 flex items-center gap-3 rounded-xl px-3 py-2"
           style={{ background: 'var(--bg-subtle)' }}
         >
-          <RefreshCw className="h-3.5 w-3.5 animate-spin text-amber-400" strokeWidth={2} />
+          <RefreshCw className="h-3.5 w-3.5 animate-spin text-violet-400" strokeWidth={2} />
           <p className="text-[12px]" style={{ color: 'var(--text-muted)' }}>
             {progressMessage ?? t('trimRunningMessage')}
           </p>
@@ -426,7 +426,7 @@ function DriveRow({
             {result.success ? (
               <CheckCircle2 className="h-4 w-4 shrink-0 text-green-500" strokeWidth={1.8} />
             ) : result.needsAdmin ? (
-              <ShieldAlert className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.8} />
+              <ShieldAlert className="h-4 w-4 shrink-0 text-violet-400" strokeWidth={1.8} />
             ) : (
               <XCircle className="h-4 w-4 shrink-0 text-red-400" strokeWidth={1.8} />
             )}
@@ -435,7 +435,7 @@ function DriveRow({
           {result.log && (
             <button
               onClick={onToggleLog}
-              className="mt-2 text-[11px] font-medium text-amber-500 hover:text-amber-400"
+              className="mt-2 text-[11px] font-medium text-violet-500 hover:text-violet-400"
             >
               {showLog ? t('hideLog') : t('showLog')}
             </button>

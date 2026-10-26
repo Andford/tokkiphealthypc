@@ -44,7 +44,7 @@ const SOURCE_PILL_COLOR: Record<ContextMenuSource, { bg: string; text: string }>
   Defender: { bg: 'rgba(34,197,94,0.10)', text: '#22c55e' },
   Git: { bg: 'rgba(244,114,22,0.10)', text: '#fb923c' },
   Dropbox: { bg: 'rgba(59,130,246,0.10)', text: '#60a5fa' },
-  'Google Drive': { bg: 'rgba(245,158,11,0.10)', text: '#fbbf24' },
+  'Google Drive': { bg: 'rgba(167, 139, 250,0.10)', text: '#c4b5fd' },
   PowerToys: { bg: 'rgba(168,85,247,0.10)', text: '#c084fc' },
   Microsoft: { bg: 'rgba(20,184,166,0.10)', text: '#2dd4bf' },
   Windows: { bg: 'rgba(20,184,166,0.10)', text: '#2dd4bf' },
@@ -63,7 +63,7 @@ const GROUP_PALETTE: ReadonlyArray<{ bg: string; text: string }> = [
   { bg: 'rgba(34,197,94,0.10)', text: '#4ade80' },
   { bg: 'rgba(99,102,241,0.10)', text: '#818cf8' },
   { bg: 'rgba(244,114,22,0.10)', text: '#fb923c' },
-  { bg: 'rgba(245,158,11,0.10)', text: '#fbbf24' },
+  { bg: 'rgba(167, 139, 250,0.10)', text: '#c4b5fd' },
   { bg: 'rgba(20,184,166,0.10)', text: '#2dd4bf' }
 ]
 
@@ -313,9 +313,9 @@ function ContextMenuCleanerPageContent() {
             border: '1px solid var(--accent-muted-bg)'
           }}
         >
-          <Shield className="mt-0.5 h-4 w-4 shrink-0 text-amber-500" strokeWidth={1.8} />
+          <Shield className="mt-0.5 h-4 w-4 shrink-0 text-violet-500" strokeWidth={1.8} />
           <div className="flex-1 text-[12px]">
-            <p className="font-semibold text-amber-500">{t('win11NoticeTitle')}</p>
+            <p className="font-semibold text-violet-500">{t('win11NoticeTitle')}</p>
             <p className="mt-0.5" style={{ color: 'var(--text-muted)' }}>
               {t('win11NoticeBody')}
             </p>
@@ -359,7 +359,7 @@ function ContextMenuCleanerPageContent() {
           style={{ background: 'var(--card-bg)', border: '1px solid var(--border-default)' }}
         >
           <div className="mb-3 flex items-center gap-2.5">
-            <Loader2 className="h-4 w-4 animate-spin text-amber-400" />
+            <Loader2 className="h-4 w-4 animate-spin text-violet-400" />
             <span className="text-[13px] font-medium text-zinc-200">{t('applyingTitle')}</span>
             <span
               className="ml-auto font-mono text-[12px]"
@@ -376,7 +376,7 @@ function ContextMenuCleanerPageContent() {
               className="h-full rounded-full transition-all duration-200 ease-out"
               style={{
                 width: `${applyProg.total > 0 ? (applyProg.current / applyProg.total) * 100 : 0}%`,
-                background: 'linear-gradient(90deg, #f59e0b 0%, #d97706 100%)'
+                background: 'linear-gradient(90deg, #a78bfa 0%, #8b5cf6 100%)'
               }}
             />
           </div>
@@ -449,7 +449,7 @@ function ContextMenuCleanerPageContent() {
               disabled={applying}
               className="pulse-primary-action pulse-scan-action flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
               style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                 color: 'var(--text-on-accent)'
               }}
             >
@@ -624,14 +624,17 @@ function ContextMenuCleanerPageContent() {
       {requiresAdminInSelection && selectedCount > 0 && !applying && (
         <div
           className="mb-3 flex items-center gap-2.5 rounded-xl px-4 py-2.5 text-[12px]"
-          style={{ background: 'rgba(245,158,11,0.06)', border: '1px solid rgba(245,158,11,0.18)' }}
+          style={{
+            background: 'rgba(167, 139, 250,0.06)',
+            border: '1px solid rgba(167, 139, 250,0.18)'
+          }}
         >
-          <AlertTriangle className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.8} />
+          <AlertTriangle className="h-4 w-4 shrink-0 text-violet-400" strokeWidth={1.8} />
           <span className="flex-1 text-zinc-300">{t('elevationPrompt')}</span>
           <button
             onClick={() => window.kudu.elevationRelaunch?.().catch(() => {})}
-            className="rounded-md px-3 py-1 text-[11px] font-medium text-amber-400"
-            style={{ background: 'rgba(245,158,11,0.10)' }}
+            className="rounded-md px-3 py-1 text-[11px] font-medium text-violet-400"
+            style={{ background: 'rgba(167, 139, 250,0.10)' }}
           >
             {t('elevationRelaunch')}
           </button>
@@ -730,7 +733,7 @@ function EntryRow({ entry, isLast, onToggle, onAction }: EntryRowProps) {
     <div
       className="flex items-center gap-3 px-5 py-3 transition-colors"
       style={{
-        background: entry.selected ? 'rgba(245,158,11,0.04)' : 'transparent',
+        background: entry.selected ? 'rgba(167, 139, 250,0.04)' : 'transparent',
         borderBottom: !isLast ? '1px solid var(--bg-subtle)' : 'none',
         opacity: entry.protected ? 0.7 : 1
       }}
@@ -741,7 +744,7 @@ function EntryRow({ entry, isLast, onToggle, onAction }: EntryRowProps) {
           checked={entry.selected}
           disabled={entry.protected}
           onChange={onToggle}
-          className="accent-amber-500"
+          className="accent-violet-500"
           aria-label={`select ${entry.displayName}`}
         />
       </div>
@@ -776,7 +779,7 @@ function EntryRow({ entry, isLast, onToggle, onAction }: EntryRowProps) {
             <span
               title={t('adminTooltip')}
               className="rounded px-1.5 py-0.5 text-[10px] font-medium"
-              style={{ background: 'rgba(245,158,11,0.10)', color: '#f59e0b' }}
+              style={{ background: 'rgba(167, 139, 250,0.10)', color: '#a78bfa' }}
             >
               {t('adminBadge')}
             </span>

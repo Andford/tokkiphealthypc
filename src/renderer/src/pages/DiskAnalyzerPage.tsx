@@ -14,16 +14,16 @@ import type { DiskNode, DriveInfo } from '@shared/types'
 type ViewMode = 'folders' | 'filetypes'
 
 const COLORS = [
-  '#f59e0b',
-  '#d97706',
-  '#b45309',
+  '#a78bfa',
+  '#8b5cf6',
+  '#7c3aed',
   '#92400e',
   '#78350f',
   '#a16207',
   '#ca8a04',
   '#eab308',
   '#facc15',
-  '#fbbf24'
+  '#c4b5fd'
 ]
 
 interface TreemapRect {
@@ -273,7 +273,7 @@ export function DiskAnalyzerPage() {
               disabled={analyzing}
               className="pulse-primary-action pulse-scan-action flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
               style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                 color: 'var(--text-on-accent)'
               }}
             >
@@ -454,7 +454,7 @@ export function DiskAnalyzerPage() {
                             <div className="flex flex-1 items-center gap-2.5 min-w-0">
                               {child.children ? (
                                 <Folder
-                                  className="h-4 w-4 shrink-0 text-amber-500"
+                                  className="h-4 w-4 shrink-0 text-violet-500"
                                   strokeWidth={1.8}
                                 />
                               ) : (

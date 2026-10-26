@@ -54,9 +54,9 @@ const categories: CategoryDef[] = [
     labelKey: 'privacyCategories.adsLabel',
     descriptionKey: 'privacyCategories.adsDescription',
     icon: Megaphone,
-    color: '#f59e0b',
-    bg: 'rgba(245,158,11,0.08)',
-    border: 'rgba(245,158,11,0.15)'
+    color: '#a78bfa',
+    bg: 'rgba(167, 139, 250,0.08)',
+    border: 'rgba(167, 139, 250,0.15)'
   },
   {
     id: 'search',
@@ -145,7 +145,7 @@ function ScoreRing({ score, size = 80 }: { score: number; size?: number }) {
   const r = (size - 6) / 2
   const circumference = 2 * Math.PI * r
   const offset = circumference - (score / 100) * circumference
-  const color = score >= 80 ? '#22c55e' : score >= 50 ? '#f59e0b' : '#ef4444'
+  const color = score >= 80 ? '#22c55e' : score >= 50 ? '#a78bfa' : '#ef4444'
 
   return (
     <div
@@ -546,7 +546,7 @@ function PrivacySettingsPanel({ embedded }: { embedded?: boolean }) {
               {unprotectedCount === 0 ? (
                 <ShieldCheck className="h-5 w-5 text-green-500" strokeWidth={1.8} />
               ) : (
-                <ShieldAlert className="h-5 w-5 text-amber-500" strokeWidth={1.8} />
+                <ShieldAlert className="h-5 w-5 text-violet-500" strokeWidth={1.8} />
               )}
               <span className="text-[13px] font-medium text-zinc-200">
                 {unprotectedCount === 0
@@ -564,7 +564,7 @@ function PrivacySettingsPanel({ embedded }: { embedded?: boolean }) {
                   style={{
                     width: `${(state.protected / state.total) * 100}%`,
                     background:
-                      state.score >= 80 ? '#22c55e' : state.score >= 50 ? '#f59e0b' : '#ef4444'
+                      state.score >= 80 ? '#22c55e' : state.score >= 50 ? '#a78bfa' : '#ef4444'
                   }}
                 />
               </div>
@@ -712,8 +712,9 @@ function PrivacySettingsPanel({ embedded }: { embedded?: boolean }) {
         <div
           className="mb-5 rounded-2xl p-4"
           style={{
-            background: applyResult.failed > 0 ? 'rgba(245,158,11,0.04)' : 'rgba(34,197,94,0.06)',
-            border: `1px solid ${applyResult.failed > 0 ? 'rgba(245,158,11,0.1)' : 'rgba(34,197,94,0.1)'}`
+            background:
+              applyResult.failed > 0 ? 'rgba(167, 139, 250,0.04)' : 'rgba(34,197,94,0.06)',
+            border: `1px solid ${applyResult.failed > 0 ? 'rgba(167, 139, 250,0.1)' : 'rgba(34,197,94,0.1)'}`
           }}
         >
           <div className="flex items-center gap-3">
@@ -945,11 +946,11 @@ function PrivacySettingsPanel({ embedded }: { embedded?: boolean }) {
         <div
           className="mt-4 flex items-start gap-3 rounded-2xl px-5 py-3"
           style={{
-            background: 'rgba(245,158,11,0.04)',
+            background: 'rgba(167, 139, 250,0.04)',
             border: '1px solid var(--accent-muted-bg)'
           }}
         >
-          <AlertTriangle className="h-4 w-4 shrink-0 text-amber-500 mt-0.5" strokeWidth={1.8} />
+          <AlertTriangle className="h-4 w-4 shrink-0 text-violet-500 mt-0.5" strokeWidth={1.8} />
           <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
             {t('privacy.adminWarning')}
           </p>

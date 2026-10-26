@@ -142,7 +142,7 @@ export function App() {
       >
         <div className="flex flex-col items-center gap-4">
           <div className="h-16 w-16 rounded-2xl" aria-hidden="true" />
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-700 border-t-amber-500" />
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-700 border-t-violet-500" />
         </div>
       </div>
     )

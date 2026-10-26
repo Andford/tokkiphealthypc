@@ -1,0 +1,497 @@
+/* Tokkip Healthy PC — Tokkip's look, loaded after the base styles.
+   The same palette as Tokkip on the phone and the PC: a near-black ground,
+   soft cards, lilac for actions, mint for health, generous rounded corners
+   and Fredoka (SIL OFL, licenses/OFL-Fredoka.txt) for titles. */
+
+@font-face {
+  font-family: 'Tokkip Round';
+  src: url('../assets/fonts/fredoka-latin-wght.woff2') format('woff2');
+  font-weight: 300 700;
+  font-display: swap;
+  unicode-range:
+    U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329,
+    U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Tokkip Round';
+  src: url('../assets/fonts/fredoka-latin-ext-wght.woff2') format('woff2');
+  font-weight: 300 700;
+  font-display: swap;
+  unicode-range:
+    U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329,
+    U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F,
+    U+A720-A7FF;
+}
+
+:root {
+  color-scheme: dark;
+  --font-display: 'Tokkip Round', 'Segoe UI Variable Display', 'Segoe UI', system-ui, sans-serif;
+
+  --page-bg: #0b0c0e;
+  --sidebar-bg: #0b0c0e;
+  --titlebar-bg: #0b0c0e;
+  --card-bg: #141518;
+  --bg-subtle: rgba(255, 255, 255, 0.03);
+  --bg-subtle-2: rgba(255, 255, 255, 0.05);
+  --bg-hover: rgba(255, 255, 255, 0.06);
+  --bg-hover-2: rgba(255, 255, 255, 0.08);
+  --bg-active: rgba(255, 255, 255, 0.1);
+  --bg-elevated: #17181c;
+  --bg-overlay: #1d1f24;
+  --flyout-bg: #17181c;
+  --toast-bg: #17181c;
+
+  --text-primary: #f5f6f8;
+  --text-secondary: #c9ccd3;
+  --text-muted: #9398a1;
+  --text-dim: #8e939c;
+  --text-faint: #6b7079;
+  --text-ghost: rgba(245, 246, 248, 0.6);
+  --text-ghost-2: rgba(245, 246, 248, 0.72);
+  --text-on-accent: #14102a;
+  --toast-text: #f5f6f8;
+
+  --brand-solid: #c4b5fd;
+  --brand-ink: #14102a;
+  --brand-surface: rgba(167, 139, 250, 0.08);
+  --brand-border: rgba(167, 139, 250, 0.2);
+  --nav-active-bg: #1a1726;
+  --nav-active-fg: #c4b5fd;
+  --nav-inactive-fg: #c9ccd3;
+  --nav-icon-fg: #8e939c;
+  --nav-section-fg: #6b7079;
+
+  --border-subtle: rgba(255, 255, 255, 0.035);
+  --border-default: #1d1f24;
+  --border-medium: #23252b;
+  --border-strong: #2c2f36;
+  --border-stronger: rgba(255, 255, 255, 0.16);
+
+  --accent: #a78bfa;
+  --accent-hover: #c4b5fd;
+  --accent-muted-bg: rgba(167, 139, 250, 0.1);
+  --accent-muted-border: rgba(167, 139, 250, 0.26);
+
+  --success: #4ade80;
+  --warning: #f5a524;
+  --danger: #f4505e;
+  --info: #60a5fa;
+  --mint: #34d399;
+
+  --gauge-track: rgba(255, 255, 255, 0.07);
+  --grid-line: rgba(255, 255, 255, 0.05);
+
+  --glass-bg: #141518;
+  --glass-border: rgba(255, 255, 255, 0.045);
+  --glass-inset: rgba(255, 255, 255, 0.02);
+  --glass-shadow: none;
+  --glass-hover-bg: #17181c;
+  --glass-hover-border: rgba(167, 139, 250, 0.22);
+  --glass-hover-inset: rgba(255, 255, 255, 0.03);
+  --glass-hover-shadow: none;
+
+  --scrollbar-thumb: rgba(255, 255, 255, 0.1);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.2);
+  --selection-bg: rgba(167, 139, 250, 0.35);
+  --glow-amber: transparent;
+  --glow-blue: transparent;
+
+  /* Tailwind's rounded-* steps, softer (Material 3 Expressive). */
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 18px;
+  --radius-2xl: 24px;
+  --radius-3xl: 30px;
+}
+
+.light {
+  color-scheme: light;
+  --page-bg: #f7f5fc;
+  --sidebar-bg: #f7f5fc;
+  --titlebar-bg: #f7f5fc;
+  --card-bg: #ffffff;
+  --bg-subtle: rgba(40, 24, 90, 0.035);
+  --bg-subtle-2: rgba(40, 24, 90, 0.05);
+  --bg-hover: rgba(40, 24, 90, 0.07);
+  --bg-hover-2: rgba(40, 24, 90, 0.09);
+  --bg-active: rgba(40, 24, 90, 0.12);
+  --bg-elevated: #efebfa;
+  --bg-overlay: #e6e0f6;
+  --flyout-bg: #ffffff;
+  --toast-bg: #ffffff;
+
+  --text-primary: #1b1530;
+  --text-secondary: #3d3557;
+  --text-muted: #5c5577;
+  --text-dim: #6e6789;
+  --text-faint: #8a84a3;
+  --text-ghost: rgba(27, 21, 48, 0.62);
+  --text-ghost-2: rgba(27, 21, 48, 0.74);
+  --text-on-accent: #ffffff;
+  --toast-text: #1b1530;
+
+  --brand-solid: #6d4fe0;
+  --brand-ink: #ffffff;
+  --brand-surface: rgba(109, 79, 224, 0.08);
+  --brand-border: rgba(109, 79, 224, 0.2);
+  --nav-active-bg: #e9e2ff;
+  --nav-active-fg: #4c33b8;
+  --nav-inactive-fg: #3d3557;
+  --nav-icon-fg: #6e6789;
+  --nav-section-fg: #8a84a3;
+
+  --border-subtle: rgba(40, 24, 90, 0.06);
+  --border-default: rgba(40, 24, 90, 0.09);
+  --border-medium: rgba(40, 24, 90, 0.12);
+  --border-strong: rgba(40, 24, 90, 0.18);
+  --border-stronger: rgba(40, 24, 90, 0.26);
+
+  --accent: #7c5ce6;
+  --accent-hover: #6d4fe0;
+  --accent-muted-bg: rgba(124, 92, 230, 0.09);
+  --accent-muted-border: rgba(124, 92, 230, 0.26);
+
+  --success: #16a34a;
+  --warning: #b45309;
+  --danger: #dc2626;
+  --info: #2563eb;
+  --mint: #0f9f73;
+
+  --gauge-track: rgba(40, 24, 90, 0.08);
+  --grid-line: rgba(40, 24, 90, 0.06);
+
+  --glass-bg: #ffffff;
+  --glass-border: rgba(40, 24, 90, 0.07);
+  --glass-inset: rgba(255, 255, 255, 0.8);
+  --glass-shadow: 0 1px 2px rgba(40, 24, 90, 0.04), 0 8px 24px rgba(40, 24, 90, 0.05);
+  --glass-hover-bg: #ffffff;
+  --glass-hover-border: rgba(124, 92, 230, 0.3);
+  --glass-hover-inset: rgba(255, 255, 255, 0.95);
+  --glass-hover-shadow: 0 2px 6px rgba(40, 24, 90, 0.06), 0 14px 30px rgba(40, 24, 90, 0.07);
+
+  --scrollbar-thumb: rgba(40, 24, 90, 0.14);
+  --scrollbar-thumb-hover: rgba(40, 24, 90, 0.26);
+  --selection-bg: rgba(124, 92, 230, 0.25);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ── Type ─────────────────────────────────────────────────────── */
+
+.pulse-page-heading h1,
+.page-header h1,
+.tokkip-display,
+.simple-dashboard h1,
+.simple-dashboard h2,
+.pulse-home-greeting h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* ── Cards: soft, flat, generous corners ─────────────────────── */
+
+.glass-card,
+.pulse-card,
+.pulse-action-card,
+.simple-goal,
+.simple-dashboard-routine button {
+  border-radius: 26px !important;
+}
+
+/* ── Title bar ───────────────────────────────────────────────── */
+
+.app-brand {
+  gap: 8px;
+}
+.app-brand .tokkip-brand-name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 14px;
+  color: var(--text-primary);
+}
+.app-brand .tokkip-brand-name small {
+  margin-left: 6px;
+  font-weight: 500;
+  color: var(--mint);
+}
+
+/* ── Sidebar: pill indicator like the phone's bottom bar ─────── */
+
+.calm-nav-item[aria-current='page'],
+.calm-nav-item.is-active {
+  border-radius: 999px !important;
+}
+
+/* ── Expressive icon tiles ───────────────────────────────────── */
+
+.tokkip-shape {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+/* ── Tokkip's health card ────────────────────────────────────── */
+
+.tokkip-health {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.tokkip-health-ring {
+  position: absolute;
+  inset: 0;
+  transform: rotate(-90deg);
+}
+.tokkip-health-score {
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 46px;
+  padding: 2px 10px;
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 13px;
+  text-align: center;
+  color: var(--text-on-accent);
+}
+
+/* ── Celebration ─────────────────────────────────────────────── */
+
+.tokkip-party {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 42%, rgba(42, 32, 72, 0.92), rgba(11, 12, 14, 0.95));
+  animation: tokkip-fade 260ms ease-out;
+}
+.tokkip-party-card {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 440px;
+  padding: 0 24px;
+  text-align: center;
+  color: #f5f6f8;
+}
+.tokkip-party-blob {
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  top: -24px;
+  background: linear-gradient(135deg, #c4b5fd, #f472b6 55%, #fbbf24);
+  animation:
+    tokkip-spin 9s linear infinite,
+    tokkip-pop 600ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  opacity: 0.9;
+}
+.tokkip-party h2 {
+  margin-top: 18px;
+  font-family: var(--font-display);
+  font-size: 34px;
+  font-weight: 600;
+}
+.tokkip-party .tokkip-party-badge {
+  margin-top: 10px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  background: #fbbf24;
+  color: #1b1530;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+}
+.tokkip-party p {
+  margin-top: 14px;
+  font-size: 16px;
+  line-height: 1.5;
+  color: rgba(245, 246, 248, 0.9);
+}
+.tokkip-party button {
+  margin-top: 22px;
+  padding: 14px 30px;
+  border-radius: 999px;
+  background: #fbbf24;
+  color: #1b1530;
+  font-weight: 700;
+  font-size: 16px;
+  transition:
+    border-radius 200ms,
+    transform 200ms;
+}
+.tokkip-party button:active {
+  border-radius: 16px;
+  transform: scale(0.97);
+}
+.tokkip-confetti {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes tokkip-fade {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes tokkip-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes tokkip-pop {
+  from {
+    transform: scale(0.2);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tokkip-party-blob {
+    animation: none;
+  }
+}
+
+/* ── Inicio: Tokkip and how the PC feels ─────────────────────── */
+
+.tokkip-hero {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin-bottom: 28px;
+  padding: 22px 26px;
+  border-radius: 30px;
+  background: var(--card-bg);
+  border: 1px solid var(--glass-border);
+}
+.tokkip-hero-copy {
+  min-width: 0;
+  flex: 1;
+}
+.tokkip-hero-copy h1 {
+  margin-top: 6px;
+  font-size: 30px;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+.tokkip-bubble {
+  position: relative;
+  display: inline-block;
+  margin-top: 12px;
+  padding: 12px 16px;
+  border-radius: 20px 20px 20px 6px;
+  background: var(--accent-muted-bg);
+  border: 1px solid var(--accent-muted-border);
+  color: var(--text-secondary);
+  font-size: 14px;
+  line-height: 1.45;
+  max-width: 560px;
+}
+.tokkip-hero-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  margin-left: 2px;
+  padding: 11px 20px;
+  border-radius: 999px;
+  background: var(--accent);
+  color: var(--text-on-accent);
+  font-weight: 700;
+  font-size: 14px;
+  transition:
+    border-radius 180ms ease,
+    transform 180ms ease;
+}
+.tokkip-hero-action:hover {
+  background: var(--accent-hover);
+}
+.tokkip-hero-action:active {
+  border-radius: 14px;
+  transform: scale(0.98);
+}
+.simple-dashboard-heading h2 {
+  font-size: 22px;
+  color: var(--text-primary);
+}
+
+/* ── Preferences → Tokkip ────────────────────────────────────── */
+
+.tokkip-settings {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.tokkip-settings-top {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.tokkip-settings-top p,
+.tokkip-settings-note {
+  color: var(--text-muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.tokkip-settings-note strong {
+  color: var(--text-secondary);
+}
+.tokkip-settings-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+.tokkip-settings-row small {
+  display: block;
+  margin-top: 2px;
+  font-weight: 400;
+  color: var(--text-muted);
+}
+.tokkip-settings-row input[type='checkbox'] {
+  width: 20px;
+  height: 20px;
+  accent-color: var(--accent);
+}
+.tokkip-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: flex-end;
+}
+.tokkip-pills button {
+  padding: 7px 14px;
+  border-radius: 999px;
+  background: var(--bg-subtle-2);
+  color: var(--text-secondary);
+  font-size: 13px;
+  font-weight: 600;
+}
+.tokkip-pills button[aria-pressed='true'] {
+  background: var(--accent);
+  color: var(--text-on-accent);
+}
+.tokkip-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tokkip-swatches button {
+  width: 30px;
+  height: 30px;
+}

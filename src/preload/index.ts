@@ -8,6 +8,7 @@ import type { AppPrivacyCapability, AppPrivacyReport } from '../shared/app-priva
 import type { UninstallOptions } from '../shared/uninstall-policy'
 import { contextBridge, ipcRenderer } from 'electron'
 import { IPC } from '../shared/channels'
+import type { TokkipNotice } from '../shared/tokkip-notice'
 import type {
   PlatformInfo,
   ScanItem,
@@ -449,6 +450,9 @@ const api = {
   deletionLogClear: (): Promise<void> => ipcRenderer.invoke(IPC.DELETION_LOG_CLEAR),
 
   // History push events
+  // Tokkip PC: how this PC is doing, for its island (src/main/services/tokkip-notice.ts)
+  tokkipNotice: (notice: TokkipNotice): Promise<void> =>
+    ipcRenderer.invoke(IPC.TOKKIP_NOTICE, notice),
   onHistoryChanged: (callback: () => void) => {
     const handler = () => callback()
     ipcRenderer.on(IPC.HISTORY_CHANGED, handler)

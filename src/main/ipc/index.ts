@@ -11,6 +11,7 @@ import { execFile } from 'child_process'
 import { existsSync, mkdirSync, writeFileSync } from 'fs'
 import { dirname, isAbsolute } from 'path'
 import { IPC } from '../../shared/channels'
+import { writeTokkipNotice } from '../services/tokkip-notice'
 import { psUtf8 } from '../services/exec-utf8'
 import { registerSystemCleanerIpc } from './system-cleaner.ipc'
 import { registerBrowserCleanerIpc } from './browser-cleaner.ipc'
@@ -269,6 +270,7 @@ export function registerCleanerIpc(getWindow: WindowGetter): void {
 
   // Scan history — validate entry shape before persisting
   ipcMain.handle(IPC.HISTORY_GET, () => getHistory())
+  ipcMain.handle(IPC.TOKKIP_NOTICE, (_e, notice: unknown) => writeTokkipNotice(notice))
   ipcMain.handle(IPC.HISTORY_ADD, (_event, entry) => {
     const validated = validateHistoryEntry(entry)
     if (validated) addHistoryEntry(validated)

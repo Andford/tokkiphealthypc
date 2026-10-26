@@ -70,7 +70,7 @@ const SORT_LABEL_KEYS: Record<string, string> = {
 
 function safetyScoreColor(score: number): { bg: string; text: string } {
   if (score >= 8) return { bg: 'rgba(34,197,94,0.10)', text: '#22c55e' }
-  if (score >= 5) return { bg: 'rgba(245,158,11,0.10)', text: '#f59e0b' }
+  if (score >= 5) return { bg: 'rgba(167, 139, 250,0.10)', text: '#a78bfa' }
   if (score >= 3) return { bg: 'rgba(249,115,22,0.10)', text: '#f97316' }
   return { bg: 'rgba(239,68,68,0.10)', text: '#ef4444' }
 }
@@ -512,7 +512,9 @@ export function UninstallerPage() {
               className="flex items-center gap-1.5 px-4 py-2.5 text-[12px] font-medium transition-colors"
               style={{
                 background:
-                  filterMode === 'no-recent-launch' ? 'rgba(245,158,11,0.1)' : 'var(--bg-subtle)',
+                  filterMode === 'no-recent-launch'
+                    ? 'rgba(167, 139, 250,0.1)'
+                    : 'var(--bg-subtle)',
                 color:
                   filterMode === 'no-recent-launch' ? 'var(--accent-hover)' : 'var(--text-muted)',
                 borderLeft: '1px solid var(--border-medium)'
@@ -585,7 +587,7 @@ export function UninstallerPage() {
                   >
                     {t(labelKey)}
                     {sortField === field && (
-                      <span className="ml-auto text-amber-400 text-[10px]">
+                      <span className="ml-auto text-violet-400 text-[10px]">
                         {sortDirection === 'asc' ? t('sortAscending') : t('sortDescending')}
                       </span>
                     )}
@@ -620,15 +622,15 @@ export function UninstallerPage() {
         noRecentLaunchPrograms.length > 0 &&
         filterMode === 'all' && (
           <div
-            className="mb-5 flex items-center justify-between rounded-2xl px-5 py-4 cursor-pointer transition-colors hover:border-amber-500/20"
+            className="mb-5 flex items-center justify-between rounded-2xl px-5 py-4 cursor-pointer transition-colors hover:border-violet-500/20"
             style={{
-              background: 'rgba(245,158,11,0.04)',
+              background: 'rgba(167, 139, 250,0.04)',
               border: '1px solid var(--accent-muted-bg)'
             }}
             onClick={() => useUninstallerStore.getState().setFilterMode('no-recent-launch')}
           >
             <div className="flex items-center gap-3">
-              <AlertTriangle className="h-5 w-5 shrink-0 text-amber-500" strokeWidth={1.8} />
+              <AlertTriangle className="h-5 w-5 shrink-0 text-violet-500" strokeWidth={1.8} />
               <div>
                 <p className="text-[13px] font-medium text-zinc-200">
                   {noRecentLaunchPrograms.length !== 1
@@ -652,7 +654,7 @@ export function UninstallerPage() {
             </div>
             <span
               className="rounded-full px-3 py-1 text-[11px] font-medium"
-              style={{ background: 'rgba(245,158,11,0.1)', color: 'var(--accent-hover)' }}
+              style={{ background: 'rgba(167, 139, 250,0.1)', color: 'var(--accent-hover)' }}
             >
               {t('unusedBannerViewButton')}
             </span>
@@ -663,13 +665,13 @@ export function UninstallerPage() {
       <div
         className="mb-5 flex items-center gap-3 rounded-2xl px-5 py-4"
         style={{
-          background: 'rgba(245,158,11,0.04)',
-          border: '1px solid rgba(245,158,11,0.08)'
+          background: 'rgba(167, 139, 250,0.04)',
+          border: '1px solid rgba(167, 139, 250,0.08)'
         }}
       >
-        <Shield className="h-5 w-5 shrink-0 text-amber-500" strokeWidth={1.8} />
+        <Shield className="h-5 w-5 shrink-0 text-violet-500" strokeWidth={1.8} />
         <p className="text-[12px]" style={{ color: 'var(--text-muted)' }}>
-          <span className="font-semibold text-amber-500">{t('nativeUninstallLabel')}</span> —{' '}
+          <span className="font-semibold text-violet-500">{t('nativeUninstallLabel')}</span> —{' '}
           {t('nativeUninstallDescription')}
           <span className="mt-2 block">{t('launchHistoryLimitations')}</span>
         </p>
@@ -689,13 +691,13 @@ export function UninstallerPage() {
         <div
           className="mb-5 rounded-2xl p-4"
           style={{
-            background: 'rgba(245,158,11,0.04)',
+            background: 'rgba(167, 139, 250,0.04)',
             border: '1px solid var(--accent-muted-bg)'
           }}
         >
           <div className="flex items-center justify-between mb-2.5">
             <div className="flex items-center gap-2.5">
-              <Loader2 className="h-4 w-4 animate-spin text-amber-400" strokeWidth={2} />
+              <Loader2 className="h-4 w-4 animate-spin text-violet-400" strokeWidth={2} />
               <span className="text-[13px] font-medium text-zinc-200">
                 {progress.phase === 'uninstalling'
                   ? t('progressUninstalling', { programName: progress.currentProgram })
@@ -720,7 +722,7 @@ export function UninstallerPage() {
               className="h-full rounded-full transition-all duration-300"
               style={{
                 width: `${progress.progress}%`,
-                background: 'linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%)'
+                background: 'linear-gradient(90deg, #a78bfa 0%, #c4b5fd 100%)'
               }}
             />
           </div>
@@ -784,8 +786,8 @@ export function UninstallerPage() {
               <button
                 onClick={() => setConfirmForceRemove(lastFailedProgramRef.current)}
                 disabled={uninstalling}
-                className="ml-auto shrink-0 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] font-medium text-amber-400 transition-all hover:bg-amber-500/10 disabled:opacity-30"
-                style={{ border: '1px solid rgba(245,158,11,0.15)' }}
+                className="ml-auto shrink-0 flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-[11px] font-medium text-violet-400 transition-all hover:bg-violet-500/10 disabled:opacity-30"
+                style={{ border: '1px solid rgba(167, 139, 250,0.15)' }}
               >
                 <Trash2 className="h-3.5 w-3.5" strokeWidth={1.8} />
                 {t('forceRemoveButton')}
@@ -806,7 +808,7 @@ export function UninstallerPage() {
               disabled={isBusy}
               className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
               style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                 color: 'var(--text-on-accent)'
               }}
             >
@@ -820,7 +822,7 @@ export function UninstallerPage() {
       {/* Loading state */}
       {loading && (
         <div className="flex flex-col items-center justify-center py-16">
-          <Loader2 className="h-10 w-10 animate-spin text-amber-400 mb-4" strokeWidth={1.5} />
+          <Loader2 className="h-10 w-10 animate-spin text-violet-400 mb-4" strokeWidth={1.5} />
           <p className="text-[13px] text-zinc-400">{t('loadingInstalledPrograms')}</p>
         </div>
       )}
@@ -870,17 +872,17 @@ export function UninstallerPage() {
               {filteredPrograms.length > 0 &&
               selectablePrograms.length > 0 &&
               selectablePrograms.every((p) => selectedIds.has(p.id)) ? (
-                <CheckSquare className="h-4.5 w-4.5 text-amber-400" strokeWidth={1.8} />
+                <CheckSquare className="h-4.5 w-4.5 text-violet-400" strokeWidth={1.8} />
               ) : filteredPrograms.some((p) => selectedIds.has(p.id)) ? (
-                <MinusSquare className="h-4.5 w-4.5 text-amber-400" strokeWidth={1.8} />
+                <MinusSquare className="h-4.5 w-4.5 text-violet-400" strokeWidth={1.8} />
               ) : (
                 <Square className="h-4.5 w-4.5" strokeWidth={1.8} />
               )}
             </button>
             {filterMode === 'no-recent-launch' ? (
-              <AlertTriangle className="h-4.5 w-4.5 text-amber-400" strokeWidth={1.8} />
+              <AlertTriangle className="h-4.5 w-4.5 text-violet-400" strokeWidth={1.8} />
             ) : (
-              <Package className="h-4.5 w-4.5 text-amber-400" strokeWidth={1.8} />
+              <Package className="h-4.5 w-4.5 text-violet-400" strokeWidth={1.8} />
             )}
             <span className="text-[13px] font-semibold text-zinc-200">
               {filterMode === 'no-recent-launch'
@@ -913,7 +915,7 @@ export function UninstallerPage() {
                       background: isSelected
                         ? 'var(--accent-muted-bg)'
                         : noRecentLaunch
-                          ? 'rgba(245,158,11,0.03)'
+                          ? 'rgba(167, 139, 250,0.03)'
                           : 'var(--bg-subtle)',
                       border: `1px solid ${isSelected ? 'var(--accent-muted-border)' : noRecentLaunch ? 'var(--accent-muted-bg)' : 'var(--border-subtle)'}`
                     }}
@@ -928,7 +930,7 @@ export function UninstallerPage() {
                       className="shrink-0 text-zinc-500 hover:text-zinc-300 transition-colors disabled:opacity-30"
                     >
                       {isSelected ? (
-                        <CheckSquare className="h-5 w-5 text-amber-400" strokeWidth={1.8} />
+                        <CheckSquare className="h-5 w-5 text-violet-400" strokeWidth={1.8} />
                       ) : (
                         <Square className="h-5 w-5" strokeWidth={1.8} />
                       )}
@@ -936,7 +938,9 @@ export function UninstallerPage() {
                     <div
                       className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
                       style={{
-                        background: noRecentLaunch ? 'rgba(245,158,11,0.1)' : 'rgba(139,92,246,0.1)'
+                        background: noRecentLaunch
+                          ? 'rgba(167, 139, 250,0.1)'
+                          : 'rgba(139,92,246,0.1)'
                       }}
                     >
                       {noRecentLaunch ? (
@@ -970,7 +974,7 @@ export function UninstallerPage() {
                           <span
                             className="rounded-md px-2 py-0.5 text-[10px] font-medium shrink-0"
                             style={{
-                              background: 'rgba(245,158,11,0.1)',
+                              background: 'rgba(167, 139, 250,0.1)',
                               color: 'var(--accent-hover)'
                             }}
                           >

@@ -478,9 +478,9 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
         className="mb-5 flex items-center gap-3 rounded-2xl px-5 py-4"
         style={{ background: 'var(--accent-muted-bg)', border: '1px solid var(--accent-muted-bg)' }}
       >
-        <Shield className="h-5 w-5 shrink-0 text-amber-500" strokeWidth={1.8} />
+        <Shield className="h-5 w-5 shrink-0 text-violet-500" strokeWidth={1.8} />
         <p className="text-[12px]" style={{ color: 'var(--text-muted)' }}>
-          <span className="font-semibold text-amber-500">
+          <span className="font-semibold text-violet-500">
             {t('driverManager.safeOperationBold')}
           </span>{' '}
           — {t('driverManager.safeOperationText')}
@@ -574,7 +574,7 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
           }}
         >
           {installResult.failed > 0 ? (
-            <AlertTriangle className="h-5 w-5 shrink-0 text-amber-500" />
+            <AlertTriangle className="h-5 w-5 shrink-0 text-violet-500" />
           ) : (
             <CheckCircle2 className="h-5 w-5 shrink-0 text-green-500" strokeWidth={1.8} />
           )}
@@ -593,7 +593,9 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
               )}
             </p>
             {installResult.rebootRequired && (
-              <p className="mt-1 text-[12px] text-amber-400">{t('driverManager.rebootRequired')}</p>
+              <p className="mt-1 text-[12px] text-violet-400">
+                {t('driverManager.rebootRequired')}
+              </p>
             )}
             {installResult.errors.length > 0 && (
               <details className="mt-2 text-[12px]" style={{ color: 'var(--text-secondary)' }}>
@@ -619,7 +621,7 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
           }}
         >
           {cleanResult.failed > 0 ? (
-            <AlertTriangle className="h-5 w-5 shrink-0 text-amber-500" />
+            <AlertTriangle className="h-5 w-5 shrink-0 text-violet-500" />
           ) : (
             <CheckCircle2 className="h-5 w-5 shrink-0 text-green-500" strokeWidth={1.8} />
           )}
@@ -690,7 +692,7 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
               disabled={isBusy}
               className="pulse-primary-action pulse-scan-action flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
               style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                 color: 'var(--text-on-accent)'
               }}
             >
@@ -919,14 +921,14 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
         <div className="mb-6">
           <div className="mb-3 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <Trash2 className="h-4.5 w-4.5 text-amber-400" strokeWidth={1.8} />
+              <Trash2 className="h-4.5 w-4.5 text-violet-400" strokeWidth={1.8} />
               <span className="text-[13px] font-semibold text-zinc-200">
                 {t('driverManager.stalePackages', { count: stalePackages.length })}
               </span>
               {totalStaleSize > 0 && (
                 <span
                   className="rounded-md px-2 py-0.5 text-[10px] font-medium"
-                  style={{ background: 'rgba(245,158,11,0.1)', color: '#f59e0b' }}
+                  style={{ background: 'rgba(167, 139, 250,0.1)', color: '#a78bfa' }}
                 >
                   {formatBytes(totalStaleSize)}
                 </span>
@@ -958,8 +960,8 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
                 key={pkg.id}
                 className="flex items-center gap-4 rounded-2xl px-5 py-4 transition-colors cursor-pointer"
                 style={{
-                  background: pkg.selected ? 'rgba(245,158,11,0.04)' : 'var(--bg-subtle)',
-                  border: `1px solid ${pkg.selected ? 'rgba(245,158,11,0.1)' : 'var(--border-subtle)'}`
+                  background: pkg.selected ? 'rgba(167, 139, 250,0.04)' : 'var(--bg-subtle)',
+                  border: `1px solid ${pkg.selected ? 'rgba(167, 139, 250,0.1)' : 'var(--border-subtle)'}`
                 }}
               >
                 <div className="w-6">
@@ -969,16 +971,16 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
                     onChange={() => useDriverStore.getState().togglePackage(pkg.id)}
                     disabled={isBusy}
                     aria-label={t('driverManager.selectPackage', { name: pkg.originalName })}
-                    className="accent-amber-500 cursor-pointer"
+                    className="accent-violet-500 cursor-pointer"
                   />
                 </div>
                 <div
                   className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-                  style={{ background: 'rgba(245,158,11,0.1)' }}
+                  style={{ background: 'rgba(167, 139, 250,0.1)' }}
                 >
                   <AlertTriangle
                     className="h-5 w-5"
-                    style={{ color: '#f59e0b' }}
+                    style={{ color: '#a78bfa' }}
                     strokeWidth={1.8}
                   />
                 </div>

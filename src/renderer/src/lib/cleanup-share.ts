@@ -104,7 +104,7 @@ export function cleanupCardSvg(
   const ink = dark ? '#f4f4f5' : '#18181b'
   const muted = dark ? '#a1a1aa' : '#62626c'
   const panel = dark ? '#202125' : '#f2f2ee'
-  const accent = dark ? '#fbbf24' : '#a65d00'
+  const accent = dark ? '#c4b5fd' : '#a65d00'
   const text = (x: number, y: number, size: number, value: string, color = ink, weight = 400) =>
     `<text x="${x}" y="${y}" fill="${color}" font-size="${size}" font-weight="${weight}">${escapeXml(value)}</text>`
   const rows = breakdown ? [...data.categories].sort((a, b) => b.bytes - a.bytes).slice(0, 4) : []
@@ -116,11 +116,11 @@ export function cleanupCardSvg(
   const heroY = format === 'square' ? 300 : 240
   const barsY = format === 'square' ? 580 : 410
   return `<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="${height}" viewBox="0 0 1080 ${height}">
-  <defs><radialGradient id="glow"><stop stop-color="#f59e0b" stop-opacity=".18"/><stop offset="1" stop-color="#f59e0b" stop-opacity="0"/></radialGradient></defs>
+  <defs><radialGradient id="glow"><stop stop-color="#a78bfa" stop-opacity=".18"/><stop offset="1" stop-color="#a78bfa" stop-opacity="0"/></radialGradient></defs>
   <rect width="1080" height="${height}" rx="32" fill="${dark ? '#141518' : '#fafaf7'}"/>
   <circle cx="970" cy="100" r="390" fill="url(#glow)"/>
   <g font-family="Arial, sans-serif">
-  <rect x="56" y="52" width="48" height="48" rx="14" fill="#f59e0b"/>
+  <rect x="56" y="52" width="48" height="48" rx="14" fill="#a78bfa"/>
   ${text(67, 87, 32, 'k', '#18181b', 700)}${text(119, 88, 32, 'kudu', ink, 700)}
   ${text(56, 150, 18, t(data.cleanups > 1 ? 'share.historyEyebrow' : 'share.cleanupEyebrow'), muted)}
   ${text(56, heroY, 76, formatBytes(data.bytes, 1), accent, 700)}
@@ -133,7 +133,7 @@ export function cleanupCardSvg(
   ${rows
     .map((c, i) => {
       const y = barsY + i * 35
-      return `${text(56, y + 18, 16, t('share.categories.' + c.type), muted)}<rect x="300" y="${y + 6}" width="530" height="10" rx="5" fill="${panel}"/><rect x="300" y="${y + 6}" width="${Math.max(3, (c.bytes / max) * 530)}" height="10" rx="5" fill="#f59e0b"/>${text(858, y + 18, 16, formatBytes(c.bytes, 1), muted)}`
+      return `${text(56, y + 18, 16, t('share.categories.' + c.type), muted)}<rect x="300" y="${y + 6}" width="530" height="10" rx="5" fill="${panel}"/><rect x="300" y="${y + 6}" width="${Math.max(3, (c.bytes / max) * 530)}" height="10" rx="5" fill="#a78bfa"/>${text(858, y + 18, 16, formatBytes(c.bytes, 1), muted)}`
     })
     .join('')}
   ${rows.length === 0 ? text(56, barsY + 38, 26, t('share.tagline'), ink, 500) : ''}

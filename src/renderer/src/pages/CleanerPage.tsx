@@ -31,6 +31,7 @@ import { ScanProgress } from '@/components/shared/ScanProgress'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { CleanSummary } from '@/components/cleaner/CleanSummary'
+import { celebrate } from '@/tokkip/Party'
 import { cn, formatBytes, formatNumber } from '@/lib/utils'
 import { cleanInBatches } from '@/lib/cleaner-batches'
 import { filterCleanerResults, splitSearchHighlight } from '@/lib/cleaner-results'
@@ -636,6 +637,7 @@ export function CleanerPage() {
         totalSizeBefore: store.getTotalSize()
       })
       store.setStatus(ScanStatus.Complete)
+      celebrate(totalCleaned, totalFiles)
     } catch {
       store.setStatus(ScanStatus.Error)
     }
@@ -705,7 +707,7 @@ export function CleanerPage() {
   const highlight = (text: string) =>
     splitSearchHighlight(text, searchQuery).map((part, index) =>
       part.match ? (
-        <mark key={index} className="rounded-sm bg-amber-500/20 text-inherit">
+        <mark key={index} className="rounded-sm bg-violet-500/20 text-inherit">
           {part.text}
         </mark>
       ) : (
@@ -811,9 +813,9 @@ export function CleanerPage() {
               }
               className="pulse-primary-action flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-30"
               style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                 color: 'var(--text-on-accent)',
-                boxShadow: hasResults ? '0 4px 20px rgba(245,158,11,0.2)' : 'none'
+                boxShadow: hasResults ? '0 4px 20px rgba(167, 139, 250,0.2)' : 'none'
               }}
             >
               {preparingClean ? (
@@ -852,7 +854,7 @@ export function CleanerPage() {
                 className="relative flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left transition-all"
                 style={{
                   background: isActive ? 'var(--accent-muted-bg)' : 'transparent',
-                  color: isActive ? 'var(--warning)' : 'var(--text-muted)'
+                  color: isActive ? 'var(--accent)' : 'var(--text-muted)'
                 }}
               >
                 {isActive && (
@@ -864,7 +866,7 @@ export function CleanerPage() {
                 {scanningCategory === cat.type ||
                 (cat.type === AI_TOOLS_VIEW && scanningCategory === CleanerType.App) ? (
                   <Loader2
-                    className="h-[17px] w-[17px] shrink-0 animate-spin text-amber-400"
+                    className="h-[17px] w-[17px] shrink-0 animate-spin text-violet-400"
                     strokeWidth={1.8}
                   />
                 ) : (
@@ -927,13 +929,13 @@ export function CleanerPage() {
               className="mb-5 flex items-center gap-3 rounded-2xl px-4 py-3"
               style={{
                 background: 'var(--accent-muted-bg)',
-                border: '1px solid rgba(245,158,11,0.12)'
+                border: '1px solid rgba(167, 139, 250,0.12)'
               }}
             >
-              <AlertTriangle className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.8} />
+              <AlertTriangle className="h-4 w-4 shrink-0 text-violet-400" strokeWidth={1.8} />
               <p className="text-[12px]" style={{ color: 'var(--text-muted)' }}>
                 {t('scannersFailed')}{' '}
-                <span className="text-amber-400 font-medium">{failedCategories.join(', ')}</span>
+                <span className="text-violet-400 font-medium">{failedCategories.join(', ')}</span>
               </p>
             </div>
           )}
@@ -948,7 +950,7 @@ export function CleanerPage() {
                   border: '1px solid var(--accent-muted-border)'
                 }}
               >
-                <ShieldAlert className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.8} />
+                <ShieldAlert className="h-4 w-4 shrink-0 text-violet-400" strokeWidth={1.8} />
                 <div className="flex-1 min-w-0">
                   <p className="text-[12px] text-zinc-300">
                     <span className="font-medium">
@@ -969,8 +971,8 @@ export function CleanerPage() {
                 {platform !== 'darwin' && (
                   <button
                     onClick={handleRelaunch}
-                    className="shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-medium text-amber-400 transition-colors hover:bg-amber-500/15"
-                    style={{ border: '1px solid rgba(245,158,11,0.2)' }}
+                    className="shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-medium text-violet-400 transition-colors hover:bg-violet-500/15"
+                    style={{ border: '1px solid rgba(167, 139, 250,0.2)' }}
                   >
                     {t('relaunchAsAdmin')}
                   </button>
@@ -990,12 +992,12 @@ export function CleanerPage() {
               >
                 {checkingBlockers ? (
                   <Loader2
-                    className="mt-0.5 h-4 w-4 shrink-0 animate-spin text-amber-400"
+                    className="mt-0.5 h-4 w-4 shrink-0 animate-spin text-violet-400"
                     strokeWidth={1.8}
                   />
                 ) : (
                   <AlertTriangle
-                    className="mt-0.5 h-4 w-4 shrink-0 text-amber-400"
+                    className="mt-0.5 h-4 w-4 shrink-0 text-violet-400"
                     strokeWidth={1.8}
                   />
                 )}
@@ -1058,7 +1060,7 @@ export function CleanerPage() {
                   disabled={isCleaning || preparingClean}
                   className="pulse-primary-action pulse-scan-action flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
                   style={{
-                    background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                    background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                     color: 'var(--text-on-accent)'
                   }}
                 >
@@ -1123,7 +1125,7 @@ export function CleanerPage() {
                     type="checkbox"
                     checked={selectedOnly}
                     onChange={(event) => setSelectedOnly(event.target.checked)}
-                    className="accent-amber-500"
+                    className="accent-violet-500"
                   />
                   {t('selectedOnly')}
                 </label>
@@ -1136,7 +1138,7 @@ export function CleanerPage() {
                     elsewhere: formatNumber(selectedElsewhere)
                   })}
                 </p>
-                <div className="flex gap-3 text-amber-500">
+                <div className="flex gap-3 text-violet-500">
                   <button
                     type="button"
                     disabled={!bulkSelectableIds.length}
@@ -1499,17 +1501,17 @@ export function CleanerPage() {
                                       className="flex items-center gap-3 px-4 py-2 pl-14 cursor-pointer transition-colors"
                                       style={{
                                         background: checked
-                                          ? 'rgba(245,158,11,0.03)'
+                                          ? 'rgba(167, 139, 250,0.03)'
                                           : 'transparent'
                                       }}
                                       onMouseEnter={(e) => {
                                         e.currentTarget.style.background = checked
-                                          ? 'rgba(245,158,11,0.05)'
+                                          ? 'rgba(167, 139, 250,0.05)'
                                           : 'var(--bg-subtle)'
                                       }}
                                       onMouseLeave={(e) => {
                                         e.currentTarget.style.background = checked
-                                          ? 'rgba(245,158,11,0.03)'
+                                          ? 'rgba(167, 139, 250,0.03)'
                                           : 'transparent'
                                       }}
                                     >
@@ -1634,7 +1636,7 @@ export function CleanerPage() {
                                         [displayKey]: visibleLimit + 50
                                       }))
                                     }
-                                    className="w-full px-4 py-2.5 text-left pl-14 text-[12px] text-amber-500 hover:bg-[var(--bg-hover)]"
+                                    className="w-full px-4 py-2.5 text-left pl-14 text-[12px] text-violet-500 hover:bg-[var(--bg-hover)]"
                                   >
                                     {t('showMoreItems', {
                                       count: formatNumber(

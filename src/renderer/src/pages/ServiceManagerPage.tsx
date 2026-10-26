@@ -495,13 +495,14 @@ export function ServiceManagerPage({ embedded }: { embedded?: boolean }) {
         <div
           className="mb-5 rounded-xl p-4"
           style={{
-            background: applyResult.failed > 0 ? 'rgba(245,158,11,0.06)' : 'rgba(34,197,94,0.06)',
-            border: `1px solid ${applyResult.failed > 0 ? 'rgba(245,158,11,0.15)' : 'rgba(34,197,94,0.15)'}`
+            background:
+              applyResult.failed > 0 ? 'rgba(167, 139, 250,0.06)' : 'rgba(34,197,94,0.06)',
+            border: `1px solid ${applyResult.failed > 0 ? 'rgba(167, 139, 250,0.15)' : 'rgba(34,197,94,0.15)'}`
           }}
         >
           <div className="flex items-center gap-2">
             {applyResult.failed > 0 ? (
-              <AlertTriangle className="h-4 w-4" style={{ color: '#f59e0b' }} />
+              <AlertTriangle className="h-4 w-4" style={{ color: '#a78bfa' }} />
             ) : (
               <CheckCircle2 className="h-4 w-4" style={{ color: '#22c55e' }} />
             )}
@@ -543,7 +544,7 @@ export function ServiceManagerPage({ embedded }: { embedded?: boolean }) {
               onClick={handleScan}
               className="pulse-primary-action pulse-scan-action flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all"
               style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                 color: 'var(--text-on-accent)'
               }}
             >

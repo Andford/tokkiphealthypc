@@ -1,6 +1,6 @@
 {
   "pageTitle": "Buscador de archivos grandes",
-  "pageDescription": "Encuentre los archivos más grandes de su unidad y recupere espacio desperdiciado",
+  "pageDescription": "Encuentra los archivos más grandes de tu unidad y recupera espacio desperdiciado",
   "selectDirectory": "Seleccionar directorio",
   "scanButton": "Buscar archivos grandes",
   "cancelScan": "Cancelar análisis",
@@ -13,7 +13,7 @@
   "minFileSize": "Tamaño mínimo de archivo",
   "maxDepth": "Profundidad máxima de análisis",
   "excludePatterns": "Excluir carpetas",
-  "excludePlaceholder": "Añada el nombre de la carpeta que desea excluir…",
+  "excludePlaceholder": "Añade el nombre de la carpeta que quieres excluir…",
   "settings": "Configuración del análisis",
   "selectAll": "Seleccionar todo",
   "deselectAll": "Deseleccionar todo",
@@ -30,5 +30,5 @@
   "emptyTitle": "No se encontraron archivos grandes",
   "emptyDescription": "No se encontraron archivos que coincidan con el tamaño mínimo.",
   "idleTitle": "Buscar archivos grandes",
-  "idleDescription": "Seleccione un directorio para buscar archivos grandes que puedan estar ocupando espacio en disco innecesariamente."
+  "idleDescription": "Selecciona un directorio para buscar archivos grandes que puedan estar ocupando espacio en disco innecesariamente."
 }

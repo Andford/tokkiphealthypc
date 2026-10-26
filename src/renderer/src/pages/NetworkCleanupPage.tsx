@@ -173,9 +173,9 @@ export function NetworkCleanupPage() {
               disabled={!hasItems || isScanning || isCleaning || selectedIds.size === 0}
               className="flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-30"
               style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                 color: 'var(--text-on-accent)',
-                boxShadow: hasItems ? '0 4px 20px rgba(245,158,11,0.2)' : 'none'
+                boxShadow: hasItems ? '0 4px 20px rgba(167, 139, 250,0.2)' : 'none'
               }}
             >
               <Sparkles className="h-4 w-4" strokeWidth={2} />
@@ -234,7 +234,7 @@ export function NetworkCleanupPage() {
               <p className="text-[11px] font-medium" style={{ color: 'var(--text-muted)' }}>
                 {t('totalFound')}
               </p>
-              <p className="text-[20px] font-bold tracking-tight text-amber-400">{items.length}</p>
+              <p className="text-[20px] font-bold tracking-tight text-violet-400">{items.length}</p>
               <p className="text-[11px]" style={{ color: 'var(--text-muted)' }}>
                 {t('networkItems')}
               </p>
@@ -257,7 +257,7 @@ export function NetworkCleanupPage() {
               className="mb-5 flex items-center gap-3 rounded-2xl px-5 py-4"
               style={{ background: 'var(--card-bg)', border: '1px solid var(--border-default)' }}
             >
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-amber-400 border-t-transparent" />
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-violet-400 border-t-transparent" />
               <span className="text-[13px] text-zinc-400">{t('scanningStatus')}</span>
             </div>
           )}
@@ -267,7 +267,7 @@ export function NetworkCleanupPage() {
               className="mb-5 flex items-center gap-3 rounded-2xl px-5 py-4"
               style={{ background: 'var(--card-bg)', border: '1px solid var(--border-default)' }}
             >
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-amber-400 border-t-transparent" />
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-violet-400 border-t-transparent" />
               <span className="text-[13px] text-zinc-400">{t('cleaningStatus')}</span>
             </div>
           )}
@@ -319,7 +319,7 @@ export function NetworkCleanupPage() {
                   disabled={isCleaning}
                   className="pulse-primary-action pulse-scan-action flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
                   style={{
-                    background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                    background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                     color: 'var(--text-on-accent)'
                   }}
                 >
@@ -342,7 +342,7 @@ export function NetworkCleanupPage() {
                 {categoryItems.length > 0 && (
                   <button
                     onClick={() => useNetworkStore.getState().toggleCategory(activeCategory)}
-                    className="text-[12px] font-medium text-amber-500 hover:text-amber-400"
+                    className="text-[12px] font-medium text-violet-500 hover:text-violet-400"
                   >
                     {t('toggleAll')}
                   </button>
@@ -367,10 +367,10 @@ export function NetworkCleanupPage() {
                       key={item.id}
                       className={cn(
                         'flex cursor-pointer items-center gap-3 rounded-xl px-4 py-3.5 transition-all',
-                        checked && 'ring-1 ring-amber-500/20'
+                        checked && 'ring-1 ring-violet-500/20'
                       )}
                       style={{
-                        background: checked ? 'rgba(245,158,11,0.04)' : 'var(--card-bg)',
+                        background: checked ? 'rgba(167, 139, 250,0.04)' : 'var(--card-bg)',
                         border: '1px solid var(--border-default)'
                       }}
                       onMouseEnter={(e) => {
@@ -380,7 +380,7 @@ export function NetworkCleanupPage() {
                       }}
                       onMouseLeave={(e) => {
                         e.currentTarget.style.background = checked
-                          ? 'rgba(245,158,11,0.04)'
+                          ? 'rgba(167, 139, 250,0.04)'
                           : 'var(--card-bg)'
                       }}
                     >

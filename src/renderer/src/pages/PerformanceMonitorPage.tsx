@@ -115,10 +115,12 @@ export function PerformanceMonitorPage() {
                   onClick={() => setTimeRange(opt.value)}
                   className={cn(
                     'rounded-md px-3 py-1.5 text-[11px] font-semibold transition-all',
-                    timeRange === opt.value ? 'text-amber-400' : 'text-zinc-500 hover:text-zinc-300'
+                    timeRange === opt.value
+                      ? 'text-violet-400'
+                      : 'text-zinc-500 hover:text-zinc-300'
                   )}
                   style={
-                    timeRange === opt.value ? { background: 'rgba(245,158,11,0.1)' } : undefined
+                    timeRange === opt.value ? { background: 'rgba(167, 139, 250,0.1)' } : undefined
                   }
                 >
                   {opt.label}

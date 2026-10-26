@@ -72,7 +72,7 @@ export function ProcessTable() {
       onClick={() => setSort(column)}
       className={cn(
         'flex items-center gap-1 text-left text-[11px] font-semibold uppercase tracking-wider transition-colors',
-        sortColumn === column ? 'text-amber-400' : 'text-zinc-600 hover:text-zinc-400'
+        sortColumn === column ? 'text-violet-400' : 'text-zinc-600 hover:text-zinc-400'
       )}
       style={{ width }}
     >
@@ -83,7 +83,7 @@ export function ProcessTable() {
 
   function cpuBarColor(pct: number): string {
     if (pct >= 50) return '#ef4444'
-    if (pct >= 20) return '#f59e0b'
+    if (pct >= 20) return '#a78bfa'
     return '#22c55e'
   }
 

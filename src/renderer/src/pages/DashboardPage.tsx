@@ -45,6 +45,7 @@ import type { DriveInfo, ScanResult, CleanResult } from '@shared/types'
 import { CleanerType } from '@shared/enums'
 import { usePlatform } from '@/hooks/usePlatform'
 import { SimpleDashboard } from '@/components/dashboard/SimpleDashboard'
+import { celebrate } from '@/tokkip/Party'
 
 type OneClickPhase = 'idle' | 'scanning' | 'cleaning' | 'done'
 
@@ -259,7 +260,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
     const allTypes = new Set(entries.map((e) => e.type))
 
     const historyTools = [
-      { key: 'cleaner' as const, label: t('toolLabelCleaner'), icon: Search, color: '#f59e0b' },
+      { key: 'cleaner' as const, label: t('toolLabelCleaner'), icon: Search, color: '#a78bfa' },
       ...(features.registry
         ? [
             {
@@ -548,6 +549,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
     }
 
     setResult(oneClickResult)
+    celebrate(oneClickResult.spaceRecovered, oneClickResult.filesCleaned)
     setPhase('done')
     setPhaseLabel('')
     refreshDrives()
@@ -646,6 +648,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
     }
 
     setResult(oneClickResult)
+    celebrate(oneClickResult.spaceRecovered, oneClickResult.filesCleaned)
     setPhase('done')
     setPhaseLabel('')
     refreshDrives()

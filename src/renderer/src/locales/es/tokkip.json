@@ -1,0 +1,77 @@
+{
+  "heroLabel": "Cómo se siente tu PC",
+  "mood": {
+    "happy": {
+      "kicker": "TU PC ESTÁ CONTENTA",
+      "title": "¡Todo en orden por aquí!"
+    },
+    "calm": {
+      "kicker": "TU PC ESTÁ BIEN",
+      "title": "Vamos bien, con un detallito"
+    },
+    "tired": {
+      "kicker": "TU PC ESTÁ CANSADA",
+      "title": "Tu PC necesita un respiro"
+    },
+    "dizzy": {
+      "kicker": "TU PC ESTÁ MAREADA",
+      "title": "Hay que echarle una mano"
+    },
+    "party": {
+      "kicker": "¡LISTO!",
+      "title": "¡Qué limpieza!"
+    },
+    "sleep": {
+      "kicker": "EN PAUSA",
+      "title": "Tokkip descansa"
+    },
+    "worried": {
+      "kicker": "CUIDADO",
+      "title": "Algo no se ve bien"
+    }
+  },
+  "reasonAllGood": "Limpia, con espacio y revisada. Sigue así: un ratito a la semana basta.",
+  "reasonNeverCleaned": "Todavía no hemos limpiado juntos. Empecemos por los archivos que ya no sirven.",
+  "reasonNeverCleanedAction": "Hacer la primera limpieza",
+  "reasonCleanLongAgo": "Hace {{days}} días que no limpiamos. Se acumulan cachés y temporales.",
+  "reasonCleanLongAgoAction": "Limpiar ahora",
+  "reasonCleanAWhile": "Hace {{days}} días de la última limpieza. Un repaso rápido y listo.",
+  "reasonCleanAWhileAction": "Dar un repaso",
+  "reasonDiskFull": "Tu disco {{drive}} está al {{percent}} %. Con tan poco espacio todo se pone lento.",
+  "reasonDiskFullAction": "Ver qué ocupa espacio",
+  "reasonDiskFilling": "Tu disco {{drive}} va al {{percent}} %. Buen momento para hacer espacio.",
+  "reasonDiskFillingAction": "Ver qué ocupa espacio",
+  "reasonThreats": "Encontré {{count}} amenaza(s) sin resolver. Vamos a revisarlas.",
+  "reasonThreatsAction": "Revisar amenazas",
+  "reasonNeverScanned": "Aún no revisamos si hay malware. Toma unos minutos.",
+  "reasonNeverScannedAction": "Revisar ahora",
+  "reasonScanLongAgo": "La última revisión de malware fue hace {{days}} días.",
+  "reasonScanLongAgoAction": "Revisar otra vez",
+  "party": {
+    "title": "¡Tu PC respira!",
+    "freed": "{{size}} LIBERADOS",
+    "items": "{{count}} elementos fuera",
+    "body": "Menos basura, más espacio y una PC más ligera. Gracias por cuidarla.",
+    "button": "¡Bien!"
+  },
+  "island": {
+    "cleanDone": "Liberé {{size}} en tu PC",
+    "needsCare": "Tu PC necesita un respiro: {{reason}}"
+  },
+  "settings": {
+    "intro": "Te acompaña y te dice cómo se siente tu PC. Es el mismo Tokkip de tu teléfono y de Tokkip PC.",
+    "species": "Especie",
+    "color": "Su color",
+    "sounds": "Sonidos de Tokkip",
+    "soundsDesc": "Un pop al empezar, un check al terminar y la fiesta al limpiar",
+    "speciesNames": {
+      "conejo": "Conejito",
+      "gato": "Gatito",
+      "perro": "Perrito",
+      "robot": "Robotito",
+      "mapache": "Mapache"
+    },
+    "island": "Avisos en Tokkip PC",
+    "islandDesc": "Si tienes Tokkip PC, su isla te cuenta cuándo limpiaste y cuándo tu PC necesita un respiro."
+  }
+}

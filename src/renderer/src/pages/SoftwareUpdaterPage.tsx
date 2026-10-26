@@ -50,9 +50,9 @@ const SEVERITY_STYLES_BASE = {
     labelKey: 'softwareUpdater.severityMajor'
   },
   minor: {
-    bg: 'rgba(245,158,11,0.08)',
-    border: 'rgba(245,158,11,0.18)',
-    text: '#fbbf24',
+    bg: 'rgba(167, 139, 250,0.08)',
+    border: 'rgba(167, 139, 250,0.18)',
+    text: '#c4b5fd',
     labelKey: 'softwareUpdater.severityMinor'
   },
   patch: {
@@ -354,7 +354,7 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
           disabled={isBusy}
           className="pulse-primary-action pulse-scan-action flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
           style={{
-            background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+            background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
             color: 'var(--text-on-accent)'
           }}
         >
@@ -470,7 +470,7 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
                   >
                     {t(labelKey)}
                     {severityFilter === key && (
-                      <CheckCircle2 className="ml-auto h-3 w-3 text-amber-400" strokeWidth={2} />
+                      <CheckCircle2 className="ml-auto h-3 w-3 text-violet-400" strokeWidth={2} />
                     )}
                   </button>
                 ))}
@@ -520,7 +520,7 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
                   >
                     {t(labelKey)}
                     {sortField === field && (
-                      <span className="ml-auto text-amber-400 text-[10px]">
+                      <span className="ml-auto text-violet-400 text-[10px]">
                         {sortDirection === 'asc'
                           ? t('softwareUpdater.sortAsc')
                           : t('softwareUpdater.sortDesc')}
@@ -620,15 +620,15 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
         <div
           className="mb-5 flex items-start gap-3 rounded-2xl px-5 py-4"
           style={{
-            background: 'rgba(245,158,11,0.04)',
-            border: '1px solid rgba(245,158,11,0.12)'
+            background: 'rgba(167, 139, 250,0.04)',
+            border: '1px solid rgba(167, 139, 250,0.12)'
           }}
         >
-          <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-amber-400" strokeWidth={1.8} />
+          <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0 text-violet-400" strokeWidth={1.8} />
           <div className="flex flex-col gap-1 text-[12px] text-zinc-400">
             {failedManagers.map((m) => (
               <p key={m.name}>
-                <span className="font-semibold text-amber-400">
+                <span className="font-semibold text-violet-400">
                   {t('softwareUpdater.managerScanFailed', {
                     manager: WINDOWS_MANAGER_OPTIONS.find((o) => o.id === m.name)?.label ?? m.name
                   })}
@@ -685,13 +685,13 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
         <div
           className="mb-5 rounded-2xl p-4"
           style={{
-            background: 'rgba(245,158,11,0.04)',
+            background: 'rgba(167, 139, 250,0.04)',
             border: '1px solid var(--accent-muted-bg)'
           }}
         >
           <div className="flex items-center justify-between mb-2.5">
             <div className="flex items-center gap-2.5">
-              <Loader2 className="h-4 w-4 animate-spin text-amber-400" strokeWidth={2} />
+              <Loader2 className="h-4 w-4 animate-spin text-violet-400" strokeWidth={2} />
               <span className="text-[13px] font-medium text-zinc-200">
                 {t('softwareUpdater.updatingProgress', {
                   app: progress.currentApp,
@@ -712,7 +712,7 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
               className="h-full rounded-full transition-all duration-300"
               style={{
                 width: `${progress.percent}%`,
-                background: 'linear-gradient(90deg, #f59e0b 0%, #fbbf24 100%)'
+                background: 'linear-gradient(90deg, #a78bfa 0%, #c4b5fd 100%)'
               }}
             />
           </div>
@@ -858,7 +858,7 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
               disabled={isBusy}
               className="pulse-primary-action pulse-scan-action flex items-center gap-2 rounded-xl px-5 py-2.5 text-[13px] font-semibold transition-all disabled:opacity-40"
               style={{
-                background: 'linear-gradient(135deg, #f59e0b 0%, #d97706 100%)',
+                background: 'linear-gradient(135deg, #a78bfa 0%, #8b5cf6 100%)',
                 color: 'var(--text-on-accent)'
               }}
             >
@@ -872,7 +872,7 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
       {/* Loading state */}
       {loading && (
         <div className="flex flex-col items-center justify-center py-16">
-          <Loader2 className="h-10 w-10 animate-spin text-amber-400 mb-4" strokeWidth={1.5} />
+          <Loader2 className="h-10 w-10 animate-spin text-violet-400 mb-4" strokeWidth={1.5} />
           <p className="text-[13px] text-zinc-400">{t('softwareUpdater.checkingForUpdates')}</p>
           <p className="text-[11px] mt-1" style={{ color: 'var(--text-muted)' }}>
             {t('softwareUpdater.checkingSubtext')}
@@ -1004,8 +1004,8 @@ function AppRow({
     <div
       className="flex items-center gap-4 rounded-2xl px-5 py-4 transition-colors"
       style={{
-        background: app.selected ? 'rgba(245,158,11,0.03)' : 'var(--bg-subtle)',
-        border: `1px solid ${app.selected ? 'rgba(245,158,11,0.1)' : 'var(--border-subtle)'}`
+        background: app.selected ? 'rgba(167, 139, 250,0.03)' : 'var(--bg-subtle)',
+        border: `1px solid ${app.selected ? 'rgba(167, 139, 250,0.1)' : 'var(--border-subtle)'}`
       }}
     >
       {/* Checkbox */}

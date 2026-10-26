@@ -174,7 +174,7 @@ export function EmptyFolderCleanerPage() {
           onClick={() => setShowSettings((s) => !s)}
           className={cn(
             'ml-auto flex items-center gap-2 rounded-xl px-3 py-2.5 text-[13px] font-medium transition-colors',
-            showSettings ? 'text-amber-400' : 'text-zinc-500 hover:text-zinc-300'
+            showSettings ? 'text-violet-400' : 'text-zinc-500 hover:text-zinc-300'
           )}
         >
           <Settings2 className="h-4 w-4" strokeWidth={1.8} />
@@ -335,7 +335,7 @@ export function EmptyFolderCleanerPage() {
                     onClick={() => store.setDeleteMode('recycle')}
                     className={cn(
                       'px-3 py-1.5 text-[12px] font-medium transition-colors',
-                      store.deleteMode === 'recycle' ? 'text-amber-400' : 'text-zinc-500'
+                      store.deleteMode === 'recycle' ? 'text-violet-400' : 'text-zinc-500'
                     )}
                     style={
                       store.deleteMode === 'recycle'
@@ -380,7 +380,7 @@ export function EmptyFolderCleanerPage() {
                       background:
                         store.deleteMode === 'permanent'
                           ? 'rgba(239,68,68,0.12)'
-                          : 'rgba(245,158,11,0.12)',
+                          : 'rgba(167, 139, 250,0.12)',
                       color: store.deleteMode === 'permanent' ? '#ef4444' : 'var(--accent)'
                     }}
                   >
@@ -405,7 +405,7 @@ export function EmptyFolderCleanerPage() {
                       type="checkbox"
                       checked={store.selectedPaths.has(folder.path)}
                       onChange={() => store.togglePath(folder.path)}
-                      className="h-3.5 w-3.5 shrink-0 cursor-pointer rounded accent-amber-500"
+                      className="h-3.5 w-3.5 shrink-0 cursor-pointer rounded accent-violet-500"
                     />
                     <FolderX
                       className="h-4 w-4 shrink-0"
@@ -450,7 +450,7 @@ export function EmptyFolderCleanerPage() {
           className="mb-5 flex items-center gap-3 rounded-2xl p-5"
           style={{ background: 'var(--card-bg)', border: '1px solid var(--border-subtle)' }}
         >
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-amber-400 border-t-transparent" />
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-violet-400 border-t-transparent" />
           <span className="text-[13px] font-medium text-white">{t('deleting')}</span>
         </div>
       )}

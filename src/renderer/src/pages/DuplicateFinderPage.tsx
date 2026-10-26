@@ -228,7 +228,7 @@ export function DuplicateFinderPage() {
           onClick={() => setShowSettings((s) => !s)}
           className={cn(
             'ml-auto flex items-center gap-2 rounded-xl px-3 py-2.5 text-[13px] font-medium transition-colors',
-            showSettings ? 'text-amber-400' : 'text-zinc-500 hover:text-zinc-300'
+            showSettings ? 'text-violet-400' : 'text-zinc-500 hover:text-zinc-300'
           )}
         >
           <Settings2 className="h-4 w-4" strokeWidth={1.8} />
@@ -259,13 +259,13 @@ export function DuplicateFinderPage() {
                     className={cn(
                       'rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors',
                       store.minFileSize === p.value
-                        ? 'text-amber-400'
+                        ? 'text-violet-400'
                         : 'text-zinc-500 hover:text-zinc-300'
                     )}
                     style={{
                       background:
                         store.minFileSize === p.value
-                          ? 'rgba(245,158,11,0.1)'
+                          ? 'rgba(167, 139, 250,0.1)'
                           : 'var(--bg-subtle-2)'
                     }}
                   >
@@ -289,12 +289,12 @@ export function DuplicateFinderPage() {
                   className={cn(
                     'rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors',
                     store.maxFileSize === null
-                      ? 'text-amber-400'
+                      ? 'text-violet-400'
                       : 'text-zinc-500 hover:text-zinc-300'
                   )}
                   style={{
                     background:
-                      store.maxFileSize === null ? 'rgba(245,158,11,0.1)' : 'var(--bg-subtle-2)'
+                      store.maxFileSize === null ? 'rgba(167, 139, 250,0.1)' : 'var(--bg-subtle-2)'
                   }}
                 >
                   {t('noLimit')}
@@ -306,12 +306,12 @@ export function DuplicateFinderPage() {
                     className={cn(
                       'rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors',
                       store.maxFileSize === v
-                        ? 'text-amber-400'
+                        ? 'text-violet-400'
                         : 'text-zinc-500 hover:text-zinc-300'
                     )}
                     style={{
                       background:
-                        store.maxFileSize === v ? 'rgba(245,158,11,0.1)' : 'var(--bg-subtle-2)'
+                        store.maxFileSize === v ? 'rgba(167, 139, 250,0.1)' : 'var(--bg-subtle-2)'
                     }}
                   >
                     {formatBytes(v, 0)}
@@ -338,12 +338,14 @@ export function DuplicateFinderPage() {
                     className={cn(
                       'rounded-lg px-3 py-1.5 text-[12px] font-medium transition-colors',
                       activeExtPreset === preset
-                        ? 'text-amber-400'
+                        ? 'text-violet-400'
                         : 'text-zinc-500 hover:text-zinc-300'
                     )}
                     style={{
                       background:
-                        activeExtPreset === preset ? 'rgba(245,158,11,0.1)' : 'var(--bg-subtle-2)'
+                        activeExtPreset === preset
+                          ? 'rgba(167, 139, 250,0.1)'
+                          : 'var(--bg-subtle-2)'
                     }}
                   >
                     {t(preset === 'all' ? 'allFiles' : preset)}
@@ -531,11 +533,11 @@ export function DuplicateFinderPage() {
                     onClick={() => store.setDeleteMode('recycle')}
                     className={cn(
                       'px-3 py-1.5 text-[12px] font-medium transition-colors',
-                      store.deleteMode === 'recycle' ? 'text-amber-400' : 'text-zinc-500'
+                      store.deleteMode === 'recycle' ? 'text-violet-400' : 'text-zinc-500'
                     )}
                     style={
                       store.deleteMode === 'recycle'
-                        ? { background: 'rgba(245,158,11,0.1)' }
+                        ? { background: 'rgba(167, 139, 250,0.1)' }
                         : undefined
                     }
                   >
@@ -576,8 +578,8 @@ export function DuplicateFinderPage() {
                       background:
                         store.deleteMode === 'permanent'
                           ? 'rgba(239,68,68,0.12)'
-                          : 'rgba(245,158,11,0.12)',
-                      color: store.deleteMode === 'permanent' ? '#ef4444' : '#f59e0b'
+                          : 'rgba(167, 139, 250,0.12)',
+                      color: store.deleteMode === 'permanent' ? '#ef4444' : '#a78bfa'
                     }}
                   >
                     <Trash2 className="h-4 w-4" />
@@ -674,7 +676,7 @@ export function DuplicateFinderPage() {
                                         : undefined
                                   }
                                   onChange={() => store.togglePath(file.path)}
-                                  className="h-3.5 w-3.5 shrink-0 cursor-pointer rounded accent-amber-500 disabled:cursor-not-allowed disabled:opacity-40"
+                                  className="h-3.5 w-3.5 shrink-0 cursor-pointer rounded accent-violet-500 disabled:cursor-not-allowed disabled:opacity-40"
                                 />
                                 <span
                                   className="min-w-0 flex-1 truncate text-[12px]"
@@ -735,7 +737,7 @@ export function DuplicateFinderPage() {
           className="mb-5 flex items-center gap-3 rounded-2xl p-5"
           style={{ background: 'var(--card-bg)', border: '1px solid var(--border-subtle)' }}
         >
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-amber-400 border-t-transparent" />
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-violet-400 border-t-transparent" />
           <span className="text-[13px] font-medium text-white">{t('deleting')}</span>
         </div>
       )}

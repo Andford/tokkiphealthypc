@@ -5,10 +5,21 @@ import { Sidebar } from './Sidebar'
 import { AdminBanner } from './AdminBanner'
 import { useSettingsStore } from '@/stores/settings-store'
 import { usePlatform } from '@/hooks/usePlatform'
-import logoSrc from '@/assets/logo.png'
+import { Tokkip } from '@/tokkip/Tokkip'
+import { TokkipParty } from '@/tokkip/Party'
+import { useTokkipHealth } from '@/tokkip/health'
+import { reportHealth } from '@/tokkip/island'
+
+/** Keeps Tokkip PC told how this PC feels, and the title bar's Tokkip in the same mood. */
+function useHealthBeacon() {
+  const health = useTokkipHealth()
+  useEffect(() => reportHealth(health), [health.score, health.mood, health.reasons[0]?.key]) // eslint-disable-line react-hooks/exhaustive-deps
+  return health
+}
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const location = useLocation()
+  const health = useHealthBeacon()
   const { platform } = usePlatform()
   const handleSkip = useCallback((e: React.MouseEvent | React.KeyboardEvent) => {
     e.preventDefault()
@@ -25,16 +36,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         Skip to main content
       </a>
 
-      <header className="app-titlebar drag-region" aria-label="Kudu window titlebar">
+      <header className="app-titlebar drag-region" aria-label="Tokkip Healthy PC">
         <div className="app-brand">
-          <img src={logoSrc} alt="" className="h-6 w-6 rounded-full" />
-          <div>
-            <div
-              className="text-[12px] font-bold leading-none"
-              style={{ color: 'var(--text-primary)' }}
-            >
-              Kudu
-            </div>
+          <Tokkip size={26} mood={health.mood} />
+          <div className="tokkip-brand-name">
+            Tokkip<small>Healthy PC</small>
           </div>
         </div>
         <div className="app-titlebar-drag flex-1" aria-hidden="true" />
@@ -57,6 +63,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </main>
         </div>
       </div>
+      <TokkipParty />
     </div>
   )
 }

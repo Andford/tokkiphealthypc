@@ -1,6 +1,6 @@
 {
   "pageTitle": "Destructor de archivos",
-  "pageDescription": "Destruya de forma segura archivos y carpetas para que no puedan recuperarse, sobrescribiendo su contenido antes de eliminarlos",
+  "pageDescription": "Destruye de forma segura archivos y carpetas para que no puedan recuperarse, sobrescribiendo su contenido antes de eliminarlos",
   "addFiles": "Agregar archivos",
   "addFolders": "Agregar carpetas",
   "clearAll": "Borrar todo",
@@ -25,7 +25,7 @@
   "shredFailed": "No se pudieron destruir {{failed}} archivos",
   "failed": "Error",
   "emptyTitle": "No hay archivos seleccionados",
-  "emptyDescription": "Agregue archivos o carpetas para destruirlos de forma segura. Los datos se sobrescriben con bytes aleatorios y luego con ceros antes de eliminarlos, lo que hace que su recuperación sea prácticamente imposible.",
+  "emptyDescription": "Agrega archivos o carpetas para destruirlos de forma segura. Los datos se sobrescriben con bytes aleatorios y luego con ceros antes de eliminarlos, lo que hace que su recuperación sea prácticamente imposible.",
   "completeTitle": "Destrucción completada",
   "shredAnother": "Destruir más archivos"
 }

@@ -86,7 +86,7 @@ export function AppPrivacyPanel() {
       {error && (
         <p
           role="alert"
-          className="mb-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-4 text-sm"
+          className="mb-4 rounded-xl border border-violet-500/30 bg-violet-500/10 p-4 text-sm"
           style={{ color: 'var(--warning)' }}
         >
           {t(report ? 'appPrivacy.refreshFailed' : 'appPrivacy.failed')}
@@ -117,7 +117,7 @@ export function AppPrivacyPanel() {
           {partial && (
             <p
               role="status"
-              className="mb-4 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-sm"
+              className="mb-4 rounded-xl border border-violet-500/30 bg-violet-500/10 p-3 text-sm"
               style={{ color: 'var(--warning)' }}
             >
               {t('appPrivacy.partial')}

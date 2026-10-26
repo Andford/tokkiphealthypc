@@ -67,7 +67,7 @@ export function SystemHardeningPage() {
               onClick={() => setActiveTab(tab.id)}
               className={cn(
                 'flex flex-1 items-center justify-center gap-2.5 rounded-lg px-4 py-3 text-[13px] font-medium transition-all',
-                isActive ? 'text-amber-400' : 'text-zinc-500 hover:text-zinc-300'
+                isActive ? 'text-violet-400' : 'text-zinc-500 hover:text-zinc-300'
               )}
               style={isActive ? { background: 'var(--accent-muted-bg)' } : undefined}
             >

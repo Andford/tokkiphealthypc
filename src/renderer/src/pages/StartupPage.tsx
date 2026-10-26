@@ -40,14 +40,14 @@ import type { StartupItem, StartupBootTrace } from '@shared/types'
 
 const impactStyles: Record<StartupItem['impact'], { bg: string; text: string }> = {
   high: { bg: 'rgba(239,68,68,0.08)', text: '#ef4444' },
-  medium: { bg: 'rgba(245,158,11,0.08)', text: '#f59e0b' },
+  medium: { bg: 'rgba(167, 139, 250,0.08)', text: '#a78bfa' },
   low: { bg: 'rgba(34,197,94,0.08)', text: '#22c55e' },
   none: { bg: 'var(--bg-subtle-2)', text: 'var(--text-muted)' }
 }
 
 const impactBarColors: Record<string, string> = {
   high: '#ef4444',
-  medium: '#f59e0b',
+  medium: '#a78bfa',
   low: '#22c55e'
 }
 
@@ -66,7 +66,7 @@ const sourceKeys: Record<StartupItem['source'], string> = {
 
 function safetyScoreColor(score: number): { bg: string; text: string } {
   if (score >= 8) return { bg: 'rgba(34,197,94,0.10)', text: '#22c55e' }
-  if (score >= 5) return { bg: 'rgba(245,158,11,0.10)', text: '#f59e0b' }
+  if (score >= 5) return { bg: 'rgba(167, 139, 250,0.10)', text: '#a78bfa' }
   if (score >= 3) return { bg: 'rgba(249,115,22,0.10)', text: '#f97316' }
   return { bg: 'rgba(239,68,68,0.10)', text: '#ef4444' }
 }
@@ -127,7 +127,7 @@ function BootTracePanel({ trace, loading }: { trace: StartupBootTrace | null; lo
         style={{ background: 'var(--card-bg)', border: '1px solid var(--border-default)' }}
       >
         <div className="flex items-center gap-3">
-          <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-700 border-t-amber-500" />
+          <div className="h-5 w-5 animate-spin rounded-full border-2 border-zinc-700 border-t-violet-500" />
           <span className="text-[13px] text-zinc-500">{t('bootTraceAnalyzing')}</span>
         </div>
       </div>
@@ -166,7 +166,7 @@ function BootTracePanel({ trace, loading }: { trace: StartupBootTrace | null; lo
       value: Math.max(0, trace.mainPathMs - trace.startupAppsMs),
       fill: '#3b82f6'
     },
-    { name: t('pieStartupApps'), value: trace.startupAppsMs, fill: '#f59e0b' },
+    { name: t('pieStartupApps'), value: trace.startupAppsMs, fill: '#a78bfa' },
     {
       name: t('pieOther'),
       value: Math.max(0, trace.totalBootMs - trace.mainPathMs),
@@ -192,7 +192,7 @@ function BootTracePanel({ trace, loading }: { trace: StartupBootTrace | null; lo
         <div className="flex items-center gap-3">
           <div
             className="flex h-9 w-9 items-center justify-center rounded-xl"
-            style={{ background: 'rgba(245,158,11,0.1)' }}
+            style={{ background: 'rgba(167, 139, 250,0.1)' }}
           >
             <Activity
               className="h-4.5 w-4.5"
@@ -252,7 +252,7 @@ function BootTracePanel({ trace, loading }: { trace: StartupBootTrace | null; lo
               icon={Zap}
               label={t('statStartupAppsDelay')}
               value={formatMs(trace.startupAppsMs)}
-              color="#f59e0b"
+              color="#a78bfa"
             />
             <StatMini
               icon={Activity}
@@ -706,7 +706,7 @@ export function StartupPage() {
                     {item.stale && (
                       <span
                         className="flex items-center gap-1 rounded-md px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide"
-                        style={{ background: 'rgba(245,158,11,0.10)', color: '#f59e0b' }}
+                        style={{ background: 'rgba(167, 139, 250,0.10)', color: '#a78bfa' }}
                         title={t('staleTooltip')}
                       >
                         <PackageX className="h-3 w-3" strokeWidth={1.8} />

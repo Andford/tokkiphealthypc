@@ -136,7 +136,7 @@ function CategoryBar({
           animate={{ width: `${pct}%` }}
           transition={{ delay: delay + 0.15, duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
           className="absolute inset-y-0 left-0 rounded-full"
-          style={{ background: 'linear-gradient(90deg, #f59e0b, #d97706)' }}
+          style={{ background: 'linear-gradient(90deg, #a78bfa, #8b5cf6)' }}
         />
       </div>
       <span
@@ -224,8 +224,8 @@ export function CleanSummary({ summary, onRelaunchAsAdmin, platform }: CleanSumm
             icon={Files}
             value={summary.filesDeleted}
             label={t('summaryFilesDeleted')}
-            color="#f59e0b"
-            iconBg="rgba(245,158,11,0.10)"
+            color="#a78bfa"
+            iconBg="rgba(167, 139, 250,0.10)"
             delay={0.3}
           />
           <MetricCard
@@ -291,15 +291,15 @@ export function CleanSummary({ summary, onRelaunchAsAdmin, platform }: CleanSumm
               border: '1px solid var(--accent-muted-border)'
             }}
           >
-            <ShieldAlert className="h-4 w-4 shrink-0 text-amber-400" strokeWidth={1.8} />
+            <ShieldAlert className="h-4 w-4 shrink-0 text-violet-400" strokeWidth={1.8} />
             <p className="flex-1 text-[12px]" style={{ color: 'var(--text-muted)' }}>
               {t('permissionError')}
             </p>
             {platform !== 'darwin' && (
               <button
                 onClick={onRelaunchAsAdmin}
-                className="shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-medium text-amber-400 transition-colors hover:bg-amber-500/15"
-                style={{ border: '1px solid rgba(245,158,11,0.2)' }}
+                className="shrink-0 rounded-lg px-3 py-1.5 text-[12px] font-medium text-violet-400 transition-colors hover:bg-violet-500/15"
+                style={{ border: '1px solid rgba(167, 139, 250,0.2)' }}
               >
                 {t('relaunchAsAdmin')}
               </button>

@@ -248,6 +248,9 @@ export const IPC = {
   // History push events (main -> renderer)
   HISTORY_CHANGED: 'history:changed',
 
+  // Tokkip PC (the island) hears how this PC is doing
+  TOKKIP_NOTICE: 'tokkip:notice',
+
   // Large File Finder
   LARGE_FILES_SCAN: 'large-files:scan',
   LARGE_FILES_CANCEL: 'large-files:cancel',

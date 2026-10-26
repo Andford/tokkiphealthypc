@@ -4,6 +4,7 @@ import './i18n'
 import { App } from './App'
 import './globals.css'
 import './pulse.css'
+import './tokkip/tokkip.css'
 
 class ErrorBoundary extends React.Component<
   { children: React.ReactNode },

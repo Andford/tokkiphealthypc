@@ -1,7 +1,7 @@
 {
   "recovery": {
     "title": "Centro de recuperación",
-    "description": "Revise y restaure los cambios compatibles realizados por Tokkip",
+    "description": "Revisa y restaure los cambios compatibles realizados por Tokkip",
     "limits": "La recuperación cubre los valores DWORD de privacidad/registro de Windows registrados, las tareas programadas y la configuración de los servicios. La eliminación permanente de archivos no se puede deshacer. Es posible que los cambios antiguos o no compatibles solo tengan una copia de seguridad manual. Algunos ajustes restaurados requieren reiniciar.",
     "refresh": "Actualizar",
     "export": "Exportar historial de recuperación",
@@ -30,10 +30,10 @@
       "conflict": "Se detectó un cambio más reciente"
     },
     "remove": "Eliminar entrada",
-    "removeDescription": "¿Eliminar este registro de recuperación del historial local? Esto no cambia sus ajustes ni elimina las copias de seguridad del registro. Tokkip ya no podrá restaurar este cambio por usted.",
+    "removeDescription": "¿Eliminar este registro de recuperación del historial local? Esto no cambia tus ajustes ni elimina las copias de seguridad del registro. Tokkip ya no podrá restaurar este cambio por tú.",
     "unreadable": "No se pudo leer este registro de recuperación. Es posible que haya sido escrito por otra cuenta de usuario o que esté dañado en el disco.",
     "loading": "¿Cargando historial de recuperación?",
-    "emptyTitle": "Su historial de recuperación comienza aquí",
+    "emptyTitle": "Tu historial de recuperación comienza aquí",
     "source": {
       "privacy": "Privacy Shield",
       "services": "Administrador de servicios",
@@ -76,10 +76,10 @@
     "selectionContext": "Entradas en caché en estas categorías: {{found}} · No seleccionadas en esta operación: {{unselected}}",
     "title": "Comprobantes de limpieza",
     "description": "Registrados en el momento de la eliminación. Cada comprobante cubre una operación de limpieza o un lote.",
-    "empty": "Aún no hay comprobantes de limpieza. Ejecute una limpieza para registrar sus resultados.",
+    "empty": "Aún no hay comprobantes de limpieza. Ejecuta una limpieza para registrar tus resultados.",
     "loadError": "No se pudieron leer los comprobantes de limpieza. Los datos existentes se han conservado.",
     "actionError": "La acción del comprobante falló.",
-    "saveError": "La limpieza finalizó, pero no se pudo guardar su comprobante.",
+    "saveError": "La limpieza finalizó, pero no se pudo guardar tu comprobante.",
     "refresh": "Actualizar",
     "complete": "Completado",
     "withIssues": "Completado con problemas",
@@ -118,7 +118,7 @@
   "viewCloud": "Nube",
   "clearButton": "Borrar",
   "emptyStateTitle": "Aún no hay historial",
-  "emptyStateDescription": "Ejecute un análisis desde las páginas Cleaner, Registry o Debloater. Los resultados aparecerán aquí.",
+  "emptyStateDescription": "Ejecuta un análisis desde las páginas Cleaner, Registry o Debloater. Los resultados aparecerán aquí.",
   "confirmClearCloudTitle": "Borrar historial de la nube",
   "confirmClearScanTitle": "Borrar historial de análisis",
   "confirmClearCloudDescription": "Esto eliminará permanentemente todas las entradas del historial de acciones en la nube. Esta acción no se puede deshacer.",
@@ -199,7 +199,7 @@
       "truncatedBadge": "+{{count}} más",
       "truncatedHint": "Esta carpeta contenía {{count}} entradas adicionales además del límite de listado por carpeta. Se eliminaron, pero no se enumeraron individualmente.",
       "emptyRecorded": "No se registraron rutas de archivos para esta ejecución.",
-      "disabledHint": "El registro de eliminaciones está desactivado, por lo que no se registraron las rutas individuales de esta ejecución. Active \"Mantener un registro de los archivos eliminados\" en Configuración → Preferencias de limpieza para registrarlas a partir de ahora."
+      "disabledHint": "El registro de eliminaciones está desactivado, por lo que no se registraron las rutas individuales de esta ejecución. Activa \"Mantener un registro de los archivos eliminados\" en Configuración → Preferencias de limpieza para registrarlas a partir de ahora."
     }
   },
   "cloud": {
