@@ -15,9 +15,7 @@
 ## Qué es
 
 Tokkip Healthy PC es el limpiador y optimizador de la familia Tokkip (Tokkip en
-el teléfono y el reloj, Tokkip Notas y Tokkip PC). Está hecho a partir de
-[Kudu](https://github.com/adventdevinc/kudu) (MIT), con el diseño de Tokkip y
-sin nada de Kudu Cloud: todo pasa en tu computadora.
+el teléfono y el reloj, Tokkip Notas y Tokkip PC).
 
 - **Tokkip te dice cómo se siente tu PC**: en Inicio está dentro de un anillo
   que se llena con la salud de tu PC (cuándo limpiaste, qué tan llenos van
