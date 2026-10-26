@@ -48,7 +48,7 @@ const item: ScanItem = {
   selected: true
 }
 beforeEach(async () => {
-  state.root = await mkdtemp(join(tmpdir(), 'kudu-receipts-'))
+  state.root = await mkdtemp(join(tmpdir(), 'tokkip-receipts-'))
   state.logPaths = false
   state.lockReleases = []
   clearCache()

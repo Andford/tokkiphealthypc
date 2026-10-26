@@ -45,7 +45,10 @@ export function ProcessTable() {
     if (!killTarget) return
     setKilling(true)
     try {
-      const result = await window.kudu.perfKillProcess(killTarget.pid, killTarget.birthToken || '')
+      const result = await window.tokkip.perfKillProcess(
+        killTarget.pid,
+        killTarget.birthToken || ''
+      )
       if (result.success) {
         toast.success(t('endProcessSuccessToast', { name: killTarget.name, pid: killTarget.pid }))
       } else {

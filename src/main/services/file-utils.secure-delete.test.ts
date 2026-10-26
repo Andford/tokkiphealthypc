@@ -15,7 +15,7 @@ import { safeDelete } from './file-utils'
 
 const roots: string[] = []
 async function fixture() {
-  const root = await mkdtemp(join(tmpdir(), 'kudu-secure-'))
+  const root = await mkdtemp(join(tmpdir(), 'tokkip-secure-'))
   roots.push(root)
   const cache = join(root, 'cache')
   const outside = join(root, 'outside')

@@ -127,7 +127,7 @@ function ownerIdentity(program: InstalledProgram): string {
 }
 
 async function readPreviousOwners(programs: InstalledProgram[]): Promise<InstalledProgram[]> {
-  const dir = app.isPackaged ? app.getPath('userData') : join(app.getPath('userData'), 'Kudu-Dev')
+  const dir = app.isPackaged ? app.getPath('userData') : join(app.getPath('userData'), 'Tokkip-Dev')
   const path = join(dir, 'leftover-owners.json')
   let previous: InstalledProgram[] = []
   try {

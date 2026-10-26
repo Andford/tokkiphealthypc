@@ -89,7 +89,7 @@ export async function findValidlySignedFiles(paths: string[]): Promise<Map<strin
 async function verifyBatch(paths: string[]): Promise<Map<string, string>> {
   let tempDir: string | null = null
   try {
-    tempDir = await mkdtemp(join(tmpdir(), 'kudu-authenticode-'))
+    tempDir = await mkdtemp(join(tmpdir(), 'tokkip-authenticode-'))
     const pathFile = join(tempDir, 'paths.json')
     await writeFile(pathFile, JSON.stringify(paths), 'utf8')
     // A replacer function, so a `$` in the temp path is not read as a pattern.

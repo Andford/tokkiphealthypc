@@ -15,7 +15,7 @@ export const useHistoryStore = create<HistoryState>((set, get) => ({
 
   load: async () => {
     try {
-      const entries = await window.kudu.historyGet()
+      const entries = await window.tokkip.historyGet()
       set({ entries, loaded: true })
     } catch {
       set({ entries: [], loaded: true })
@@ -24,7 +24,7 @@ export const useHistoryStore = create<HistoryState>((set, get) => ({
 
   addEntry: async (entry) => {
     try {
-      await window.kudu.historyAdd(entry)
+      await window.tokkip.historyAdd(entry)
       set((s) => ({ entries: [entry, ...s.entries].slice(0, 100) }))
     } catch {
       // Silent fail
@@ -33,7 +33,7 @@ export const useHistoryStore = create<HistoryState>((set, get) => ({
 
   clear: async () => {
     try {
-      await window.kudu.historyClear()
+      await window.tokkip.historyClear()
       set({ entries: [] })
     } catch {
       // Silent fail
@@ -46,7 +46,7 @@ export const useHistoryStore = create<HistoryState>((set, get) => ({
 let _historyListenerRegistered = false
 if (!_historyListenerRegistered) {
   _historyListenerRegistered = true
-  window.kudu.onHistoryChanged(() => {
+  window.tokkip.onHistoryChanged(() => {
     useHistoryStore.getState().load()
   })
 }

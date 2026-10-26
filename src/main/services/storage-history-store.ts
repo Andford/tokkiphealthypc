@@ -15,7 +15,7 @@ interface StorageIndex {
   snapshots: StorageSnapshotSummary[]
 }
 const directory = () =>
-  join(app.getPath('userData'), app.isPackaged ? 'storage-history' : 'Kudu-Dev/storage-history')
+  join(app.getPath('userData'), app.isPackaged ? 'storage-history' : 'Tokkip-Dev/storage-history')
 const file = () => join(directory(), 'index.json')
 const idPattern = /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/
 export const validStorageId = (id: unknown): id is string =>

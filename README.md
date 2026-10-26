@@ -27,7 +27,7 @@ el teléfono y el reloj, Tokkip Notas y Tokkip PC).
 
   <img src="docs/media/fiesta.png" alt="La fiesta al limpiar" width="640" />
 
-- **Todas las herramientas de Kudu**: limpiador del sistema, navegadores, apps
+- **Todas las herramientas**: limpiador del sistema, navegadores, apps
   y juegos; registro; programas de inicio; red; rutinas automáticas;
   escáner de malware (Windows Defender, heurística y tus reglas YARA locales);
   privacidad; firewall; monitor de rendimiento; servicios; modo juego;
@@ -46,19 +46,24 @@ el teléfono y el reloj, Tokkip Notas y Tokkip PC).
 
 <img src="docs/media/inicio-claro.png" alt="Modo claro" width="640" />
 
-## Qué cambió respecto a Kudu
+## Qué cambió respecto al original
 
-- Sin Kudu Cloud: se quitaron la vinculación, el agente y el modo daemon, y las
+- Sin nube: se quitaron la vinculación, el agente y el modo daemon, y las
   herramientas que solo funcionaban con la nube (monitor de amenazas, escáner
   de vulnerabilidades, alertas de filtraciones, diagnóstico de rendimiento y
   las calificaciones de seguridad de programas). Las firmas YARA ya no se
-  descargan de Kudu: el escáner lee los archivos `.yar` que pongas en tu
+  descargan de internet: el escáner lee los archivos `.yar` que pongas en tu
   carpeta de firmas (se abre desde la pestaña Base de datos del escáner).
 - Diseño de Tokkip: su paleta, títulos en Fredoka, esquinas redondeadas y
   formas de Material Expressive; Tokkip en la barra de título y en Inicio.
 - Solo español (de tú) e inglés.
 - Nuevo nombre, ícono, identificador (`mx.loperstack.tokkiphealthypc`) y
   actualizaciones desde los releases de este repositorio.
+- Todo se llama Tokkip, también por dentro (código, registros, tareas,
+  carpetas). El nombre original solo queda en el crédito de Acerca de y en
+  [LICENSE](LICENSE). Lo que guardó la primera versión (la tarea de inicio,
+  los sellos de los respaldos del registro, tus preferencias de pantalla) se
+  reconoce o se pasa solo.
 
 ## Instalar
 

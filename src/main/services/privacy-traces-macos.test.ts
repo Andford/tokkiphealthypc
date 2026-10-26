@@ -52,7 +52,7 @@ const quarantineDb = () =>
   join(home, 'Library', 'Preferences', 'com.apple.LaunchServices.QuarantineEventsV2')
 
 beforeEach(async () => {
-  home = await mkdtemp(join(tmpdir(), 'kudu-mac-traces-'))
+  home = await mkdtemp(join(tmpdir(), 'tokkip-mac-traces-'))
   execFile.mockReset()
 })
 afterEach(async () => {

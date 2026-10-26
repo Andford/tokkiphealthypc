@@ -14,7 +14,7 @@ describe('parseCliArgs', () => {
   it('requires a separate explicit opt-in for performance cache resets', () => {
     const normal = parseCliArgs([
       'node',
-      'kudu',
+      'tokkip',
       '--cli',
       'scan',
       '--clean',
@@ -23,7 +23,7 @@ describe('parseCliArgs', () => {
     expect(normal.ctx.includeCacheResets).toBeUndefined()
     const reset = parseCliArgs([
       'node',
-      'kudu',
+      'tokkip',
       '--cli',
       '--include-cache-resets',
       'scan',
@@ -34,53 +34,53 @@ describe('parseCliArgs', () => {
     expect(reset.commandArgs).not.toContain('--include-cache-resets')
   })
   it('parses --json flag', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', '--json', 'registry', 'scan'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', '--json', 'registry', 'scan'])
     expect(result.ctx.json).toBe(true)
     expect(result.command).toBe('registry')
   })
 
   it('parses --verbose flag', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', '--verbose', 'scan'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', '--verbose', 'scan'])
     expect(result.ctx.verbosity).toBe('verbose')
   })
 
   it('parses --quiet flag', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', '--quiet', 'scan'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', '--quiet', 'scan'])
     expect(result.ctx.verbosity).toBe('quiet')
   })
 
   it('parses -q as quiet', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', '-q', 'scan'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', '-q', 'scan'])
     expect(result.ctx.verbosity).toBe('quiet')
   })
 
   it('defaults to normal verbosity', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', 'scan'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', 'scan'])
     expect(result.ctx.verbosity).toBe('normal')
   })
 
   it('parses --help flag', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', '--help'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', '--help'])
     expect(result.help).toBe(true)
   })
 
   it('parses -h flag', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', '-h'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', '-h'])
     expect(result.help).toBe(true)
   })
 
   it('parses --version flag', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', '--version'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', '--version'])
     expect(result.version).toBe(true)
   })
 
   it('parses -v flag', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', '-v'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', '-v'])
     expect(result.version).toBe(true)
   })
 
   it('extracts command correctly', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', 'malware', 'scan', '--json'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', 'malware', 'scan', '--json'])
     expect(result.command).toBe('malware')
     expect(result.ctx.json).toBe(true)
   })
@@ -88,7 +88,7 @@ describe('parseCliArgs', () => {
   it('filters global flags from commandArgs', () => {
     const result = parseCliArgs([
       'node',
-      'kudu',
+      'tokkip',
       '--cli',
       '--json',
       '--verbose',
@@ -103,23 +103,23 @@ describe('parseCliArgs', () => {
   })
 
   it('detects legacy flags', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', '--system', '--browser'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', '--system', '--browser'])
     expect(result.hasLegacyFlags).toBe(true)
     expect(result.command).toBeUndefined()
   })
 
   it('detects --all as legacy flag', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', '--all'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', '--all'])
     expect(result.hasLegacyFlags).toBe(true)
   })
 
   it('detects --clean flag', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli', '--all', '--clean'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli', '--all', '--clean'])
     expect(result.hasCleanFlag).toBe(true)
   })
 
   it('handles no arguments after --cli', () => {
-    const result = parseCliArgs(['node', 'kudu', '--cli'])
+    const result = parseCliArgs(['node', 'tokkip', '--cli'])
     expect(result.command).toBeUndefined()
     expect(result.ctx.json).toBe(false)
     expect(result.ctx.verbosity).toBe('normal')

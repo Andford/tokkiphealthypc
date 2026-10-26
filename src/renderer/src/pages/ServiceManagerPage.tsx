@@ -113,7 +113,7 @@ export function ServiceManagerPage({ embedded }: { embedded?: boolean }) {
 
   // Listen for progress events
   useEffect(() => {
-    const cleanup = window.kudu?.onServiceProgress?.((data: ServiceScanProgress) => {
+    const cleanup = window.tokkip?.onServiceProgress?.((data: ServiceScanProgress) => {
       useServiceStore.getState().setScanProgress(data)
     })
     return () => {
@@ -131,7 +131,7 @@ export function ServiceManagerPage({ embedded }: { embedded?: boolean }) {
     store.setScanProgress(null)
 
     try {
-      const result = await window.kudu.serviceScan()
+      const result = await window.tokkip.serviceScan()
       const s = useServiceStore.getState()
       s.setServices(result.services)
       s.setHasScanned(true)
@@ -172,7 +172,7 @@ export function ServiceManagerPage({ embedded }: { embedded?: boolean }) {
       }))
 
       try {
-        const result = await window.kudu.serviceApply(changes)
+        const result = await window.tokkip.serviceApply(changes)
         useServiceStore.getState().setApplyResult(result)
         if (result.succeeded > 0) {
           const key =
@@ -196,7 +196,7 @@ export function ServiceManagerPage({ embedded }: { embedded?: boolean }) {
           )
 
         // Re-scan to refresh state
-        const scanResult = await window.kudu.serviceScan()
+        const scanResult = await window.tokkip.serviceScan()
         useServiceStore.getState().setServices(scanResult.services)
 
         // Log to history

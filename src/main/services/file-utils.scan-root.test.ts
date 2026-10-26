@@ -16,7 +16,7 @@ let base: string
 let privateDir: string
 let alias: string
 beforeEach(() => {
-  base = realpathSync.native(mkdtempSync(join(tmpdir(), 'kudu-scanroot-')))
+  base = realpathSync.native(mkdtempSync(join(tmpdir(), 'tokkip-scanroot-')))
   privateDir = join(base, 'private')
   mkdirSync(privateDir)
   writeFileSync(join(privateDir, 'secret.bin'), 'x')

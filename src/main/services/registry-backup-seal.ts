@@ -5,23 +5,29 @@ import { isAdmin } from './elevation'
 import { execNativeUtf8, execTracked, psUtf8 } from './exec-utf8'
 
 /**
- * Integrity seals for the registry backups Kudu may later import.
+ * Integrity seals for the registry backups Tokkip may later import.
  *
  * Packaged Windows builds run elevated, but the backup folder defaults to the
  * user's Documents, which any unelevated process of that user can write. A
  * backup is only restorable when the SHA-256 of its exact bytes matches the one
- * Kudu recorded when writing it, in a key only administrators can change:
- * `HKLM\SOFTWARE\Kudu\RegistryBackupSeals\<folder id>` (value name = backup file
+ * Tokkip recorded when writing it, in a key only administrators can change:
+ * `HKLM\SOFTWARE\Tokkip\RegistryBackupSeals\<folder id>` (value name = backup file
  * name). The folder id is derived from the backup folder's real path, so each
  * folder has its own seals: switching the backup folder never makes the seals
  * of backups left in the previous one look orphaned.
  *
  * Seals are read from HKLM only, never from the backup folder or userData.
  * Sealing needs elevation; when it is not possible the backup is still written
- * but cannot be restored from inside Kudu. Nothing here throws into the caller.
+ * but cannot be restored from inside Tokkip. Nothing here throws into the caller.
  */
 
-const SEAL_ROOT = 'HKLM\\SOFTWARE\\Kudu\\RegistryBackupSeals'
+const SEAL_ROOT = 'HKLM\\SOFTWARE\\Tokkip\\RegistryBackupSeals'
+/**
+ * Where the first version, under the original app's name, sealed its backups.
+ * Read (and cleaned) so those backups can still be restored; never written.
+ * It is under HKLM too, so it is just as out of reach of unelevated processes.
+ */
+const LEGACY_SEAL_ROOT = 'HKLM\\SOFTWARE\\Kudu\\RegistryBackupSeals'
 /** File names only: no separators, no `..`, nothing cmd.exe or reg.exe would reinterpret. */
 const SEALABLE_NAME = /^[A-Za-z0-9_-][A-Za-z0-9_.-]{0,199}\.reg$/
 const SHA256_HEX = /^[0-9a-f]{64}$/
@@ -39,7 +45,7 @@ export function sha256Hex(bytes: Buffer): string {
  * real path (junctions resolved, case-folded), so the same folder always maps
  * to the same key however it is spelled.
  */
-export async function sealKeyFor(dir: string): Promise<string> {
+export async function sealKeyFor(dir: string, root: string = SEAL_ROOT): Promise<string> {
   let real: string
   try {
     real = await realpath(dir)
@@ -47,7 +53,7 @@ export async function sealKeyFor(dir: string): Promise<string> {
     real = resolve(dir)
   }
   const id = createHash('sha256').update(real.toLowerCase(), 'utf8').digest('hex').slice(0, 32)
-  return `${SEAL_ROOT}\\${id}`
+  return `${root}\\${id}`
 }
 
 /** Record the hash of `bytes` as the seal for `fileName` in `dir`. False when it could not be recorded. */
@@ -90,11 +96,21 @@ function parseSeals(stdout: string): Map<string, string> {
 /** Every seal recorded for `dir`, keyed by lower-cased file name. Empty when none can be read. */
 export async function readSeals(dir: string): Promise<Map<string, string>> {
   if (process.platform !== 'win32') return new Map()
+  const seals = await readSealsAt(dir, LEGACY_SEAL_ROOT)
+  for (const [name, hash] of await readSealsAt(dir, SEAL_ROOT)) seals.set(name, hash)
+  return seals
+}
+
+async function readSealsAt(dir: string, root: string): Promise<Map<string, string>> {
   try {
-    const { stdout } = await execNativeUtf8('reg', ['query', await sealKeyFor(dir), '/reg:64'], {
-      timeout: 15000,
-      windowsHide: true
-    })
+    const { stdout } = await execNativeUtf8(
+      'reg',
+      ['query', await sealKeyFor(dir, root), '/reg:64'],
+      {
+        timeout: 15000,
+        windowsHide: true
+      }
+    )
     return parseSeals(stdout)
   } catch {
     return new Map()
@@ -104,10 +120,17 @@ export async function readSeals(dir: string): Promise<Map<string, string>> {
 /** The recorded hash for `fileName` in `dir`, or null when there is none or it cannot be read. */
 export async function readSeal(dir: string, fileName: string): Promise<string | null> {
   if (process.platform !== 'win32' || !isSealable(fileName)) return null
+  return (
+    (await readSealAt(dir, fileName, SEAL_ROOT)) ??
+    (await readSealAt(dir, fileName, LEGACY_SEAL_ROOT))
+  )
+}
+
+async function readSealAt(dir: string, fileName: string, root: string): Promise<string | null> {
   try {
     const { stdout } = await execNativeUtf8(
       'reg',
-      ['query', await sealKeyFor(dir), '/v', fileName, '/reg:64'],
+      ['query', await sealKeyFor(dir, root), '/v', fileName, '/reg:64'],
       { timeout: 15000, windowsHide: true }
     )
     return parseSeals(stdout).get(fileName.toLowerCase()) ?? null
@@ -125,14 +148,16 @@ export async function verifySeal(dir: string, fileName: string, bytes: Buffer): 
 /** Remove the seal of a deleted backup in `dir`. Best effort. */
 export async function removeSeal(dir: string, fileName: string): Promise<void> {
   if (process.platform !== 'win32' || !isSealable(fileName) || !isAdmin()) return
-  try {
-    await execNativeUtf8(
-      'reg',
-      ['delete', await sealKeyFor(dir), '/v', fileName, '/f', '/reg:64'],
-      { timeout: 15000, windowsHide: true }
-    )
-  } catch {
-    // Best effort; `sweepSeals` retries once the file is gone.
+  for (const root of [SEAL_ROOT, LEGACY_SEAL_ROOT]) {
+    try {
+      await execNativeUtf8(
+        'reg',
+        ['delete', await sealKeyFor(dir, root), '/v', fileName, '/f', '/reg:64'],
+        { timeout: 15000, windowsHide: true }
+      )
+    } catch {
+      // Best effort (and usually not there); `sweepSeals` retries once the file is gone.
+    }
   }
 }
 
@@ -150,11 +175,11 @@ export async function removeSeals(dir: string, fileNames: string[]): Promise<voi
 /**
  * Drop every seal of `dir` whose backup file no longer exists there. `seals` is
  * `readSeals(dir)`, and `present` the lower-cased names of the regular files in
- * `dir`, listed *after* `seals` was read: Kudu always writes a backup before
+ * `dir`, listed *after* `seals` was read: Tokkip always writes a backup before
  * sealing it, so a seal read earlier than the listing can never belong to a file
  * not yet written. Other folders' seals are never touched.
  *
- * Without this, a backup deleted outside Kudu (or whose seal removal failed)
+ * Without this, a backup deleted outside Tokkip (or whose seal removal failed)
  * could be put back later, byte for byte, by an unelevated process and be
  * verified again. Returns the seals that remain. Needs elevation to remove.
  */
@@ -175,7 +200,7 @@ export async function sweepSeals(
  * Create an empty directory that only Administrators and SYSTEM can modify, for
  * the `reg export` parts a sealed backup is assembled from and the copy `reg
  * import` reads. The user's %TEMP% will not do: an unelevated process could
- * rewrite a file there between Kudu writing (or hashing) it and reading it.
+ * rewrite a file there between Tokkip writing (or hashing) it and reading it.
  *
  * The directory lives in the Windows temp folder, where standard users cannot
  * delete or rename other users' entries, has an unguessable name, is created

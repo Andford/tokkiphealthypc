@@ -371,7 +371,7 @@ export function comparePackageVersions(a: string, b: string): number {
 }
 
 /**
- * Places winget may live when it is not on PATH. Kudu runs elevated
+ * Places winget may live when it is not on PATH. Tokkip runs elevated
  * (requireAdministrator); when UAC elevates under a different account than
  * the logged-in user, that account's PATH lacks the `WindowsApps` alias
  * directory and a bare `winget` fails with ENOENT even though the tool works
@@ -755,7 +755,7 @@ export function wingetRemedies(appId: string, code?: number): string[] {
     // installing the latest version." — winget names the remedy itself.
     case 0x8a15008e: // APPINSTALLER_CLI_ERROR_UPDATE_INSTALL_TECHNOLOGY_MISMATCH
       return [`winget uninstall --id ${id} --exact`, `winget install --id ${id} --exact`]
-    // Anything else: Kudu ran winget silently, so the same command by hand is
+    // Anything else: Tokkip ran winget silently, so the same command by hand is
     // what shows the output winget never got to print.
     default:
       return [`winget upgrade --id ${id} --exact`]
@@ -1634,7 +1634,7 @@ interface BrewInfoJson {
  * read the user's shell rc files, so a bare `brew` lookup fails even when
  * brew is installed and on the user's interactive shell PATH. We probe the
  * standard install locations first, then fall back to a PATH lookup so
- * non-standard installs still work when the user launched Kudu from a shell.
+ * non-standard installs still work when the user launched Tokkip from a shell.
  */
 export const BREW_PATH_CANDIDATES = [
   '/opt/homebrew/bin/brew', // Apple Silicon default

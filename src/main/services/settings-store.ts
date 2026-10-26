@@ -6,7 +6,7 @@ import { randomUUID } from 'crypto'
 import { logError } from './logger'
 import { matchLocaleToLanguage } from '../../shared/languages'
 import type {
-  KuduSettings,
+  AppSettings,
   ScheduleEntry,
   ScheduleTaskType,
   MalwareAllowlistEntry,
@@ -19,7 +19,9 @@ let _configPath: string | null = null
 
 export function getDataDir(): string {
   if (!_dataDir) {
-    _dataDir = app.isPackaged ? app.getPath('userData') : join(app.getPath('userData'), 'Kudu-Dev')
+    _dataDir = app.isPackaged
+      ? app.getPath('userData')
+      : join(app.getPath('userData'), 'Tokkip-Dev')
   }
   return _dataDir
 }
@@ -32,7 +34,7 @@ function getConfigPath(): string {
 }
 
 interface StoreData {
-  settings: KuduSettings
+  settings: AppSettings
   onboardingComplete: boolean
   machineId: string
   /** Last known main-window geometry; null until the window is first sized. */
@@ -172,7 +174,7 @@ function readStore(): StoreData {
       // data loss to anyone who opens the file (issue #269). Deleting it here
       // clears it from existing installs on their next write.
       delete (merged as { stats?: unknown }).stats
-      // Kudu Cloud's settings (and its API key) aren't used: drop them.
+      // Tokkip Cloud's settings (and its API key) aren't used: drop them.
       delete (merged.settings as { cloud?: unknown }).cloud
       // Migrate legacy single-manager preference → aggregation list. Existing
       // installs kept exactly one manager (winget or choco); preserve that as
@@ -292,7 +294,7 @@ function writeStore(data: StoreData): void {
   throw lastErr
 }
 
-export function getSettings(): KuduSettings {
+export function getSettings(): AppSettings {
   return readStore().settings
 }
 
@@ -331,7 +333,7 @@ function runLocked(what: string, mutate: (data: StoreData) => boolean | void): P
   })
 }
 
-export function setSettings(partial: Partial<KuduSettings>): Promise<void> {
+export function setSettings(partial: Partial<AppSettings>): Promise<void> {
   const write = runLocked('settings', (data) => {
     const patch = { ...partial }
     if (patch.schedules)

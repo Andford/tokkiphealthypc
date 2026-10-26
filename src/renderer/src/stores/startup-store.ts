@@ -70,7 +70,7 @@ export const useStartupStore = create<StartupState>((set) => ({
     }),
   setSafetyLoading: (safetyLoading) => set({ safetyLoading }),
   setExpandedItemId: (expandedItemId) => set({ expandedItemId }),
-  // Safety ratings came from Kudu Cloud; Tokkip Healthy PC has no cloud, so none.
+  // Safety ratings came from Tokkip Cloud; Tokkip Healthy PC has no cloud, so none.
   fetchSafetyRatings: async () => set({ safetyLoading: false }),
 
   reset: () =>

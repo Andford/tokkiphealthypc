@@ -132,7 +132,7 @@ export function UninstallerPage() {
   const safetyRatings = useUninstallerStore((s) => s.safetyRatings)
   const safetyLoading = useUninstallerStore((s) => s.safetyLoading)
   const expandedItemId = useUninstallerStore((s) => s.expandedItemId)
-  const isCloudLinked = false // Safety ratings needed Kudu Cloud
+  const isCloudLinked = false // Safety ratings needed Tokkip Cloud
 
   const [confirmProgram, setConfirmProgram] = useState<InstalledProgram | null>(null)
   const [confirmForceRemove, setConfirmForceRemove] = useState<InstalledProgram | null>(null)
@@ -146,7 +146,7 @@ export function UninstallerPage() {
 
   // Listen for progress events
   useEffect(() => {
-    const cleanup = window.kudu.onUninstallerProgress((data: UninstallProgress) => {
+    const cleanup = window.tokkip.onUninstallerProgress((data: UninstallProgress) => {
       useUninstallerStore.getState().setProgress(data)
     })
     return () => {
@@ -187,7 +187,7 @@ export function UninstallerPage() {
     store.setExpandedItemId(null)
 
     try {
-      const result = await window.kudu.uninstallerList()
+      const result = await window.tokkip.uninstallerList()
       const s = useUninstallerStore.getState()
       s.setPrograms(result.programs)
       s.setHasLoaded(true)
@@ -216,7 +216,7 @@ export function UninstallerPage() {
     lastFailedProgramRef.current = program
 
     try {
-      const result = await window.kudu.uninstallerUninstall(program.id, {
+      const result = await window.tokkip.uninstallerUninstall(program.id, {
         dependencyWarningAcknowledged: getSharedComponentKind(program) !== null
       })
       const s = useUninstallerStore.getState()
@@ -284,7 +284,7 @@ export function UninstallerPage() {
 
     for (const program of toUninstall) {
       try {
-        const result = await window.kudu.uninstallerUninstall(program.id)
+        const result = await window.tokkip.uninstallerUninstall(program.id)
         const s = useUninstallerStore.getState()
 
         if (result.success) {
@@ -371,7 +371,7 @@ export function UninstallerPage() {
     uninstallStartRef.current = Date.now()
 
     try {
-      const result = await window.kudu.uninstallerForceRemove(program.id, {
+      const result = await window.tokkip.uninstallerForceRemove(program.id, {
         dependencyWarningAcknowledged: getSharedComponentKind(program) !== null
       })
       const s = useUninstallerStore.getState()

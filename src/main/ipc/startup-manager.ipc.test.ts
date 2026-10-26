@@ -65,7 +65,7 @@ vi.mock('electron', () => ({
   app: {
     isPackaged: false,
     getPath: (name: string) => {
-      if (name === 'userData') return 'C:\\Users\\Test\\AppData\\Roaming\\Kudu'
+      if (name === 'userData') return 'C:\\Users\\Test\\AppData\\Roaming\\Tokkip'
       if (name === 'appData') return 'C:\\Users\\Test\\AppData\\Roaming'
       return 'C:\\mock'
     }
@@ -1068,15 +1068,15 @@ describe('stale startup entries', () => {
     })
 
     it('expands environment variables when resolving the target', async () => {
-      process.env.__KUDU_TEST_APPDIR = 'C:\\Apps'
+      process.env.__TOKKIP_TEST_APPDIR = 'C:\\Apps'
       onlyExisting('C:\\Apps\\present.exe')
       setupExecFileHandler((cmd, args) => {
         if (cmd === 'reg' && args[1] === HKCU_RUN) {
           return {
             stdout: regOutput([
-              { name: 'Present', command: '%__KUDU_TEST_APPDIR%\\present.exe' },
-              { name: 'Gone', command: '%__KUDU_TEST_APPDIR%\\gone.exe' },
-              { name: 'UnknownVar', command: '%__KUDU_NOT_SET__%\\app.exe' }
+              { name: 'Present', command: '%__TOKKIP_TEST_APPDIR%\\present.exe' },
+              { name: 'Gone', command: '%__TOKKIP_TEST_APPDIR%\\gone.exe' },
+              { name: 'UnknownVar', command: '%__TOKKIP_NOT_SET__%\\app.exe' }
             ])
           }
         }
@@ -1087,7 +1087,7 @@ describe('stale startup entries', () => {
       expect(items.find((i) => i.name === 'Present')!.stale).toBe(false)
       expect(items.find((i) => i.name === 'Gone')!.stale).toBe(true)
       expect(items.find((i) => i.name === 'UnknownVar')!.stale).toBe(false)
-      delete process.env.__KUDU_TEST_APPDIR
+      delete process.env.__TOKKIP_TEST_APPDIR
     })
   })
 })

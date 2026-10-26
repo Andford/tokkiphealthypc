@@ -33,7 +33,7 @@ import type {
   WindowsPackageManager
 } from '@shared/types'
 
-/** Windows managers Kudu can aggregate, with their display labels. */
+/** Windows managers Tokkip can aggregate, with their display labels. */
 const WINDOWS_MANAGER_OPTIONS: { id: WindowsPackageManager; label: string }[] = [
   { id: 'winget', label: 'winget' },
   { id: 'choco', label: 'Chocolatey' },
@@ -120,7 +120,7 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
 
   // Listen for progress events
   useEffect(() => {
-    const cleanup = window.kudu.onSoftwareUpdateProgress((data: UpdateProgress) => {
+    const cleanup = window.tokkip.onSoftwareUpdateProgress((data: UpdateProgress) => {
       useUpdaterStore.getState().setProgress(data)
     })
     return () => {
@@ -130,7 +130,7 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
 
   // Load persisted ignore list from settings, then auto-scan on first visit
   useEffect(() => {
-    window.kudu
+    window.tokkip
       .settingsGet()
       .then((settings) => {
         if (settings.ignoredSoftwareUpdates?.length) {
@@ -169,7 +169,7 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
     store.setUpdateResult(null)
 
     try {
-      const result = await window.kudu.softwareUpdateCheck()
+      const result = await window.tokkip.softwareUpdateCheck()
       const s = useUpdaterStore.getState()
       s.setApps(result.apps)
       s.setUpToDate(result.upToDate)
@@ -215,7 +215,7 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
     const items = appsToUpdate.map((a) => ({ id: a.id, source: a.source }))
 
     try {
-      const result = await window.kudu.softwareUpdateRun(items)
+      const result = await window.tokkip.softwareUpdateRun(items)
       const s = useUpdaterStore.getState()
       s.setUpdateResult(result)
       s.setProgress(null)
@@ -298,7 +298,7 @@ export function SoftwareUpdaterPage({ embedded }: { embedded?: boolean }) {
       // Keep at least one manager enabled
       if (next.length === 0) return
       useSettingsStore.getState().updateSettings({ windowsPackageManagers: next })
-      await window.kudu.settingsSet({ windowsPackageManagers: next })
+      await window.tokkip.settingsSet({ windowsPackageManagers: next })
       handleCheck()
     },
     [handleCheck]

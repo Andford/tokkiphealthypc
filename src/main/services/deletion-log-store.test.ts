@@ -32,7 +32,7 @@ const rec = (ts: string, path: string, size = 100, category = 'Temp'): DeletedFi
 
 describe('deletion-log-store', () => {
   beforeEach(() => {
-    testDir = mkdtempSync(join(tmpdir(), 'kudu-dellog-test-'))
+    testDir = mkdtempSync(join(tmpdir(), 'tokkip-dellog-test-'))
     _resetDeletionLogPathCache()
   })
 

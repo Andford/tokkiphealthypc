@@ -33,7 +33,7 @@ export function CustomFoldersPanel() {
 
   useEffect(() => {
     let active = true
-    window.kudu
+    window.tokkip
       .customFoldersList()
       .then((value) => {
         if (active) setFolders(value)
@@ -89,7 +89,7 @@ export function CustomFoldersPanel() {
         onSubmit={(event) => {
           event.preventDefault()
           void run(async () => {
-            setFolders(await window.kudu.customFoldersAdd(name, path))
+            setFolders(await window.tokkip.customFoldersAdd(name, path))
             setName('')
             setPath('')
             resetPreview()
@@ -129,7 +129,7 @@ export function CustomFoldersPanel() {
             style={buttonStyle}
             onClick={() =>
               void run(async () => {
-                const picked = await window.kudu.customFoldersPick()
+                const picked = await window.tokkip.customFoldersPick()
                 if (picked) setPath(picked)
               })
             }
@@ -167,7 +167,7 @@ export function CustomFoldersPanel() {
                 onClick={() =>
                   void run(async () => {
                     resetPreview()
-                    setResult(await window.kudu.customFoldersScan(folder.id))
+                    setResult(await window.tokkip.customFoldersScan(folder.id))
                   })
                 }
               >
@@ -179,7 +179,7 @@ export function CustomFoldersPanel() {
                 style={buttonStyle}
                 onClick={() =>
                   void run(async () => {
-                    setFolders(await window.kudu.customFoldersRemove(folder.id))
+                    setFolders(await window.tokkip.customFoldersRemove(folder.id))
                     resetPreview()
                   })
                 }
@@ -315,7 +315,7 @@ export function CustomFoldersPanel() {
           setConfirm(false)
           if (!result) return
           void run(async () => {
-            const moved = await window.kudu.customFoldersTrash(result.scanId, [...selected])
+            const moved = await window.tokkip.customFoldersTrash(result.scanId, [...selected])
             const trashed = new Set(moved.trashedIds)
             setResult((previous) =>
               previous

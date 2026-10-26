@@ -3,7 +3,7 @@ import type { PlatformElevation } from '../types'
 
 let _isAdmin: boolean | null = null
 
-// Check the security token inherited from Kudu rather than probing a Windows
+// Check the security token inherited from Tokkip rather than probing a Windows
 // service. `net session` also requires the Server (LanmanServer) service, so it
 // reports access denied on elevated systems where that service is disabled.
 const ADMIN_TOKEN_CHECK = [

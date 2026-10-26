@@ -22,7 +22,7 @@ import { countCachedCategories, getCachedItem } from './scan-cache'
 const retryRuns = new Map<string, { expires: number; ids: string[] }>()
 let writes: Promise<unknown> = Promise.resolve()
 const directory = () =>
-  join(app.getPath('userData'), app.isPackaged ? 'cleanup-receipts' : 'Kudu-Dev/cleanup-receipts')
+  join(app.getPath('userData'), app.isPackaged ? 'cleanup-receipts' : 'Tokkip-Dev/cleanup-receipts')
 const file = () => join(directory(), 'receipts.json')
 const lockFile = () => join(directory(), 'receipts.lock')
 const tempFile = (path: string) => path + '.' + randomUUID() + '.tmp'

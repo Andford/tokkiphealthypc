@@ -32,7 +32,7 @@ const entry: ScheduleEntry = {
   conditions: { acOnly: true }
 }
 beforeEach(async () => {
-  state.directory = await mkdtemp(join(tmpdir(), 'kudu-schedule-test-'))
+  state.directory = await mkdtemp(join(tmpdir(), 'tokkip-schedule-test-'))
   setSettings({ schedules: [entry] })
   await flushSettings()
 })

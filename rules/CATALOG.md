@@ -1,4 +1,4 @@
-# Kudu Cleaner Rules Catalog
+# Tokkip Cleaner Rules Catalog
 
 > Auto-generated from the JSON rule files. Do not edit manually.
 >
@@ -101,7 +101,7 @@
 | JetBrains IDEs | ✅ | ✅ | ✅ |
 | Kodi | ✅ | ✅ | ✅ |
 | Krita | ✅ | ✅ | ✅ |
-| Kudu | ✅ | ❌ | ❌ |
+| Tokkip | ✅ | ❌ | ❌ |
 | Ledger Live | ✅ | ✅ | ✅ |
 | LibreOffice | ✅ | ✅ | ✅ |
 | Linear | ✅ | ✅ | ✅ |

@@ -42,7 +42,7 @@ export const useDownloadsStore = create<State>((set, get) => ({
       outcome: null
     })
     try {
-      set({ result: await window.kudu.downloadsScan() })
+      set({ result: await window.tokkip.downloadsScan() })
     } catch (error) {
       set({ error: message(error) })
     } finally {
@@ -54,7 +54,7 @@ export const useDownloadsStore = create<State>((set, get) => ({
     if (busy || !result || !selected.size) return
     set({ busy: true, phase: 'moving', error: null, outcome: null })
     try {
-      const outcome = await window.kudu.downloadsTrash(result.scanId, [...selected])
+      const outcome = await window.tokkip.downloadsTrash(result.scanId, [...selected])
       set({
         outcome,
         selected: new Set(),

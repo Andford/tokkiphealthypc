@@ -208,7 +208,7 @@ async function kdeConfigWrite(
 
 // ─── Sysctl helpers ─────────────────────────────────────────
 
-const SYSCTL_CONF = '/etc/sysctl.d/99-kudu.conf'
+const SYSCTL_CONF = '/etc/sysctl.d/99-tokkip.conf'
 
 async function sysctlGet(param: string): Promise<string> {
   const { stdout } = await execFileAsync('/usr/sbin/sysctl', ['-n', param], { timeout: 5_000 })
@@ -453,7 +453,7 @@ const ACCESS_CONTROL_SETTINGS: PrivacySettingDef[] = [
       try {
         const suid = await sysctlGet('fs.suid_dumpable')
         if (suid !== '0') return false
-        const content = await readFile('/etc/security/limits.d/99-kudu.conf', 'utf8')
+        const content = await readFile('/etc/security/limits.d/99-tokkip.conf', 'utf8')
         return content.includes('* hard core 0')
       } catch {
         return false
@@ -462,11 +462,11 @@ const ACCESS_CONTROL_SETTINGS: PrivacySettingDef[] = [
     async apply() {
       await sysctlApply('fs.suid_dumpable', '0')
       await mkdir('/etc/security/limits.d', { recursive: true })
-      await writeFile('/etc/security/limits.d/99-kudu.conf', '* hard core 0\n', 'utf8')
+      await writeFile('/etc/security/limits.d/99-tokkip.conf', '* hard core 0\n', 'utf8')
     },
     async revert() {
       await sysctlRevert('fs.suid_dumpable', '0')
-      await unlink('/etc/security/limits.d/99-kudu.conf').catch(() => {})
+      await unlink('/etc/security/limits.d/99-tokkip.conf').catch(() => {})
     }
   },
   {

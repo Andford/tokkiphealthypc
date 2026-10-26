@@ -70,13 +70,13 @@ function ShareDesigner({ data, onClose }: { data: CleanupShareData; onClose: () 
         ])
         toast.success(t(action === 'discord' ? 'share.discordCopied' : 'share.copied'))
       } else if (action === 'share') {
-        const file = new File([blob], 'kudu-cleanup.png', { type: 'image/png' })
+        const file = new File([blob], 'tokkip-cleanup.png', { type: 'image/png' })
         await navigator.share({ files: [file], text: caption })
       } else {
         const url = URL.createObjectURL(blob)
         const link = document.createElement('a')
         link.href = url
-        link.download = 'kudu-cleanup.png'
+        link.download = 'tokkip-cleanup.png'
         link.click()
         setTimeout(() => URL.revokeObjectURL(url), 60_000)
       }
@@ -89,7 +89,7 @@ function ShareDesigner({ data, onClose }: { data: CleanupShareData; onClose: () 
   }
   const nativeShare =
     typeof navigator.canShare === 'function' &&
-    navigator.canShare({ files: [new File([''], 'kudu-cleanup.png', { type: 'image/png' })] })
+    navigator.canShare({ files: [new File([''], 'tokkip-cleanup.png', { type: 'image/png' })] })
 
   return (
     <dialog

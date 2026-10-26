@@ -39,7 +39,7 @@ export class DownloadsClaimBatch {
     private readonly allowed: (original: string, claimed: string) => Promise<boolean> = async () =>
       true,
     private readonly operations = { rename, link },
-    private readonly recoveryPrefix = 'Kudu Downloads Recovery-'
+    private readonly recoveryPrefix = 'Tokkip Downloads Recovery-'
   ) {}
 
   private async stageDirectory(): Promise<string> {

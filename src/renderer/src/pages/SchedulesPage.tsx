@@ -186,7 +186,7 @@ export function SchedulesPage() {
   useEffect(() => {
     let mounted = true
     const refresh = () =>
-      window.kudu
+      window.tokkip
         .scheduleRuntime()
         .then((value) => {
           if (mounted) setRuntime(value)
@@ -202,8 +202,8 @@ export function SchedulesPage() {
 
   const save = async (updated: ScheduleEntry[]) => {
     try {
-      await window.kudu.settingsSet({ schedules: updated })
-      const persisted = await window.kudu.settingsGet()
+      await window.tokkip.settingsSet({ schedules: updated })
+      const persisted = await window.tokkip.settingsGet()
       if (
         JSON.stringify(persisted.schedules.map(scheduleDefinition)) !==
         JSON.stringify(updated.map(scheduleDefinition))
@@ -221,10 +221,10 @@ export function SchedulesPage() {
   const ensureBackgroundMode = () => {
     if (!isPortable && !settings.runAtStartup) {
       updateSettings({ runAtStartup: true })
-      window.kudu?.settingsSet?.({ runAtStartup: true }).catch(() => {})
-      window.kudu?.applyStartup?.(true).catch(() => {
+      window.tokkip?.settingsSet?.({ runAtStartup: true }).catch(() => {})
+      window.tokkip?.applyStartup?.(true).catch(() => {
         updateSettings({ runAtStartup: false })
-        window.kudu?.settingsSet?.({ runAtStartup: false }).catch(() => {})
+        window.tokkip?.settingsSet?.({ runAtStartup: false }).catch(() => {})
         toast.error(t('failedEnableStartup'), {
           action: {
             label: t('failedEnableStartupAction'),
@@ -236,8 +236,8 @@ export function SchedulesPage() {
     }
     if (!settings.minimizeToTray) {
       updateSettings({ minimizeToTray: true })
-      window.kudu?.settingsSet?.({ minimizeToTray: true }).catch(() => {})
-      window.kudu?.applyTray?.(true)
+      window.tokkip?.settingsSet?.({ minimizeToTray: true }).catch(() => {})
+      window.tokkip?.applyTray?.(true)
     }
   }
 
@@ -444,7 +444,7 @@ export function SchedulesPage() {
         onConfirm={() => {
           const id = runId!
           setRunId(null)
-          void window.kudu
+          void window.tokkip
             .scheduleRunNow(id)
             .then((state) => {
               if (state) setRuntime((previous) => [...previous.filter((r) => r.id !== id), state])

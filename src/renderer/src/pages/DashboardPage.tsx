@@ -69,38 +69,38 @@ const CLEANER_SCAN_FNS: {
 }[] = [
   {
     type: CleanerType.System,
-    scan: () => window.kudu.systemScan(),
-    clean: (ids) => window.kudu.systemClean(ids)
+    scan: () => window.tokkip.systemScan(),
+    clean: (ids) => window.tokkip.systemClean(ids)
   },
   {
     type: CleanerType.Browser,
-    scan: () => window.kudu.browserScan(),
-    clean: (ids) => window.kudu.browserClean(ids)
+    scan: () => window.tokkip.browserScan(),
+    clean: (ids) => window.tokkip.browserClean(ids)
   },
   {
     type: CleanerType.App,
-    scan: () => window.kudu.appScan(),
-    clean: (ids) => window.kudu.appClean(ids)
+    scan: () => window.tokkip.appScan(),
+    clean: (ids) => window.tokkip.appClean(ids)
   },
   {
     type: CleanerType.Gaming,
-    scan: () => window.kudu.gamingScan(),
-    clean: (ids) => window.kudu.gamingClean(ids)
+    scan: () => window.tokkip.gamingScan(),
+    clean: (ids) => window.tokkip.gamingClean(ids)
   },
   {
     type: CleanerType.RecycleBin,
-    scan: () => window.kudu.recycleBinScan(),
-    clean: () => window.kudu.recycleBinClean()
+    scan: () => window.tokkip.recycleBinScan(),
+    clean: () => window.tokkip.recycleBinClean()
   },
   {
     type: CleanerType.Environment,
-    scan: () => window.kudu.environmentScan(),
-    clean: (ids) => window.kudu.environmentClean(ids)
+    scan: () => window.tokkip.environmentScan(),
+    clean: (ids) => window.tokkip.environmentClean(ids)
   },
   {
     type: CleanerType.Database,
-    scan: () => window.kudu.databaseScan(),
-    clean: (ids) => window.kudu.databaseClean(ids)
+    scan: () => window.tokkip.databaseScan(),
+    clean: (ids) => window.tokkip.databaseClean(ids)
   }
 ]
 
@@ -122,7 +122,7 @@ export function DashboardPage() {
     saveInFlight.current = true
     setSaving(true)
     try {
-      await window.kudu.settingsSet({ dashboardView: next })
+      await window.tokkip.settingsSet({ dashboardView: next })
       updateSettings({ dashboardView: next })
     } catch {
       toast.error(t('simple.saveFailed'))
@@ -220,7 +220,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
 
   const refreshDrives = useCallback(() => {
     setDriveStatus('loading')
-    window.kudu
+    window.tokkip
       ?.diskDrives?.()
       .then((nextDrives) => {
         setDrives(nextDrives)
@@ -243,7 +243,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
     startupLoadAttemptedRef.current = true
     const startupStore = useStartupStore.getState()
     startupStore.setLoading(true)
-    window.kudu
+    window.tokkip
       .startupList()
       .then((items) => startupStore.setItems(items))
       .catch(() => startupStore.setError(t('toastStartupCheckFailed')))
@@ -383,12 +383,12 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
   const runRegistry = useCallback(async (): Promise<number> => {
     try {
       setPhaseLabel(t('phaseLabelScanningRegistry'))
-      const entries = await window.kudu.registryScan()
+      const entries = await window.tokkip.registryScan()
       if (!Array.isArray(entries)) return 0
       const selectedIds = entries.filter((e) => e?.selected).map((e) => e.id)
       if (selectedIds.length === 0) return 0
       setPhaseLabel(t('phaseLabelFixingRegistry'))
-      const res = await window.kudu.registryFix(selectedIds)
+      const res = await window.tokkip.registryFix(selectedIds)
       return res?.fixed ?? 0
     } catch {
       toast.error(t('toastRegistryScanFailed'))
@@ -403,7 +403,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
     malwareStore.setActionResult(null)
     try {
       setPhaseLabel(t('phaseLabelScanningMalware'))
-      const result = await window.kudu.malwareScan()
+      const result = await window.tokkip.malwareScan()
       malwareStore.setScanResult(result)
       malwareStore.setThreats(result.threats)
       malwareStore.setActionResult(null)
@@ -419,7 +419,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
         details: t.details
       }))
       try {
-        const actionResult = await window.kudu.malwareQuarantine(paths, meta)
+        const actionResult = await window.tokkip.malwareQuarantine(paths, meta)
         const failedPaths = new Set(actionResult.errors.map((error) => error.path))
         const knownUnresolved = result.threats.filter((threat) => failedPaths.has(threat.path))
         malwareStore.setActionResult(actionResult)
@@ -445,7 +445,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
   const runPrivacyCheck = useCallback(async (): Promise<{ score: number; issues: number }> => {
     try {
       setPhaseLabel(t('phaseLabelCheckingPrivacy'))
-      const state = await window.kudu.privacyScan()
+      const state = await window.tokkip.privacyScan()
       return { score: state.score, issues: state.total - state.protected }
     } catch {
       toast.error(t('toastPrivacyCheckFailed'))
@@ -456,7 +456,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
   const runStartupCheck = useCallback(async (): Promise<number> => {
     try {
       setPhaseLabel(t('phaseLabelCheckingStartup'))
-      const items = await window.kudu.startupList()
+      const items = await window.tokkip.startupList()
       useStartupStore.getState().setItems(items)
       return items.filter((i) => i.enabled && i.impact === 'high').length
     } catch {
@@ -468,7 +468,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
   const runSoftwareUpdateCheck = useCallback(async (): Promise<number> => {
     try {
       setPhaseLabel(t('phaseLabelCheckingSoftwareUpdates'))
-      const result = await window.kudu.softwareUpdateCheck()
+      const result = await window.tokkip.softwareUpdateCheck()
       const updaterStore = useUpdaterStore.getState()
       updaterStore.setApps(result.apps)
       updaterStore.setUpToDate(result.upToDate)
@@ -486,11 +486,11 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
   const runDrivers = useCallback(async (): Promise<{ removed: number; space: number }> => {
     try {
       setPhaseLabel(t('phaseLabelScanningDrivers'))
-      const scanResult = await window.kudu.driverScan()
+      const scanResult = await window.tokkip.driverScan()
       const stalePackages = scanResult.packages.filter((p) => !p.isCurrent && p.selected)
       if (stalePackages.length === 0) return { removed: 0, space: 0 }
       setPhaseLabel(t('phaseLabelRemovingStaleDrivers'))
-      const cleanResult = await window.kudu.driverClean(stalePackages.map((p) => p.publishedName))
+      const cleanResult = await window.tokkip.driverClean(stalePackages.map((p) => p.publishedName))
       return { removed: cleanResult.removed, space: cleanResult.spaceRecovered }
     } catch {
       toast.error(t('toastDriverCleanupFailed'))
@@ -1073,7 +1073,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
         </button>
       </section>
       {isRunning && (
-        <div className="kudu-operation" role="status">
+        <div className="tokkip-operation" role="status">
           <div>
             <Loader2 className="h-4 w-4 shrink-0 animate-spin" strokeWidth={2} />
             <span>{phaseLabel || t('progressWorking')}</span>
@@ -1084,7 +1084,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
             )}
           </div>
           {stepProgress.total > 0 && (
-            <div className="kudu-operation-track">
+            <div className="tokkip-operation-track">
               <i style={{ width: `${(stepProgress.current / stepProgress.total) * 100}%` }} />
             </div>
           )}
@@ -1094,7 +1094,7 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
       {phase === 'done' && result && (
         <div
           className={cn(
-            'kudu-operation',
+            'tokkip-operation',
             result.threatsFound > result.threatsQuarantined ? 'is-warning' : 'is-complete'
           )}
           role="status"

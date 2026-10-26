@@ -33,7 +33,7 @@ const settingsMock = vi.hoisted(() => ({
 }))
 
 vi.mock('electron', () => ({
-  app: { isPackaged: true, getPath: () => 'C:\\kudu-test-userdata' },
+  app: { isPackaged: true, getPath: () => 'C:\\tokkip-test-userdata' },
   ipcMain: { handle: vi.fn() },
   powerSaveBlocker: { start: vi.fn(() => 7), stop: vi.fn(), isStarted: vi.fn(() => false) }
 }))
@@ -100,7 +100,7 @@ import {
 
 // Built with join() rather than hardcoded so the fake fs keys match on both
 // Windows and the Linux CI runner.
-const SNAPSHOT_PATH = join('C:\\kudu-test-userdata', 'game-mode-snapshot.json')
+const SNAPSHOT_PATH = join('C:\\tokkip-test-userdata', 'game-mode-snapshot.json')
 
 // We test the exported validateSnapshot logic by importing the module's internal
 // validation indirectly through its exported functions.  Since validateSnapshot

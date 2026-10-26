@@ -2796,9 +2796,9 @@
       "startupSettingFailedAction": "1445799c033a2d17e2bad5d8610879e71ff0d73a8a3c2b932b43ad0449dac3a1",
       "startupSettingFailedDesc": "a7fb343a10ee0c4de12841feb6561e967a5292d5e6575df5ef7324ba8aeb3b1a",
       "startupSettingFailedToast": "6f1d126bdf0b52216a29e596a73102c5c82276b9aeff60331d163aa0e28758e1",
-      "supportKudu": "1e975daedb0cb9693c53a7ddaf2b532818a5c25a20002f0e80a0b66596251133",
-      "supportKuduAction": "090834e1828c2bf7920961e233aabbcee480859a31f58447f6aeba7d699845e0",
-      "supportKuduDescription": "8eb9bb7125d46fd67c8f47677f26da83f52ed2897670f651b72b97d00e49f73a",
+      "supportTokkip": "1e975daedb0cb9693c53a7ddaf2b532818a5c25a20002f0e80a0b66596251133",
+      "supportTokkipAction": "090834e1828c2bf7920961e233aabbcee480859a31f58447f6aeba7d699845e0",
+      "supportTokkipDescription": "8eb9bb7125d46fd67c8f47677f26da83f52ed2897670f651b72b97d00e49f73a",
       "threatDetectionAlertsDesc": "be10bc5d76066c1623cb4d6fd57931b74dd0dae1a28c161db2bcd5cbef1da5ae",
       "threatDetectionAlertsLabel": "8a7d01ba172fe5e19ec2b358e72080546ed19db63e576d2c46c567ed0276ea3c",
       "upToDate": "df7d1cc1aa81245a8dcef0c127c2ed6f7b7801c8fc213cebdd0c36ad1725851f",
@@ -2942,7 +2942,7 @@
       "statusBar.threatsDetectedPlural": "be26891b8e8985245165041ab4c6117f48fdbfc3a83aad152378d3a48822065b"
     },
     "tray": {
-      "openKudu": "1c046560b6455295490fa85af7c4bf1fb5d82445e61c202483b22a8c01fa1f6e",
+      "openTokkip": "1c046560b6455295490fa85af7c4bf1fb5d82445e61c202483b22a8c01fa1f6e",
       "quit": "b3eb37acb66ba4bbe8fb1ba296815daf194be94f5a5fb50dab2fb5e4a57ba29e",
       "scanCompleteNotificationBody": "496ba2172c35ca0d068fc1e0509bd7c00d4988a25f2a8c6debe2ac720dbb85f6",
       "scanCompleteNotificationTitle": "a612101c43e916605093290cd1eb14549304e42b90b89464396c751441ff9dec",

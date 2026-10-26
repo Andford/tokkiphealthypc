@@ -327,7 +327,7 @@ export function Sidebar() {
   const showScheduleNudge = !hasAnySchedule && !scheduleNudgeDismissed
   const dismissScheduleNudge = useCallback(() => {
     updateSettings({ scheduleNudgeDismissed: true })
-    window.kudu?.settingsSet?.({ scheduleNudgeDismissed: true }).catch(() => {})
+    window.tokkip?.settingsSet?.({ scheduleNudgeDismissed: true }).catch(() => {})
   }, [updateSettings])
 
   // Filter nav items based on platform features and cloud state
@@ -394,7 +394,7 @@ export function Sidebar() {
 
   return (
     <div
-      className="kudu-sidebar flex h-full w-[214px] shrink-0 flex-col"
+      className="tokkip-sidebar flex h-full w-[214px] shrink-0 flex-col"
       style={{
         background: 'var(--sidebar-bg)',
         borderRight: '1px solid var(--border-medium)'

@@ -1,4 +1,4 @@
-/* Presentation shared by the feature pages that opt in with the .feature-layout class; scoped to that class so it never overrides utility classes on pages that only use .feature-page. Uses Kudu's active theme. */
+/* Presentation shared by the feature pages that opt in with the .feature-layout class; scoped to that class so it never overrides utility classes on pages that only use .feature-page. Uses Tokkip's active theme. */
 .feature-layout {
   min-width: 0;
   color: var(--text-primary);

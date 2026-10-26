@@ -23,7 +23,7 @@ describe('Electron Builder proxy dependency override', () => {
             requests.push(req.url)
             res.end('electron-download-fixture')
           })
-          const cacheRoot = await mkdtemp(join(tmpdir(), 'kudu-proxy-test-'))
+          const cacheRoot = await mkdtemp(join(tmpdir(), 'tokkip-proxy-test-'))
           try {
             await new Promise((resolve, reject) => {
               proxy.once('error', reject)
@@ -44,10 +44,10 @@ describe('Electron Builder proxy dependency override', () => {
               cacheRoot,
               // The local proxy serves fixture bytes, not a release archive.
               unsafelyDisableChecksums: true,
-              mirrorOptions: { mirror: 'http://kudu.invalid/' }
+              mirrorOptions: { mirror: 'http://tokkip.invalid/' }
             })
             assert.equal(await readFile(artifact, 'utf8'), 'electron-download-fixture')
-            assert.deepEqual(requests, ['http://kudu.invalid/v0.0.0/electron-v0.0.0-win32-x64.zip'])
+            assert.deepEqual(requests, ['http://tokkip.invalid/v0.0.0/electron-v0.0.0-win32-x64.zip'])
             console.log('proxy download passed')
           } finally {
             proxy.closeAllConnections()

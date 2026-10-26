@@ -62,7 +62,7 @@ export function registerCleanupReceiptsIpc(): void {
     const receipt = await getCleanupReceipt(id)
     if (!receipt) throw new Error('Receipt not found')
     const { canceled, filePath } = await dialog.showSaveDialog({
-      defaultPath: 'kudu-cleanup-receipt.json',
+      defaultPath: 'tokkip-cleanup-receipt.json',
       filters: [{ name: 'JSON', extensions: ['json'] }]
     })
     if (canceled || !filePath) return false

@@ -49,9 +49,9 @@ export function Onboarding({ onComplete }: OnboardingProps) {
       if (settings.scheduledClean) {
         settingsPayload.schedule = { enabled: true, frequency: 'weekly', day: 1, hour: 9 }
       }
-      await window.kudu?.settingsSet?.(settingsPayload)
-      if (!isPortable) await window.kudu?.applyStartup?.(settings.runAtStartup).catch(() => {})
-      window.kudu?.applyTray?.(settings.minimizeToTray)
+      await window.tokkip?.settingsSet?.(settingsPayload)
+      if (!isPortable) await window.tokkip?.applyStartup?.(settings.runAtStartup).catch(() => {})
+      window.tokkip?.applyTray?.(settings.minimizeToTray)
     } catch {
       // Best-effort
     }
@@ -131,7 +131,7 @@ function LanguageStep({ onNext }: { onNext: () => void }) {
   const handleSelect = (code: string) => {
     setSelected(code)
     i18next.changeLanguage(code)
-    window.kudu?.settingsSet?.({ language: code }).catch(() => {})
+    window.tokkip?.settingsSet?.({ language: code }).catch(() => {})
   }
 
   return (
@@ -192,7 +192,7 @@ function WelcomeStep({ onBack, onNext }: { onBack: () => void; onNext: () => voi
   return (
     <StepWrapper>
       <div className="flex flex-col items-center text-center">
-        <img src={logoSrc} alt="Kudu" className="mb-5 h-20 w-20 rounded-2xl" />
+        <img src={logoSrc} alt="Tokkip" className="mb-5 h-20 w-20 rounded-2xl" />
         <h2 className="mb-2 text-[22px] font-bold text-zinc-100">{t('welcomeTitle')}</h2>
         <p className="mb-2 text-[13px] leading-relaxed text-zinc-400">
           {isWin ? t('welcomeDescriptionWindows') : t('welcomeDescriptionOther')}

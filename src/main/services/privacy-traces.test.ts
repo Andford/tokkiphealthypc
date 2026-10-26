@@ -71,7 +71,7 @@ async function trySymlink(target: string, path: string): Promise<boolean> {
 }
 
 beforeEach(async () => {
-  home = await realpath(await mkdtemp(join(tmpdir(), 'kudu-traces-')))
+  home = await realpath(await mkdtemp(join(tmpdir(), 'tokkip-traces-')))
 })
 afterEach(async () => {
   await rm(home, { recursive: true, force: true })
@@ -154,7 +154,7 @@ describe('shell history discovery', () => {
   })
 
   it('ignores $HISTFILE outside home or not absolute', async () => {
-    const outside = await mkdtemp(join(tmpdir(), 'kudu-outside-'))
+    const outside = await mkdtemp(join(tmpdir(), 'tokkip-outside-'))
     try {
       expect(await histfileInsideHome(join(outside, '.bash_history'), home)).toBeNull()
       expect(await histfileInsideHome(home, home)).toBeNull()
@@ -167,7 +167,7 @@ describe('shell history discovery', () => {
   })
 
   it('ignores $HISTFILE reaching outside home through a symlinked directory', async () => {
-    const outside = await mkdtemp(join(tmpdir(), 'kudu-outside-'))
+    const outside = await mkdtemp(join(tmpdir(), 'tokkip-outside-'))
     try {
       const victim = await put(join(outside, 'victim'), 'keep me\n')
       if (!(await trySymlink(outside, join(home, 'link')))) return

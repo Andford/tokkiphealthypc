@@ -32,8 +32,8 @@ export function FileShredderPage() {
   const [showConfirm, setShowConfirm] = useState(false)
 
   useEffect(() => {
-    if (!window.kudu?.onShredderProgress) return
-    return window.kudu.onShredderProgress((data) => {
+    if (!window.tokkip?.onShredderProgress) return
+    return window.tokkip.onShredderProgress((data) => {
       useFileShredderStore.getState().setProgress(data)
     })
   }, [])
@@ -44,12 +44,12 @@ export function FileShredderPage() {
   )
 
   const handleAddFiles = async () => {
-    const entries = await window.kudu?.shredderSelectFiles?.()
+    const entries = await window.tokkip?.shredderSelectFiles?.()
     if (entries?.length) store.addEntries(entries)
   }
 
   const handleAddFolders = async () => {
-    const entries = await window.kudu?.shredderSelectFolders?.()
+    const entries = await window.tokkip?.shredderSelectFolders?.()
     if (entries?.length) store.addEntries(entries)
   }
 
@@ -58,7 +58,7 @@ export function FileShredderPage() {
     store.setStatus('shredding')
     try {
       const paths = store.entries.map((e) => e.path)
-      const result = await window.kudu?.shredderShred?.(paths)
+      const result = await window.tokkip?.shredderShred?.(paths)
       if (result) {
         store.setResult(result)
         if (result.cancelled) {
@@ -90,7 +90,7 @@ export function FileShredderPage() {
   }
 
   const handleCancel = async () => {
-    await window.kudu?.shredderCancel?.()
+    await window.tokkip?.shredderCancel?.()
   }
 
   return (
@@ -296,7 +296,7 @@ export function FileShredderPage() {
                   {formatBytes(entry.size)}
                 </span>
                 <button
-                  onClick={() => window.kudu?.shredderOpenLocation?.(entry.path)}
+                  onClick={() => window.tokkip?.shredderOpenLocation?.(entry.path)}
                   className="shrink-0 text-zinc-600 hover:text-zinc-400"
                   title={t('openLocation')}
                 >

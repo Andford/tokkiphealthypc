@@ -161,7 +161,7 @@ export function DiskAnalyzerPage() {
 
   useEffect(() => {
     if (drives.length === 0) {
-      window.kudu
+      window.tokkip
         ?.diskDrives?.()
         .then(store.setDrives)
         .catch((err) => {
@@ -177,7 +177,7 @@ export function DiskAnalyzerPage() {
     store.setError(null)
     store.setFileTypes([])
     try {
-      const result = await window.kudu.diskAnalyze(selectedDrive)
+      const result = await window.tokkip.diskAnalyze(selectedDrive)
       store.setData(result)
       store.setBreadcrumb([result])
     } catch (err) {
@@ -201,7 +201,7 @@ export function DiskAnalyzerPage() {
     store.setFileTypesLoading(true)
     store.setError(null)
     try {
-      const result = await window.kudu.diskFileTypes(selectedDrive)
+      const result = await window.tokkip.diskFileTypes(selectedDrive)
       store.setFileTypes(result)
     } catch (err) {
       console.error('File type scan failed:', err)

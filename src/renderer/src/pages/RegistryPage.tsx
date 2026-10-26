@@ -223,7 +223,7 @@ function RegistryPageContent() {
   const recomputeStats = useStatsStore((s) => s.recompute)
 
   useEffect(() => {
-    const cleanup = window.kudu.onRegistryFixProgress((data) => {
+    const cleanup = window.tokkip.onRegistryFixProgress((data) => {
       useRegistryStore.getState().setFixProgress(data)
     })
     cleanupRef.current = cleanup
@@ -238,7 +238,7 @@ function RegistryPageContent() {
     store.setFixResult(null)
     store.setError(null)
     try {
-      const results = await window.kudu.registryScan()
+      const results = await window.tokkip.registryScan()
       useRegistryStore.getState().setEntries(Array.isArray(results) ? results : [])
       useRegistryStore.getState().setScanned(true)
     } catch (err) {
@@ -251,7 +251,7 @@ function RegistryPageContent() {
 
   const handleScanCancel = useCallback(async () => {
     try {
-      await window.kudu.registryScanCancel()
+      await window.tokkip.registryScanCancel()
     } catch {
       /* ignore */
     }
@@ -260,7 +260,7 @@ function RegistryPageContent() {
 
   const handleFixCancel = useCallback(async () => {
     try {
-      await window.kudu.registryFixCancel()
+      await window.tokkip.registryFixCancel()
     } catch {
       /* ignore */
     }
@@ -284,7 +284,7 @@ function RegistryPageContent() {
       currentEntry: t('creatingBackup')
     })
     try {
-      const result = await window.kudu.registryFix(selectedIds)
+      const result = await window.tokkip.registryFix(selectedIds)
       const s = useRegistryStore.getState()
       s.setFixResult(result)
       s.setEntries(s.entries.filter((e) => !selectedIds.includes(e.id)))

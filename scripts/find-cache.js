@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // ─── Path Discovery Helper ──────────────────────────────────
 // Scans common cache directories on the current OS and reports
-// apps with cache dirs that Kudu doesn't already cover.
+// apps with cache dirs that Tokkip doesn't already cover.
 // Run: npm run find-cache
 
 const { readdirSync, statSync, readFileSync, existsSync } = require('fs')
@@ -159,7 +159,7 @@ function getDirSize(dir) {
 }
 
 function main() {
-  console.log(`\n🔍 Kudu — Cache Path Discovery (${currentPlatform})\n`)
+  console.log(`\n🔍 Tokkip — Cache Path Discovery (${currentPlatform})\n`)
   console.log('Scanning for uncovered cache directories...\n')
 
   const knownPaths = loadKnownPaths()

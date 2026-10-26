@@ -13,7 +13,7 @@ export interface CleanSummaryData {
   totalSizeBefore: number
 }
 
-const EXCLUDED_KEY = 'kudu:excluded-subcategories'
+const EXCLUDED_KEY = 'tokkip:excluded-subcategories'
 
 function loadExcluded(): Set<string> {
   try {

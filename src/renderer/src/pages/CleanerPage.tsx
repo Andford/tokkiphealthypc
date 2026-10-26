@@ -284,8 +284,8 @@ export function CleanerPage() {
   const cleanTotalRef = useRef(1)
 
   useEffect(() => {
-    if (!window.kudu?.onScanProgress) return
-    return window.kudu.onScanProgress((data) => {
+    if (!window.tokkip?.onScanProgress) return
+    return window.tokkip.onScanProgress((data) => {
       // Each cleaner reports 0-100% independently. Scale to overall progress
       // based on which category we're currently processing.
       if (data.phase === 'cleaning') {
@@ -325,7 +325,7 @@ export function CleanerPage() {
       store.status !== ScanStatus.Complete ||
       store.cleanSummary ||
       store.selectedItems.size === 0 ||
-      !window.kudu?.cleanerBlockers
+      !window.tokkip?.cleanerBlockers
     ) {
       setBlockers([])
       setCheckingBlockers(false)
@@ -337,7 +337,7 @@ export function CleanerPage() {
     setCheckingBlockers(true)
     const timer = window.setTimeout(async () => {
       try {
-        const result = await window.kudu.cleanerBlockers([...store.selectedItems])
+        const result = await window.tokkip.cleanerBlockers([...store.selectedItems])
         if (!cancelled && blockerRequestRef.current === requestId) setBlockers(result)
       } catch {
         if (!cancelled && blockerRequestRef.current === requestId) setBlockers([])
@@ -353,7 +353,7 @@ export function CleanerPage() {
   }, [platform, store.status, store.cleanSummary])
 
   const handleRelaunch = useCallback(() => {
-    window.kudu.elevationRelaunch()
+    window.tokkip.elevationRelaunch()
   }, [])
 
   const handleScan = useCallback(async () => {
@@ -369,15 +369,15 @@ export function CleanerPage() {
     const skippedForElevation: string[] = []
     try {
       const scanFns: Partial<Record<CleanerType, () => Promise<ScanResult[]>>> = {
-        [CleanerType.System]: () => window.kudu.systemScan(),
-        [CleanerType.Browser]: () => window.kudu.browserScan(),
-        [CleanerType.App]: () => window.kudu.appScan(),
-        [CleanerType.Gaming]: () => window.kudu.gamingScan(),
-        [CleanerType.RecycleBin]: () => window.kudu.recycleBinScan(),
-        [CleanerType.Shortcut]: () => window.kudu.shortcutScan(),
-        [CleanerType.Environment]: () => window.kudu.environmentScan(),
-        [CleanerType.Database]: () => window.kudu.databaseScan(),
-        [CleanerType.PrivacyTraces]: () => window.kudu.privacyTracesScan()
+        [CleanerType.System]: () => window.tokkip.systemScan(),
+        [CleanerType.Browser]: () => window.tokkip.browserScan(),
+        [CleanerType.App]: () => window.tokkip.appScan(),
+        [CleanerType.Gaming]: () => window.tokkip.gamingScan(),
+        [CleanerType.RecycleBin]: () => window.tokkip.recycleBinScan(),
+        [CleanerType.Shortcut]: () => window.tokkip.shortcutScan(),
+        [CleanerType.Environment]: () => window.tokkip.environmentScan(),
+        [CleanerType.Database]: () => window.tokkip.databaseScan(),
+        [CleanerType.PrivacyTraces]: () => window.tokkip.privacyTracesScan()
       }
       for (let ci = 0; ci < scannableCategories.length; ci++) {
         const cat = scannableCategories[ci]
@@ -422,8 +422,8 @@ export function CleanerPage() {
       const requestId = ++requestRef.current
       let latest: CleanerBlocker[] = []
       try {
-        if (platform === 'win32' && window.kudu?.cleanerBlockers) {
-          latest = await window.kudu.cleanerBlockers(selectedIds)
+        if (platform === 'win32' && window.tokkip?.cleanerBlockers) {
+          latest = await window.tokkip.cleanerBlockers(selectedIds)
         }
       } catch {
         // Advisory preflight failures must not prevent the confirmation dialog.
@@ -452,7 +452,7 @@ export function CleanerPage() {
     try {
       if (shouldCloseDetectedBrowsers) {
         try {
-          await window.kudu.cleanerPrepareClean()
+          await window.tokkip.cleanerPrepareClean()
         } catch {
           // Browser closing is best-effort; individual cleaners still report
           // any files that remain locked.
@@ -462,7 +462,7 @@ export function CleanerPage() {
       // Create a system restore point before cleaning if enabled
       if (createRestorePointEnabled) {
         try {
-          const rpResult = await window.kudu.createRestorePoint(
+          const rpResult = await window.tokkip.createRestorePoint(
             `Tokkip Healthy PC — ${new Date().toLocaleString()}`
           )
           if (rpResult.success) {
@@ -481,15 +481,15 @@ export function CleanerPage() {
       setScopedClean(null)
       const selectedIdSet = new Set(selectedIds)
       const cleanFns: Partial<Record<CleanerType, (ids: string[]) => Promise<any>>> = {
-        [CleanerType.System]: (ids) => window.kudu.systemClean(ids),
-        [CleanerType.Browser]: (ids) => window.kudu.browserClean(ids),
-        [CleanerType.App]: (ids) => window.kudu.appClean(ids),
-        [CleanerType.Gaming]: (ids) => window.kudu.gamingClean(ids),
-        [CleanerType.RecycleBin]: () => window.kudu.recycleBinClean(),
-        [CleanerType.Shortcut]: (ids) => window.kudu.shortcutClean(ids),
-        [CleanerType.Environment]: (ids) => window.kudu.environmentClean(ids),
-        [CleanerType.Database]: (ids) => window.kudu.databaseClean(ids),
-        [CleanerType.PrivacyTraces]: (ids) => window.kudu.privacyTracesClean(ids)
+        [CleanerType.System]: (ids) => window.tokkip.systemClean(ids),
+        [CleanerType.Browser]: (ids) => window.tokkip.browserClean(ids),
+        [CleanerType.App]: (ids) => window.tokkip.appClean(ids),
+        [CleanerType.Gaming]: (ids) => window.tokkip.gamingClean(ids),
+        [CleanerType.RecycleBin]: () => window.tokkip.recycleBinClean(),
+        [CleanerType.Shortcut]: (ids) => window.tokkip.shortcutClean(ids),
+        [CleanerType.Environment]: (ids) => window.tokkip.environmentClean(ids),
+        [CleanerType.Database]: (ids) => window.tokkip.databaseClean(ids),
+        [CleanerType.PrivacyTraces]: (ids) => window.tokkip.privacyTracesClean(ids)
       }
       let totalCleaned = 0,
         totalFiles = 0,
@@ -1477,7 +1477,7 @@ export function CleanerPage() {
                                   className="shrink-0 p-1 rounded transition-colors hover:bg-[var(--bg-hover-2)]"
                                   onClick={(e) => {
                                     e.stopPropagation()
-                                    window.kudu?.cleanerOpenLocation?.(result.items[0].path)
+                                    window.tokkip?.cleanerOpenLocation?.(result.items[0].path)
                                   }}
                                 >
                                   <FolderOpen
@@ -1615,7 +1615,7 @@ export function CleanerPage() {
                                           onClick={(e) => {
                                             e.preventDefault()
                                             e.stopPropagation()
-                                            window.kudu?.cleanerOpenLocation?.(item.path)
+                                            window.tokkip?.cleanerOpenLocation?.(item.path)
                                           }}
                                         >
                                           <FolderOpen

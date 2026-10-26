@@ -589,7 +589,7 @@ export interface DriverUpdateScanResult {
 
 export interface DriverUpdateIgnoreResult {
   // Whether the update was also hidden/unhidden in Windows Update itself.
-  // False when the WU call failed (e.g. not elevated); the Kudu-side
+  // False when the WU call failed (e.g. not elevated); the Tokkip-side
   // ignore still applies.
   windowsUpdateHidden: boolean
   error?: string
@@ -807,7 +807,7 @@ export interface ScheduleEntry {
   createdAt: string
 }
 
-export interface KuduSettings {
+export interface AppSettings {
   theme: 'dark' | 'light' | 'system'
   dashboardView?: 'simple' | 'advanced'
   language: string
@@ -1110,10 +1110,10 @@ export type FirewallAction = 'disable' | 'delete'
 // ─── Software Updater ──────────────────────────────────────
 export type UpdateSeverity = 'major' | 'minor' | 'patch' | 'unknown'
 
-/** Package managers Kudu can aggregate on Windows. */
+/** Package managers Tokkip can aggregate on Windows. */
 export type WindowsPackageManager = 'winget' | 'choco' | 'scoop' | 'npm'
 
-/** All package-manager names Kudu can report, across every platform. */
+/** All package-manager names Tokkip can report, across every platform. */
 export type PackageManagerName =
   'winget' | 'choco' | 'scoop' | 'npm' | 'brew' | 'apt' | 'dnf' | 'pacman'
 
@@ -1196,7 +1196,7 @@ export interface UpdateResult {
    * (e.g. choco + scoop "git"); it is omitted on single-manager platforms.
    * `suggestedCommands` carries the commands a user can run themselves when
    * the updater cannot apply the update (see `wingetRemedies` and
-   * `manualRemedies` in software-updater.ts); absent when Kudu has nothing
+   * `manualRemedies` in software-updater.ts); absent when Tokkip has nothing
    * better to offer than what it already tried.
    */
   errors: {

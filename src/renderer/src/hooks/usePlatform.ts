@@ -24,7 +24,7 @@ export function usePlatform(): PlatformInfo {
 export function usePlatformLoader(): PlatformInfo {
   const [info, setInfo] = useState<PlatformInfo>(defaultInfo)
   useEffect(() => {
-    window.kudu
+    window.tokkip
       ?.platformInfo?.()
       .then(setInfo)
       .catch(() => {})

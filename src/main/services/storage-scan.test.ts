@@ -27,7 +27,7 @@ import { measureStorageScope, validateStorageRoot } from './storage-scan'
 let root = ''
 beforeEach(async () => {
   // macOS /var and Windows 8.3 temp paths are aliases, which the scanner refuses.
-  root = await mkdtemp(join(await realpath(tmpdir()), 'kudu-storage-test-'))
+  root = await mkdtemp(join(await realpath(tmpdir()), 'tokkip-storage-test-'))
   state.blocked = ''
   state.mounts = []
   state.beforeOpen = null
@@ -145,7 +145,7 @@ it.skipIf(process.platform !== 'win32')(
   30_000
 )
 it('discards a directory swapped for a link to an outside folder right before it is opened', async () => {
-  const outside = await mkdtemp(join(await realpath(tmpdir()), 'kudu-storage-outside-'))
+  const outside = await mkdtemp(join(await realpath(tmpdir()), 'tokkip-storage-outside-'))
   try {
     await writeFile(join(outside, 'secret'), Buffer.alloc(500))
     await mkdir(join(outside, 'secret-dir'))

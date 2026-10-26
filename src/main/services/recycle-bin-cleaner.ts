@@ -10,7 +10,7 @@ using System.IO;
 using System.Security.Principal;
 using System.Text;
 
-public static class KuduRecycleBinDirectories {
+public static class TokkipRecycleBinDirectories {
   public static string Query() {
     var paths = new List<string>();
     string sid = WindowsIdentity.GetCurrent().User.Value;
@@ -26,15 +26,15 @@ public static class KuduRecycleBinDirectories {
 
     return string.Join(Environment.NewLine, paths.ToArray());
   }
-}'; Write-Output ([KuduRecycleBinDirectories]::Query())`
+}'; Write-Output ([TokkipRecycleBinDirectories]::Query())`
 
 const EMPTY_RECYCLE_BIN_SHELL_SCRIPT = `Add-Type -TypeDefinition 'using System;
 using System.Runtime.InteropServices;
 
-public static class KuduRecycleBinShell {
+public static class TokkipRecycleBinShell {
   [DllImport("Shell32.dll", CharSet = CharSet.Unicode)]
   public static extern uint SHEmptyRecycleBin(IntPtr hwnd, string pszRootPath, uint dwFlags);
-}'; Write-Output ([KuduRecycleBinShell]::SHEmptyRecycleBin([IntPtr]::Zero, $null, 7))`
+}'; Write-Output ([TokkipRecycleBinShell]::SHEmptyRecycleBin([IntPtr]::Zero, $null, 7))`
 
 export interface FastRecycleBinCleanResult {
   payloadsFound: number

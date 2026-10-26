@@ -267,7 +267,7 @@ describe('Large File Finder scan and deletion safety', () => {
     'deletes real hard links in %s mode without a stale-identity failure',
     async (mode) => {
       const fs = await vi.importActual<typeof import('fs/promises')>('fs/promises')
-      const fixture = await fs.mkdtemp(join(tmpdir(), 'kudu-large-links-'))
+      const fixture = await fs.mkdtemp(join(tmpdir(), 'tokkip-large-links-'))
       try {
         const first = join(fixture, 'first.txt')
         const second = join(fixture, 'second.txt')

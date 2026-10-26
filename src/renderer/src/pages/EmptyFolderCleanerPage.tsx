@@ -36,8 +36,8 @@ export function EmptyFolderCleanerPage() {
   const [excludeInput, setExcludeInput] = useState('')
 
   useEffect(() => {
-    if (!window.kudu?.onEmptyFoldersProgress) return
-    return window.kudu.onEmptyFoldersProgress((data) => {
+    if (!window.tokkip?.onEmptyFoldersProgress) return
+    return window.tokkip.onEmptyFoldersProgress((data) => {
       useEmptyFolderStore.getState().setProgress(data)
     })
   }, [])
@@ -45,7 +45,7 @@ export function EmptyFolderCleanerPage() {
   const selectedCount = store.selectedPaths.size
 
   const handleSelectDir = async () => {
-    const dir = await window.kudu?.emptyFoldersSelectDir?.()
+    const dir = await window.tokkip?.emptyFoldersSelectDir?.()
     if (dir) store.setDirectory(dir)
   }
 
@@ -54,7 +54,7 @@ export function EmptyFolderCleanerPage() {
     store.reset()
     store.setStatus('scanning')
     try {
-      const result = await window.kudu?.emptyFoldersScan?.({
+      const result = await window.tokkip?.emptyFoldersScan?.({
         directory: store.directory,
         maxDepth: store.maxDepth,
         excludePatterns: store.excludePatterns
@@ -72,7 +72,7 @@ export function EmptyFolderCleanerPage() {
   }
 
   const handleCancel = async () => {
-    await window.kudu?.emptyFoldersCancel?.()
+    await window.tokkip?.emptyFoldersCancel?.()
   }
 
   const handleDelete = async () => {
@@ -81,7 +81,7 @@ export function EmptyFolderCleanerPage() {
     store.setStatus('deleting')
     try {
       const paths = Array.from(deletingPaths)
-      const result = await window.kudu?.emptyFoldersDelete?.(paths, store.deleteMode)
+      const result = await window.tokkip?.emptyFoldersDelete?.(paths, store.deleteMode)
       if (result) {
         store.setDeleteResult(result)
         if (result.deleted > 0) {
@@ -422,7 +422,7 @@ export function EmptyFolderCleanerPage() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation()
-                        window.kudu?.emptyFoldersOpenLocation?.(folder.path)
+                        window.tokkip?.emptyFoldersOpenLocation?.(folder.path)
                       }}
                       className="shrink-0 text-zinc-600 hover:text-zinc-400"
                       title={t('openLocation')}

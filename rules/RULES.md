@@ -1,10 +1,10 @@
 # Contributing Cleaner Rules
 
-Kudu's cleaning targets are defined as JSON files in this directory. Adding support for a new app, game launcher, or cache location is as simple as editing a JSON file — no TypeScript or Electron knowledge required.
+Tokkip's cleaning targets are defined as JSON files in this directory. Adding support for a new app, game launcher, or cache location is as simple as editing a JSON file — no TypeScript or Electron knowledge required.
 
 This is a **source-code contribution guide**. These files are bundled at build time, so editing JSON beside an installed executable does not add a cleaning target. For personal folders, including portable-app caches on another local drive, use **Settings → Custom cleaning folders** and follow the [Custom cleaning folders guide](../CUSTOM-FOLDERS.md).
 
-Browse the [full cleaner directory](https://usekudu.com/cleaners) to see what's already covered and what's missing.
+Browse the [full cleaner directory](https://usetokkip.com/cleaners) to see what's already covered and what's missing.
 
 ## Directory Layout
 

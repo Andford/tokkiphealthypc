@@ -8,7 +8,7 @@ vi.mock('child_process', () => ({
 vi.mock('util', () => ({
   promisify: (fn: any) => fn
 }))
-// In-memory file system: config files, plists (existence only) and Kudu's own store
+// In-memory file system: config files, plists (existence only) and Tokkip's own store
 const files = new Map<string, string>()
 // Plists only root can read (cfprefsd creates new files 0600)
 const rootOnly = new Set<string>()
@@ -17,7 +17,7 @@ const modes = new Map<string, number>()
 // Paths that are symbolic links (e.g. maintained by configuration management)
 const symlinks = new Set<string>()
 const owners = new Map<string, string>()
-// Mode each Kudu temp file was created with, and what every mv put in place
+// Mode each Tokkip temp file was created with, and what every mv put in place
 const tempModes: number[] = []
 const moves: Array<{ path: string; mode?: number; owner?: string }> = []
 const enoent = (path: string) => Object.assign(new Error(`ENOENT: ${path}`), { code: 'ENOENT' })
@@ -28,8 +28,8 @@ vi.mock('fs/promises', () => ({
   }),
   writeFile: vi.fn(async (path: string, content: string, options?: unknown) => {
     files.set(path, content)
-    // Kudu's temp files are created by the user, with the requested mode
-    if (path.includes('kudu-test-uuid')) {
+    // Tokkip's temp files are created by the user, with the requested mode
+    if (path.includes('tokkip-test-uuid')) {
       const mode = (options as { mode?: number } | undefined)?.mode
       tempModes.push(mode ?? 0o644)
       modes.set(path, mode ?? 0o644)
@@ -67,7 +67,7 @@ let uuid = 0
 vi.mock('crypto', () => ({
   randomUUID: () => `test-uuid-${++uuid}`
 }))
-const USER_DATA = '/Users/TestUser/Library/Application Support/Kudu'
+const USER_DATA = '/Users/TestUser/Library/Application Support/Tokkip'
 vi.mock('electron', () => ({
   app: { isPackaged: true, getPath: () => USER_DATA }
 }))
@@ -612,9 +612,9 @@ function runChain(chain: string): string {
 
 function osascript(appleScript: string): string {
   const script: string = JSON.parse(appleScript.match(/^do shell script (".*") with prompt /s)![1])
-  if (!script.includes('kudu-group:')) return runChain(script)
+  if (!script.includes('tokkip-group:')) return runChain(script)
   const status = new Map<string, number>()
-  return [...script.matchAll(/\((.*?)\) 1>&2; s(\d+)=\$\?; echo kudu-group:\d+:\$s\d+/g)]
+  return [...script.matchAll(/\((.*?)\) 1>&2; s(\d+)=\$\?; echo tokkip-group:\d+:\$s\d+/g)]
     .map(([, chain, i]) => {
       // `{ if [ "$sN" = 0 ]…; then <command>; fi; }` runs only after those groups succeeded
       const resolved = chain.replace(
@@ -631,7 +631,7 @@ function osascript(appleScript: string): string {
         code = 1
       }
       status.set(i, code)
-      return `kudu-group:${i}:${code}`
+      return `tokkip-group:${i}:${code}`
     })
     .join('\r')
 }
@@ -792,7 +792,7 @@ describe('darwin privacy revert', () => {
       ])
     })
 
-    it('removes a managed policy plist Kudu created', async () => {
+    it('removes a managed policy plist Tokkip created', async () => {
       await find('macos-chrome-metrics').apply()
       expect(mac.defaults.get(prefId(CHROME_POLICY, 'MetricsReportingEnabled'))).toEqual(
         pref('bool', '0')
@@ -833,8 +833,8 @@ describe('darwin privacy revert', () => {
       expect(storedSettings()).toEqual({})
     })
 
-    it("restores the mode when the plist's other policy predates Kudu", async () => {
-      // Metrics reporting is already off (set by the user or MDM, not by Kudu)
+    it("restores the mode when the plist's other policy predates Tokkip", async () => {
+      // Metrics reporting is already off (set by the user or MDM, not by Tokkip)
       files.set(`${CHROME_POLICY}.plist`, 'plist')
       modes.set(`${CHROME_POLICY}.plist`, 0o600)
       mac.defaults.set(prefId(CHROME_POLICY, 'MetricsReportingEnabled'), pref('bool', '0'))
@@ -851,7 +851,7 @@ describe('darwin privacy revert', () => {
       expect(storedSettings()).toEqual({})
     })
 
-    it('leaves the mode to a later setting in the same batch only if Kudu applied it', async () => {
+    it('leaves the mode to a later setting in the same batch only if Tokkip applied it', async () => {
       files.set(`${CHROME_POLICY}.plist`, 'plist')
       modes.set(`${CHROME_POLICY}.plist`, 0o600)
       mac.defaults.set(prefId(CHROME_POLICY, 'MetricsReportingEnabled'), pref('bool', '0'))
@@ -867,7 +867,7 @@ describe('darwin privacy revert', () => {
       expect(modes.get(`${CHROME_POLICY}.plist`)).toBe(0o600)
     })
 
-    it('keeps a plist Kudu created while it still holds other policies', async () => {
+    it('keeps a plist Tokkip created while it still holds other policies', async () => {
       await find('macos-chrome-metrics').apply()
       mac.defaults.set(prefId(CHROME_POLICY, 'HomepageLocation'), pref('string', 'https://mdm'))
 
@@ -922,7 +922,7 @@ describe('darwin privacy revert', () => {
       const SSHD_CONFIG = '/etc/ssh/sshd_config'
       files.set(SSHD_CONFIG, 'PermitRootLogin yes\n')
       modes.set(SSHD_CONFIG, 0o600)
-      owners.set(SSHD_CONFIG, '501:20') // as older Kudu builds left it
+      owners.set(SSHD_CONFIG, '501:20') // as older Tokkip builds left it
 
       await find('macos-ssh-root-login').apply()
       expect([owners.get(SSHD_CONFIG), modes.get(SSHD_CONFIG)]).toEqual(['0:0', 0o600])
@@ -950,7 +950,7 @@ describe('darwin privacy revert', () => {
       ])
     })
 
-    it('gives a config file Kudu creates the stock root:wheel 0644', async () => {
+    it('gives a config file Tokkip creates the stock root:wheel 0644', async () => {
       mac.sysctl.set('net.inet.ip.forwarding', '1')
       await find('macos-ip-forwarding').apply()
       expect(moves).toEqual([{ path: '/etc/sysctl.conf', mode: 0o644, owner: '0:0' }])
@@ -960,7 +960,7 @@ describe('darwin privacy revert', () => {
       ])
     })
 
-    it('ends with the same owner and mode when Kudu itself runs as root', async () => {
+    it('ends with the same owner and mode when Tokkip itself runs as root', async () => {
       const getuid = Object.getOwnPropertyDescriptor(process, 'getuid')
       Object.defineProperty(process, 'getuid', { value: () => 0, configurable: true })
       try {
@@ -1014,7 +1014,7 @@ describe('darwin privacy revert', () => {
       expect(files.get('/etc/sysctl.conf')).toBe('')
     })
 
-    it('deletes a sysctl.conf Kudu created only once its last line is reverted', async () => {
+    it('deletes a sysctl.conf Tokkip created only once its last line is reverted', async () => {
       mac.sysctl.set('net.inet.ip.forwarding', '1')
       await find('macos-ip-forwarding').apply()
       await find('macos-core-dumps').apply()
@@ -1070,7 +1070,7 @@ describe('darwin privacy revert', () => {
       expect(files.get(SSHD_CONFIG)).toBe(original)
     })
 
-    it('removes sysctl.conf again when Kudu created it', async () => {
+    it('removes sysctl.conf again when Tokkip created it', async () => {
       mac.sysctl.set('net.inet.ip.forwarding', '1')
       await find('macos-ip-forwarding').apply()
       expect(files.get('/etc/sysctl.conf')).toContain('net.inet.ip.forwarding=0')
@@ -1289,7 +1289,7 @@ describe('darwin privacy revert', () => {
       // Both sysctl edits land in the one file
       expect(files.get('/etc/sysctl.conf')).toBe('kern.coredump=1\n')
       expect(storedSettings()).toEqual({})
-      expect([...files.keys()].filter((f) => f.includes('kudu-test-uuid'))).toEqual([])
+      expect([...files.keys()].filter((f) => f.includes('tokkip-test-uuid'))).toEqual([])
     })
 
     it('reports each setting separately when one of them fails', async () => {
@@ -1415,7 +1415,7 @@ describe('darwin privacy revert', () => {
       expect(storedSettings()).not.toHaveProperty('macos-chrome-metrics')
     })
 
-    it('leaves the plist readable while another Kudu policy in it is still applied', async () => {
+    it('leaves the plist readable while another Tokkip policy in it is still applied', async () => {
       await applyWithRootOnlyPlists()
       modes.set(`${CHROME_POLICY}.plist`, 0o644) // as managedPrefWrite left it
       rootOnly.clear()

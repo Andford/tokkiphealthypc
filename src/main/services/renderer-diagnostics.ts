@@ -11,7 +11,7 @@ import { logError, logInfo } from './logger'
  * from the auto-updater trying to push to an already-dead renderer.
  *
  * These listeners capture the actual cause (renderer crash, preload throw,
- * resource load failure, hang) into %APPDATA%/Kudu/logs/kudu.log so future
+ * resource load failure, hang) into %APPDATA%/Tokkip/logs/tokkip.log so future
  * reports come with diagnostic data attached. In packaged builds we also pop
  * DevTools detached on a crash so the user can grab the console output.
  */

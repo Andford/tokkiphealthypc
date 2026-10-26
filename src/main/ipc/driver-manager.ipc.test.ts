@@ -590,7 +590,7 @@ describe('setDriverUpdateIgnored', () => {
     expect(script).toContain('$update.IsHidden = $false')
   })
 
-  it('keeps the Kudu-side ignore when Windows Update refuses (not elevated)', async () => {
+  it('keeps the Tokkip-side ignore when Windows Update refuses (not elevated)', async () => {
     setPlatform('win32')
     mockExecFile.mockRejectedValue(Object.assign(new Error('boom'), { stderr: 'Access denied' }))
     const result = await setDriverUpdateIgnored('abc-123', true)

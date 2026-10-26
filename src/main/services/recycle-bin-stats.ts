@@ -11,7 +11,7 @@ using System.IO;
 using System.Collections.Generic;
 using System.Security.Principal;
 
-public static class KuduRecycleBinMetadata {
+public static class TokkipRecycleBinMetadata {
   public static string Query() {
     long count = 0;
     long totalSize = 0;
@@ -68,7 +68,7 @@ public static class KuduRecycleBinMetadata {
     return count.ToString(CultureInfo.InvariantCulture) + "|" +
       totalSize.ToString(CultureInfo.InvariantCulture);
   }
-}'; Write-Output ([KuduRecycleBinMetadata]::Query())`
+}'; Write-Output ([TokkipRecycleBinMetadata]::Query())`
 
 export function parseRecycleBinStats(stdout: string): RecycleBinStats {
   const [countText, sizeText] = stdout.trim().split('|')

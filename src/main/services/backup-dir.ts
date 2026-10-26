@@ -2,7 +2,7 @@ import { homedir } from 'os'
 import { join, isAbsolute } from 'path'
 import { getSettings } from './settings-store'
 
-/** Default location for Kudu backups (registry, shell extensions, etc.) */
+/** Default location for Tokkip backups (registry, shell extensions, etc.) */
 export function getDefaultBackupDir(): string {
   return join(homedir(), 'Documents', 'Tokkip Healthy PC Backups')
 }

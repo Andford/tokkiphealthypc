@@ -63,7 +63,7 @@ vi.mock('fs', () => ({
   readdirSync: (p: string) => mockReaddirSync(p),
   unlinkSync: (p: string) => mockUnlinkSync(p),
   mkdirSync: vi.fn(),
-  mkdtempSync: () => 'C:\\temp\\kudu-test',
+  mkdtempSync: () => 'C:\\temp\\tokkip-test',
   readFileSync: () => '',
   writeFileSync: (...args: unknown[]) => mockWriteFileSync(...args),
   rmSync: vi.fn()
@@ -114,7 +114,7 @@ beforeEach(() => {
   mockExistsSync.mockImplementation(() => true)
   mockReaddirSync.mockImplementation(() => [])
   mockExecNative.mockImplementation(async () => ({ stdout: '', stderr: '' }))
-  mockSeal.createPrivateTempDir.mockResolvedValue('C:\\Windows\\Temp\\kudu-reg-backup-private')
+  mockSeal.createPrivateTempDir.mockResolvedValue('C:\\Windows\\Temp\\tokkip-reg-backup-private')
   mockSeal.sealBackup.mockResolvedValue(true)
   mockSeal.removeSeals.mockResolvedValue(undefined)
 })
@@ -504,10 +504,10 @@ describe('fixRegistryEntries — targeted backup seals', () => {
   it('exports into a private folder and seals exactly the bytes it wrote', async () => {
     await fixRegistryEntries([entry] as any)
 
-    expect(mockSeal.createPrivateTempDir).toHaveBeenCalledWith('kudu-reg-backup-')
+    expect(mockSeal.createPrivateTempDir).toHaveBeenCalledWith('tokkip-reg-backup-')
     const exp = mockExecNative.mock.calls.find((c) => c[0] === 'reg' && c[1][0] === 'export')!
     // Joined with the host's path module, so either separator follows the folder.
-    expect(exp[1][2]).toMatch(/^C:\\Windows\\Temp\\kudu-reg-backup-private[\\/]/)
+    expect(exp[1][2]).toMatch(/^C:\\Windows\\Temp\\tokkip-reg-backup-private[\\/]/)
     const [write] = targetedWrites()
     const fileName = String(write[0]).split(/[\\/]/).pop()
     expect(mockSeal.sealBackup).toHaveBeenCalledWith('C:\\temp\\backups', fileName, write[1])

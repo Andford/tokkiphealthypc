@@ -9,7 +9,9 @@ let _path: string | null = null
 
 function getDataDir(): string {
   if (!_dataDir) {
-    _dataDir = app.isPackaged ? app.getPath('userData') : join(app.getPath('userData'), 'Kudu-Dev')
+    _dataDir = app.isPackaged
+      ? app.getPath('userData')
+      : join(app.getPath('userData'), 'Tokkip-Dev')
   }
   return _dataDir
 }

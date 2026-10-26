@@ -20,7 +20,7 @@ import { DownloadsClaimBatch } from './downloads-claim'
 describe('atomic Downloads claims', () => {
   let root: string, original: string
   beforeEach(async () => {
-    root = await realpath(await mkdtemp(join(tmpdir(), 'kudu-downloads-claim-')))
+    root = await realpath(await mkdtemp(join(tmpdir(), 'tokkip-downloads-claim-')))
     original = join(root, 'setup.exe')
     await writeFile(original, 'selected file')
   })
@@ -87,7 +87,7 @@ describe('atomic Downloads claims', () => {
     expect(await readFile(original, 'utf8')).toBe('replacement')
     expect(await readFile(join(root, 'original-retained.exe'), 'utf8')).toBe('selected file')
     expect(
-      (await readdir(root)).filter((name) => name.startsWith('Kudu Downloads Recovery-'))
+      (await readdir(root)).filter((name) => name.startsWith('Tokkip Downloads Recovery-'))
     ).toEqual([])
   })
 
@@ -150,7 +150,7 @@ describe('atomic Downloads claims', () => {
     await batch.finish()
     expect(allowed).toHaveBeenCalledWith(
       original,
-      expect.stringContaining('Kudu Downloads Recovery-')
+      expect.stringContaining('Tokkip Downloads Recovery-')
     )
     expect(trash).not.toHaveBeenCalled()
     expect(await readFile(original, 'utf8')).toBe('selected file')

@@ -37,13 +37,13 @@ const fireGpuGone = (reason = 'launch-failed') =>
 
 describe('gpu-fallback', () => {
   beforeEach(() => {
-    h.dataDir.value = mkdtempSync(join(tmpdir(), 'kudu-gpu-'))
+    h.dataDir.value = mkdtempSync(join(tmpdir(), 'tokkip-gpu-'))
     h.switches.length = 0
     for (const k of Object.keys(h.listeners)) delete h.listeners[k]
     h.relaunch.mockClear()
     h.exit.mockClear()
-    process.argv = ['node', 'kudu']
-    delete process.env.KUDU_DISABLE_GPU
+    process.argv = ['node', 'tokkip']
+    delete process.env.TOKKIP_DISABLE_GPU
   })
 
   afterEach(() => {
@@ -56,13 +56,13 @@ describe('gpu-fallback', () => {
   })
 
   it('honors the --disable-gpu flag', async () => {
-    process.argv = ['node', 'kudu', '--disable-gpu']
+    process.argv = ['node', 'tokkip', '--disable-gpu']
     const { shouldDisableGpu } = await load()
     expect(shouldDisableGpu()).toBe(true)
   })
 
-  it('honors the KUDU_DISABLE_GPU env var', async () => {
-    process.env.KUDU_DISABLE_GPU = '1'
+  it('honors the TOKKIP_DISABLE_GPU env var', async () => {
+    process.env.TOKKIP_DISABLE_GPU = '1'
     const { shouldDisableGpu } = await load()
     expect(shouldDisableGpu()).toBe(true)
   })

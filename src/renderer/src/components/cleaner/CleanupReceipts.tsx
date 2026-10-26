@@ -28,7 +28,7 @@ export function CleanupReceipts() {
   const load = useCallback(async () => {
     setLoading(true)
     try {
-      const next = await window.kudu.cleanupReceipts()
+      const next = await window.tokkip.cleanupReceipts()
       setReceipts(next)
       setSelected((current) =>
         next.some((r) => r.id === current) ? current : (next[0]?.id ?? null)
@@ -48,7 +48,7 @@ export function CleanupReceipts() {
     setDetails({ items: [], total: 0 })
     setDetailsLoading(!!selected)
     if (selected)
-      window.kudu
+      window.tokkip
         .cleanupReceiptDetails(selected, page)
         .then((data) => {
           if (!cancelled) setDetails(data)
@@ -181,7 +181,7 @@ export function CleanupReceipts() {
               <button
                 className={button}
                 disabled={busy}
-                onClick={() => void run(() => window.kudu.cleanupReceiptExport(receipt.id))}
+                onClick={() => void run(() => window.tokkip.cleanupReceiptExport(receipt.id))}
               >
                 <Download size={14} aria-hidden="true" />
                 {t('receipts.export')}
@@ -264,7 +264,7 @@ export function CleanupReceipts() {
           const id = retry!.id
           setRetry(null)
           void run(async () => {
-            const result = await window.kudu.cleanupReceiptRetry(id)
+            const result = await window.tokkip.cleanupReceiptRetry(id)
             if (result.receiptSaved === false) throw new Error(t('receipts.saveError'))
             if (result.receiptId) {
               setSelected(result.receiptId)
@@ -283,7 +283,7 @@ export function CleanupReceipts() {
         onConfirm={() => {
           setClear(false)
           setSelected(null)
-          void run(() => window.kudu.cleanupReceiptsClear())
+          void run(() => window.tokkip.cleanupReceiptsClear())
         }}
       />
     </section>

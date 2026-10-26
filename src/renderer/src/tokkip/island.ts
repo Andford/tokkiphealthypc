@@ -9,7 +9,7 @@ let lastHealth: TokkipHealth | null = null
 
 export function tellTokkipPc(event: { kind: 'clean'; bytes: number; items: number }) {
   const h = lastHealth
-  void window.kudu
+  void window.tokkip
     ?.tokkipNotice?.({
       kind: 'clean',
       score: h?.score ?? 100,
@@ -30,7 +30,7 @@ export function reportHealth(h: TokkipHealth) {
     ? i18next.t(`tokkip:${top.key}`, top.values)
     : i18next.t('tokkip:reasonAllGood')
   const care = h.mood === 'tired' || h.mood === 'dizzy'
-  void window.kudu
+  void window.tokkip
     ?.tokkipNotice?.({
       kind: care ? 'care' : 'status',
       score: h.score,

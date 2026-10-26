@@ -205,7 +205,7 @@ describe('win32 paths', () => {
           'electron',
           'ffmpeg-static',
           'google-drive',
-          'kudu',
+          'tokkip',
           'webview2',
           'zed'
         ])

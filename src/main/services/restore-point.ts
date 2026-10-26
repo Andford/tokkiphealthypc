@@ -16,7 +16,7 @@ export interface RestorePointResult {
  * `RPSessionInterval` inside the same script and emitting our own marker keeps
  * the detection language-independent without a second PowerShell round trip.
  */
-export const PROTECTION_SENTINEL = 'KUDU_SYSTEM_PROTECTION_DISABLED'
+export const PROTECTION_SENTINEL = 'TOKKIP_SYSTEM_PROTECTION_DISABLED'
 
 export const PROTECTION_DISABLED_ERROR =
   'System Protection is turned off, so Windows cannot create a restore point. ' +

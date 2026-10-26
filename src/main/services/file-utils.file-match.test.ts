@@ -17,7 +17,7 @@ import { scanAppRule, scanMatchingFiles } from './file-utils'
 const tempRoots: string[] = []
 
 async function tempRoot(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'kudu-file-match-'))
+  const root = await mkdtemp(join(tmpdir(), 'tokkip-file-match-'))
   tempRoots.push(root)
   return root
 }

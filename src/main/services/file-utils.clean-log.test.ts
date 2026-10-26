@@ -76,7 +76,7 @@ function seedItems(count: number, subcategory = 'Temp Files'): ScanItem[] {
 
 describe('cleanItems deletion logging', () => {
   beforeEach(() => {
-    testDir = mkdtempSync(join(tmpdir(), 'kudu-cleanlog-test-'))
+    testDir = mkdtempSync(join(tmpdir(), 'tokkip-cleanlog-test-'))
     state.keepDeletionLog = false
     state.items = []
     state.recorded = []
@@ -248,7 +248,7 @@ describe('cleanItems deletion logging', () => {
     state.keepDeletionLog = true
     seedItems(1)
     // A temp file that disappeared between the scan and the clean: rm(force)
-    // still reports success, but Kudu did not delete it.
+    // still reports success, but Tokkip did not delete it.
     state.items.push({
       id: 'id-vanished',
       path: join(testDir, 'vanished.tmp'),

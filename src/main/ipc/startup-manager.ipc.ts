@@ -33,7 +33,7 @@ interface DisabledEntry {
 const MISSING_GRACE_MS = 24 * 60 * 60 * 1000
 
 function getDisabledFilePath(): string {
-  const dir = app.isPackaged ? app.getPath('userData') : join(app.getPath('userData'), 'Kudu-Dev')
+  const dir = app.isPackaged ? app.getPath('userData') : join(app.getPath('userData'), 'Tokkip-Dev')
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
   return join(dir, 'disabled-startups.json')
 }
@@ -356,7 +356,7 @@ async function getScheduledLogonTasks(): Promise<StartupItem[]> {
             $hasLogon = $true; break
           }
         }
-        if ($hasLogon -and $task.TaskName -ne 'KuduStartup' -and $task.TaskPath -notmatch '^\\\\Microsoft\\\\' -and $task.TaskPath -notmatch '^\\\\ASUS\\\\') {
+        if ($hasLogon -and $task.TaskName -ne 'TokkipHealthyPCStartup' -and $task.TaskName -ne 'KuduStartup' -and $task.TaskPath -notmatch '^\\\\Microsoft\\\\' -and $task.TaskPath -notmatch '^\\\\ASUS\\\\') {
           $action = ($task.Actions | Where-Object { $_.CimClass.CimClassName -eq 'MSFT_TaskExecAction' } | Select-Object -First 1)
           if ($action) {
             $exe = $action.Execute
@@ -553,7 +553,7 @@ export async function listStartupItems(): Promise<StartupItem[]> {
   // Disabling an item removes it from the Run key, so this file is the only
   // record we have of it. If the program is uninstalled afterwards, nothing
   // on the system references it any more and the entry would haunt the list
-  // forever — surviving registry cleaning and even a Kudu reinstall, since
+  // forever — surviving registry cleaning and even a Tokkip reinstall, since
   // the file lives in userData.
   //
   // Such an entry is flagged as stale straight away so the user can clear it

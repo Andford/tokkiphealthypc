@@ -47,7 +47,7 @@ export function buildLinuxElevationCommand(
   for (const key of ELEVATION_ENV_KEYS) {
     if (environment[key]) parts.push(`${key}=${shellQuote(environment[key])}`)
   }
-  parts.push(shellQuote(executable), '--no-sandbox', `--kudu-data-dir=${shellQuote(userDataDir)}`)
+  parts.push(shellQuote(executable), '--no-sandbox', `--tokkip-data-dir=${shellQuote(userDataDir)}`)
 
   return `(while kill -0 ${parentPid} 2>/dev/null; do sleep 0.05; done; ${parts.join(' ')}) > /dev/null 2>&1 &`
 }

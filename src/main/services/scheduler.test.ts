@@ -10,11 +10,11 @@ vi.mock('./history-store', () => ({ getHistory: () => [] }))
 vi.mock('./logger', () => ({ logInfo: () => {}, logError: () => {} }))
 
 import { getNextScanTime, getNextRunTime, isSameDay } from './scheduler'
-import type { KuduSettings, ScheduleEntry } from '../../shared/types'
+import type { AppSettings, ScheduleEntry } from '../../shared/types'
 
 function makeSettings(
-  overrides: Partial<KuduSettings['schedule']> & { enabled?: boolean } = {}
-): KuduSettings {
+  overrides: Partial<AppSettings['schedule']> & { enabled?: boolean } = {}
+): AppSettings {
   return {
     language: 'en',
     minimizeToTray: false,

@@ -61,10 +61,10 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
 
   // Listen for progress events
   useEffect(() => {
-    const cleanupDriver = window.kudu.onDriverProgress((data: DriverScanProgress) => {
+    const cleanupDriver = window.tokkip.onDriverProgress((data: DriverScanProgress) => {
       useDriverStore.getState().setScanProgress(data)
     })
-    const cleanupUpdate = window.kudu.onDriverUpdateProgress((data: DriverUpdateProgress) => {
+    const cleanupUpdate = window.tokkip.onDriverUpdateProgress((data: DriverUpdateProgress) => {
       useDriverStore.getState().setUpdateProgress(data)
     })
     return () => {
@@ -95,8 +95,8 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
 
     // Run both scans in parallel
     const [staleResult, updateResult] = await Promise.allSettled([
-      window.kudu.driverScan(),
-      window.kudu.driverUpdateScan()
+      window.tokkip.driverScan(),
+      window.tokkip.driverUpdateScan()
     ])
 
     const s = useDriverStore.getState()
@@ -192,7 +192,7 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
       store.setUpdateProgress(null)
       const ids = selectedUpdates.map((u) => u.updateId)
       try {
-        const result = await window.kudu.driverUpdateInstall(ids)
+        const result = await window.tokkip.driverUpdateInstall(ids)
         useDriverStore.getState().setInstallResult(result)
       } catch (err) {
         console.error('Driver install failed:', err)
@@ -213,7 +213,7 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
       s2.setCleaning(true)
       const names = selectedStale.map((p) => p.publishedName)
       try {
-        const result = await window.kudu.driverClean(names)
+        const result = await window.tokkip.driverClean(names)
         useDriverStore.getState().setCleanResult(result)
 
         // History tracking
@@ -267,8 +267,8 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
       finalStore.setScanning(true)
       finalStore.setUpdateScanning(true)
       const [staleResult, updateResult] = await Promise.allSettled([
-        window.kudu.driverScan(),
-        window.kudu.driverUpdateScan()
+        window.tokkip.driverScan(),
+        window.tokkip.driverUpdateScan()
       ])
       const s = useDriverStore.getState()
       if (staleResult.status === 'fulfilled') {
@@ -297,7 +297,7 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
   // ─── Ignore / restore a driver update ─────────────────────
   // Optimistic: move the row immediately, then persist and hide/unhide the
   // update in Windows Update itself. Hiding needs elevation; if that part
-  // fails the update stays ignored in Kudu and the user is told. If the
+  // fails the update stays ignored in Tokkip and the user is told. If the
   // request itself rejects (settings could not be written) the move is rolled
   // back so the UI never claims a state that was not persisted. The row is
   // marked pending until the request finishes so it can't be flipped back
@@ -310,7 +310,7 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
       if (!upd.updateId) return
       store.setIgnorePending(upd.id, true)
       try {
-        const result = await window.kudu.driverUpdateIgnore(upd.updateId, true)
+        const result = await window.tokkip.driverUpdateIgnore(upd.updateId, true)
         if (result.windowsUpdateHidden) {
           toast.success(t('driverManager.ignoredToast', { name: upd.deviceName }), {
             description: t('driverManager.ignoredToastHidden')
@@ -338,7 +338,7 @@ export function DriverManagerPage({ embedded }: { embedded?: boolean }) {
       if (!upd.updateId) return
       store.setIgnorePending(upd.id, true)
       try {
-        const result = await window.kudu.driverUpdateIgnore(upd.updateId, false)
+        const result = await window.tokkip.driverUpdateIgnore(upd.updateId, false)
         if (!result.windowsUpdateHidden) {
           toast.warning(t('driverManager.restoredToast', { name: upd.deviceName }), {
             description: t('driverManager.restoredToastNotUnhidden')

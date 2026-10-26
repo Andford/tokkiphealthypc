@@ -30,7 +30,7 @@ export function AppPrivacyPanel() {
     setLoading(true)
     setError(false)
     try {
-      const result = await window.kudu.appPrivacyScan()
+      const result = await window.tokkip.appPrivacyScan()
       if (mounted.current) setReport(result)
     } catch {
       if (mounted.current) setError(true)
@@ -178,7 +178,7 @@ export function AppPrivacyPanel() {
                     onClick={async () => {
                       setSettingsError(false)
                       try {
-                        await window.kudu.appPrivacyOpenSettings(cap)
+                        await window.tokkip.appPrivacyOpenSettings(cap)
                       } catch {
                         setSettingsError(true)
                       }

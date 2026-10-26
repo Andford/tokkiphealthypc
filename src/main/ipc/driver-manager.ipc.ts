@@ -746,9 +746,9 @@ export function partitionIgnoredDriverUpdates(
 
 /**
  * Ignore (or restore) a driver update. The ID is persisted to settings so the
- * update stays out of Kudu's list, and the update is also hidden in Windows
+ * update stays out of Tokkip's list, and the update is also hidden in Windows
  * Update via the WUA COM API so Windows itself stops offering it (issue #464).
- * Hiding in Windows Update needs elevation; when it fails, the Kudu-side
+ * Hiding in Windows Update needs elevation; when it fails, the Tokkip-side
  * ignore still applies and the failure is reported.
  */
 let ignoreQueue: Promise<unknown> = Promise.resolve()

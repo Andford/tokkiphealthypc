@@ -12,12 +12,12 @@ export const useAppUpdateStore = create<AppUpdateStore>((set) => ({
   setStatus: (status) => set({ status }),
   init: () => {
     // Fetch current status
-    window.kudu
+    window.tokkip
       ?.updaterGetStatus?.()
       .then((s) => set({ status: s }))
       .catch(() => {})
     // Listen for live updates
-    const unsub = window.kudu?.onUpdaterStatus?.((s) => set({ status: s }))
+    const unsub = window.tokkip?.onUpdaterStatus?.((s) => set({ status: s }))
     return () => unsub?.()
   }
 }))

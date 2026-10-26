@@ -13,7 +13,7 @@ describe('downloads review selection and outcomes', () => {
   const scan = vi.fn(),
     trash = vi.fn()
   beforeEach(() => {
-    vi.stubGlobal('window', { kudu: { downloadsScan: scan, downloadsTrash: trash } })
+    vi.stubGlobal('window', { tokkip: { downloadsScan: scan, downloadsTrash: trash } })
     scan.mockReset().mockResolvedValue(structuredClone(result))
     trash.mockReset()
     useDownloadsStore.setState({

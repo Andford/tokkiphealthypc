@@ -22,7 +22,7 @@ describe('recycle-bin-cleaner', () => {
 
   beforeEach(async () => {
     execTracked.mockReset()
-    tempRoot = await mkdtemp(join(tmpdir(), 'kudu-recycle-clean-'))
+    tempRoot = await mkdtemp(join(tmpdir(), 'tokkip-recycle-clean-'))
   })
 
   afterEach(async () => {

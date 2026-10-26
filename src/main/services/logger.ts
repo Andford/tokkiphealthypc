@@ -27,10 +27,10 @@ function logDir(): string {
   return _logDir
 }
 function logFile(): string {
-  return join(logDir(), 'kudu.log')
+  return join(logDir(), 'tokkip.log')
 }
 function logFileOld(): string {
-  return join(logDir(), 'kudu.old.log')
+  return join(logDir(), 'tokkip.old.log')
 }
 function cloudLogFile(): string {
   return join(logDir(), 'cloud-agent.log')

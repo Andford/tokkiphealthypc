@@ -304,12 +304,12 @@ export function GameModePage() {
     store.getState().setLastResult(null)
 
     progressCleanupRef.current =
-      window.kudu?.onGameModeProgress?.((data) => {
+      window.tokkip?.onGameModeProgress?.((data) => {
         useGameModeStore.getState().setProgress(data)
       }) ?? null
 
     try {
-      const result = await window.kudu.gameModeActivate(config)
+      const result = await window.tokkip.gameModeActivate(config)
       // Only mark as active if at least one optimization succeeded
       if (result.succeeded > 0) {
         store.getState().setActive(true, result.snapshot?.activatedAt ?? new Date().toISOString())
@@ -337,12 +337,12 @@ export function GameModePage() {
     store.getState().setLastResult(null)
 
     progressCleanupRef.current =
-      window.kudu?.onGameModeProgress?.((data) => {
+      window.tokkip?.onGameModeProgress?.((data) => {
         useGameModeStore.getState().setProgress(data)
       }) ?? null
 
     try {
-      const result = await window.kudu.gameModeDeactivate()
+      const result = await window.tokkip.gameModeDeactivate()
       store.getState().setActive(false, null)
       const reason = result.errors[0]?.reason ?? null
       store.getState().setPendingRestore(result.failed > 0, reason)
@@ -369,7 +369,7 @@ export function GameModePage() {
 
   const handleDiscardPending = useCallback(async () => {
     try {
-      const result = await window.kudu.gameModeDiscardPending()
+      const result = await window.tokkip.gameModeDiscardPending()
       if (!result.discarded) {
         toast.error(result.reason ?? t('discardFailed'))
         return

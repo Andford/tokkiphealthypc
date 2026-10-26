@@ -49,7 +49,7 @@ function persistTweakChoice(
 ): void {
   const signatures = entries.filter((e) => isPersistentTweak(e.type)).map(tweakSignature)
   if (signatures.length === 0) return
-  window.kudu?.registrySetTweakIgnored?.(signatures, !selectedNow).catch(() => {})
+  window.tokkip?.registrySetTweakIgnored?.(signatures, !selectedNow).catch(() => {})
 }
 
 export const useRegistryStore = create<RegistryState>((set, get) => ({

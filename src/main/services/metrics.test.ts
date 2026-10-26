@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest'
 
 // Mock electron app
 vi.mock('electron', () => ({
-  app: { getVersion: () => '1.17.0', getPath: () => '/tmp/kudu' }
+  app: { getVersion: () => '1.17.0', getPath: () => '/tmp/tokkip' }
 }))
 
 // Mock systeminformation
@@ -50,9 +50,9 @@ describe('collectMetrics', () => {
     expect(metrics.length).toBeGreaterThan(0)
   })
 
-  it('includes kudu_info metric', async () => {
+  it('includes tokkip_info metric', async () => {
     const metrics = await collectMetrics()
-    const info = metrics.find((m) => m.name === 'kudu_info')
+    const info = metrics.find((m) => m.name === 'tokkip_info')
     expect(info).toBeDefined()
     expect(info!.type).toBe('gauge')
     expect(info!.value).toBe(1)
@@ -63,7 +63,7 @@ describe('collectMetrics', () => {
 
   it('includes system uptime metric', async () => {
     const metrics = await collectMetrics()
-    const uptime = metrics.find((m) => m.name === 'kudu_system_uptime_seconds')
+    const uptime = metrics.find((m) => m.name === 'tokkip_system_uptime_seconds')
     expect(uptime).toBeDefined()
     expect(uptime!.type).toBe('gauge')
     expect(uptime!.value).toBeGreaterThan(0)
@@ -71,15 +71,15 @@ describe('collectMetrics', () => {
 
   it('includes CPU usage metric', async () => {
     const metrics = await collectMetrics()
-    const cpu = metrics.find((m) => m.name === 'kudu_system_cpu_usage_percent')
+    const cpu = metrics.find((m) => m.name === 'tokkip_system_cpu_usage_percent')
     expect(cpu).toBeDefined()
     expect(cpu!.value).toBe(23.5)
   })
 
   it('includes memory metrics', async () => {
     const metrics = await collectMetrics()
-    const total = metrics.find((m) => m.name === 'kudu_system_memory_total_bytes')
-    const used = metrics.find((m) => m.name === 'kudu_system_memory_used_bytes')
+    const total = metrics.find((m) => m.name === 'tokkip_system_memory_total_bytes')
+    const used = metrics.find((m) => m.name === 'tokkip_system_memory_used_bytes')
     expect(total).toBeDefined()
     expect(total!.value).toBe(17179869184)
     expect(used).toBeDefined()
@@ -88,10 +88,10 @@ describe('collectMetrics', () => {
 
   it('includes history-based counters', async () => {
     const metrics = await collectMetrics()
-    const scans = metrics.find((m) => m.name === 'kudu_scans_total')
-    const cleaned = metrics.find((m) => m.name === 'kudu_items_cleaned_total')
-    const space = metrics.find((m) => m.name === 'kudu_space_saved_bytes_total')
-    const errors = metrics.find((m) => m.name === 'kudu_scan_errors_total')
+    const scans = metrics.find((m) => m.name === 'tokkip_scans_total')
+    const cleaned = metrics.find((m) => m.name === 'tokkip_items_cleaned_total')
+    const space = metrics.find((m) => m.name === 'tokkip_space_saved_bytes_total')
+    const errors = metrics.find((m) => m.name === 'tokkip_scan_errors_total')
     expect(scans?.value).toBe(2)
     expect(cleaned?.value).toBe(105)
     expect(space?.value).toBe(1073741824)
@@ -100,9 +100,9 @@ describe('collectMetrics', () => {
 
   it('includes last scan metrics', async () => {
     const metrics = await collectMetrics()
-    const ts = metrics.find((m) => m.name === 'kudu_last_scan_timestamp_seconds')
-    const dur = metrics.find((m) => m.name === 'kudu_last_scan_duration_seconds')
-    const items = metrics.find((m) => m.name === 'kudu_last_scan_items_found')
+    const ts = metrics.find((m) => m.name === 'tokkip_last_scan_timestamp_seconds')
+    const dur = metrics.find((m) => m.name === 'tokkip_last_scan_duration_seconds')
+    const items = metrics.find((m) => m.name === 'tokkip_last_scan_items_found')
     expect(ts).toBeDefined()
     expect(ts!.value).toBe(Math.floor(new Date('2026-03-20T10:00:00.000Z').getTime() / 1000))
     expect(dur?.value).toBe(5)
@@ -113,38 +113,38 @@ describe('collectMetrics', () => {
 describe('formatPrometheus', () => {
   it('formats a simple gauge metric', () => {
     const output = formatPrometheus([
-      { name: 'kudu_test', type: 'gauge', help: 'A test metric', value: 42 }
+      { name: 'tokkip_test', type: 'gauge', help: 'A test metric', value: 42 }
     ])
-    expect(output).toContain('# HELP kudu_test A test metric')
-    expect(output).toContain('# TYPE kudu_test gauge')
-    expect(output).toContain('kudu_test 42')
+    expect(output).toContain('# HELP tokkip_test A test metric')
+    expect(output).toContain('# TYPE tokkip_test gauge')
+    expect(output).toContain('tokkip_test 42')
   })
 
   it('formats a gauge metric with large value', () => {
     const output = formatPrometheus([
-      { name: 'kudu_count', type: 'gauge', help: 'A gauge', value: 100 }
+      { name: 'tokkip_count', type: 'gauge', help: 'A gauge', value: 100 }
     ])
-    expect(output).toContain('# TYPE kudu_count gauge')
-    expect(output).toContain('kudu_count 100')
+    expect(output).toContain('# TYPE tokkip_count gauge')
+    expect(output).toContain('tokkip_count 100')
   })
 
   it('formats labels correctly', () => {
     const output = formatPrometheus([
       {
-        name: 'kudu_info',
+        name: 'tokkip_info',
         type: 'gauge',
         help: 'Info',
         labels: { version: '1.17.0', platform: 'win32' },
         value: 1
       }
     ])
-    expect(output).toContain('kudu_info{version="1.17.0",platform="win32"} 1')
+    expect(output).toContain('tokkip_info{version="1.17.0",platform="win32"} 1')
   })
 
   it('escapes label values', () => {
     const output = formatPrometheus([
       {
-        name: 'kudu_test',
+        name: 'tokkip_test',
         type: 'gauge',
         help: 'Test',
         labels: { path: 'C:\\Users\\test' },
@@ -156,9 +156,9 @@ describe('formatPrometheus', () => {
 
   it('handles metrics without labels', () => {
     const output = formatPrometheus([
-      { name: 'kudu_uptime', type: 'gauge', help: 'Uptime', value: 3600 }
+      { name: 'tokkip_uptime', type: 'gauge', help: 'Uptime', value: 3600 }
     ])
-    expect(output).toContain('kudu_uptime 3600')
+    expect(output).toContain('tokkip_uptime 3600')
     expect(output).not.toContain('{')
   })
 

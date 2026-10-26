@@ -102,7 +102,7 @@ export function validateRecoveryEntry(value: unknown): value is RecoveryEntry {
 
 /** Feature that wrote a registry backup, inferred from its filename prefix. */
 export type RegistryBackupSource = 'registry' | 'context-menu' | 'privacy-traces' | 'pre-restore'
-/** Why a registry backup cannot be restored from inside Kudu. */
+/** Why a registry backup cannot be restored from inside Tokkip. */
 export type RegistryBackupBlock =
   | 'full-export'
   | 'too-large'

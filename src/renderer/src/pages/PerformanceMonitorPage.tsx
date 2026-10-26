@@ -40,7 +40,7 @@ export function PerformanceMonitorPage() {
 
   useEffect(() => {
     let disposed = false
-    const current = createPerfSession(window.kudu, {
+    const current = createPerfSession(window.tokkip, {
       info: setSystemInfo,
       disks: setDiskHealth,
       snapshot: pushSnapshot,

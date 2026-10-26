@@ -312,7 +312,7 @@ async function pruneBackups(dir: string, slug: string, current: string): Promise
   }
 }
 
-/** Export the whole list key to a .reg file in the Kudu backup folder; throws unless written. */
+/** Export the whole list key to a .reg file in the Tokkip backup folder; throws unless written. */
 export async function backupMruList(list: MruList): Promise<string> {
   const dir = getBackupDir()
   const slug = backupSlug(list)
@@ -324,7 +324,7 @@ export async function backupMruList(list: MruList): Promise<string> {
   // it guards the clear, but can only be imported by hand.
   let privateDir: string | null
   try {
-    privateDir = await createPrivateTempDir('kudu-trace-backup-')
+    privateDir = await createPrivateTempDir('tokkip-trace-backup-')
   } catch {
     privateDir = null
   }

@@ -16,7 +16,7 @@ export function useQuickTelemetry() {
     let timer: ReturnType<typeof setTimeout>
     const poll = async (seed = false) => {
       try {
-        const reading = await window.kudu?.perfQuickStats?.()
+        const reading = await window.tokkip?.perfQuickStats?.()
         if (!cancelled && reading && !seed) {
           setCurrent(reading)
           setSamples((previous) => [

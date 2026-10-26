@@ -48,7 +48,7 @@ function main() {
   const lines = []
   const w = (line) => lines.push(line === undefined ? '' : line)
 
-  w('# Kudu Cleaner Rules Catalog')
+  w('# Tokkip Cleaner Rules Catalog')
   w()
   w('> Auto-generated from the JSON rule files. Do not edit manually.')
   w('>')

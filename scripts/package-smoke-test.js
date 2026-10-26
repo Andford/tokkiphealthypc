@@ -39,8 +39,11 @@ if (process.argv[2] === '--native') {
     db.close()
   }
   const scanner = packagedRequire('@litko/yara-x').create()
-  scanner.addRuleSource('rule PackagedSmoke { strings: $a = "kudu_package_probe" condition: $a }')
-  assert.equal(scanner.scan(Buffer.from('kudu_package_probe'))[0]?.ruleIdentifier, 'PackagedSmoke')
+  scanner.addRuleSource('rule PackagedSmoke { strings: $a = "tokkip_package_probe" condition: $a }')
+  assert.equal(
+    scanner.scan(Buffer.from('tokkip_package_probe'))[0]?.ruleIdentifier,
+    'PackagedSmoke'
+  )
   assert.equal(scanner.scan(Buffer.from('clean data')).length, 0)
   console.log('Packaged resources, SQLite, and YARA passed')
 } else {
@@ -58,7 +61,7 @@ async function runPackagedSmoke() {
   for (const file of ['app.asar', 'icon.ico', 'icon.png']) {
     assert(existsSync(path.join(resources, file)), `Packaged resource missing: ${file}`)
   }
-  const temporary = mkdtempSync(path.join(tmpdir(), 'kudu-package-smoke-'))
+  const temporary = mkdtempSync(path.join(tmpdir(), 'tokkip-package-smoke-'))
   const env = { ...process.env }
   delete env.ELECTRON_RUN_AS_NODE
   delete env.ELECTRON_NO_ASAR
@@ -93,8 +96,8 @@ async function runPackagedSmoke() {
         ? ['--no-sandbox', '--disable-gpu', '--ozone-platform=headless']
         : []
     // Keep all CLI state in a disposable directory, including on developer machines.
-    const cli = (...args) => run([...flags, `--kudu-data-dir=${temporary}`, '--cli', ...args])
-    assert.match(cli('--version'), /Kudu v\d+\.\d+\.\d+/)
+    const cli = (...args) => run([...flags, `--tokkip-data-dir=${temporary}`, '--cli', ...args])
+    assert.match(cli('--version'), /Tokkip v\d+\.\d+\.\d+/)
     assert.match(cli('--help'), /usage/i)
     JSON.parse(cli('config', '--json', 'get'))
     JSON.parse(cli('history', '--json', 'list'))

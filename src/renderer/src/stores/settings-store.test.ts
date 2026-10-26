@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest'
 
-// Stub window.kudu to prevent eager hydration side-effect
-vi.stubGlobal('window', { kudu: undefined })
+// Stub window.tokkip to prevent eager hydration side-effect
+vi.stubGlobal('window', { tokkip: undefined })
 
 import { useSettingsStore } from './settings-store'
 

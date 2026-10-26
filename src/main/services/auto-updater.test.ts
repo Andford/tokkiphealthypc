@@ -55,7 +55,7 @@ describe('checkForUpdates UX', () => {
     vi.stubEnv('PORTABLE_EXECUTABLE_DIR', '')
     Object.defineProperty(process, 'platform', { value: 'win32', configurable: true })
     Object.defineProperty(process, 'resourcesPath', {
-      value: 'C:\\Kudu\\resources',
+      value: 'C:\\Tokkip\\resources',
       configurable: true
     })
   })
@@ -73,7 +73,7 @@ describe('checkForUpdates UX', () => {
 
   it('runs electron-updater when APPIMAGE is set on Linux', async () => {
     Object.defineProperty(process, 'platform', { value: 'linux', configurable: true })
-    process.env.APPIMAGE = '/home/u/Kudu-x86_64.AppImage'
+    process.env.APPIMAGE = '/home/u/Tokkip-x86_64.AppImage'
     const { checkForUpdates } = await import('./auto-updater')
     await checkForUpdates()
     expect(checkForUpdatesMock).toHaveBeenCalled()
@@ -82,7 +82,7 @@ describe('checkForUpdates UX', () => {
   it.each(['exe', 'zip'])(
     'blocks every installer update entry point for portable %s',
     async (format) => {
-      if (format === 'exe') vi.stubEnv('PORTABLE_EXECUTABLE_DIR', 'D:\\Kudu')
+      if (format === 'exe') vi.stubEnv('PORTABLE_EXECUTABLE_DIR', 'D:\\Tokkip')
       else markerExists.mockReturnValue(true)
       const updater = await import('./auto-updater')
       const { autoUpdater } = await import('electron-updater')

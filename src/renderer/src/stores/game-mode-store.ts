@@ -91,7 +91,7 @@ export const useGameModeStore = create<GameModeStoreState>((set, get) => ({
         : [...config.enabledOptimizations, id]
     }
     set({ config: updated })
-    window.kudu?.settingsSet?.({ gameMode: updated }).catch(() => {})
+    window.tokkip?.settingsSet?.({ gameMode: updated }).catch(() => {})
   },
 
   toggleCategory: (category) =>
@@ -106,34 +106,34 @@ export const useGameModeStore = create<GameModeStoreState>((set, get) => ({
     const { config } = get()
     const updated: GameModeConfig = { ...config, customProcessKillList: list }
     set({ config: updated })
-    window.kudu?.settingsSet?.({ gameMode: updated }).catch(() => {})
+    window.tokkip?.settingsSet?.({ gameMode: updated }).catch(() => {})
   },
 
   setAutoDetect: (enabled) => {
     const { config } = get()
     const updated: GameModeConfig = { ...config, autoDetect: enabled }
     set({ config: updated })
-    window.kudu?.settingsSet?.({ gameMode: updated }).catch(() => {})
+    window.tokkip?.settingsSet?.({ gameMode: updated }).catch(() => {})
   },
 
   setAutoDeactivate: (enabled) => {
     const { config } = get()
     const updated: GameModeConfig = { ...config, autoDeactivate: enabled }
     set({ config: updated })
-    window.kudu?.settingsSet?.({ gameMode: updated }).catch(() => {})
+    window.tokkip?.settingsSet?.({ gameMode: updated }).catch(() => {})
   },
 
   setCustomGameProcesses: (list) => {
     const { config } = get()
     const updated: GameModeConfig = { ...config, customGameProcesses: list }
     set({ config: updated })
-    window.kudu?.settingsSet?.({ gameMode: updated }).catch(() => {})
+    window.tokkip?.settingsSet?.({ gameMode: updated }).catch(() => {})
   }
 }))
 
 /** Hydrate config from persisted settings and check active status */
 export function initGameModeStore(): void {
-  window.kudu
+  window.tokkip
     ?.settingsGet?.()
     .then((settings) => {
       if (settings?.gameMode) {
@@ -142,7 +142,7 @@ export function initGameModeStore(): void {
     })
     .catch(() => {})
 
-  window.kudu
+  window.tokkip
     ?.gameModeStatus?.()
     .then((status) => {
       const s = useGameModeStore.getState()
@@ -153,7 +153,7 @@ export function initGameModeStore(): void {
 
   // Listen for auto-detect events globally so the store stays in sync
   // even when the user is on a different page.
-  window.kudu?.onGameModeAutoEvent?.((event) => {
+  window.tokkip?.onGameModeAutoEvent?.((event) => {
     const s = useGameModeStore.getState()
     if (event.type === 'game-detected') {
       s.setDetectedGame(event.processName)
@@ -161,7 +161,7 @@ export function initGameModeStore(): void {
       s.setDetectedGame(null)
     }
     // Refresh active status from main process (source of truth)
-    window.kudu
+    window.tokkip
       ?.gameModeStatus?.()
       .then((status) => {
         const st = useGameModeStore.getState()

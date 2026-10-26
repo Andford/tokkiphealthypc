@@ -9,7 +9,7 @@ import {
 import { t } from '../i18n'
 import { logInfo } from './logger'
 import { hasMainWorkInFlight, mainWorkGeneration } from './main-work'
-import type { KuduSettings, ScheduleEntry, ScheduleRunStatus } from '../../shared/types'
+import type { AppSettings, ScheduleEntry, ScheduleRunStatus } from '../../shared/types'
 
 import { randomUUID } from 'crypto'
 import si from 'systeminformation'
@@ -57,7 +57,7 @@ export function isSameDay(a: Date, b: Date): boolean {
  * Get the soonest next scan time across all enabled schedules.
  * Also supports legacy single schedule for backward compat.
  */
-export function getNextScanTime(settings: KuduSettings): Date | null {
+export function getNextScanTime(settings: AppSettings): Date | null {
   // New multi-schedule path
   if (settings.schedules.length > 0) {
     let soonest: Date | null = null

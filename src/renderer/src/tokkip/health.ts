@@ -94,7 +94,7 @@ export function useTokkipHealth(): TokkipHealth {
   useEffect(() => {
     let alive = true
     const read = () =>
-      window.kudu
+      window.tokkip
         ?.diskDrives?.()
         .then((d) => alive && setDrives(d))
         .catch(() => {})

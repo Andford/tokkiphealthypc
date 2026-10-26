@@ -63,8 +63,8 @@ const RUN_MRU_OUTPUT = [
 
 let root: string
 beforeEach(async () => {
-  root = await mkdtemp(join(tmpdir(), 'kudu-win-traces-'))
-  backupDir.path = join(root, 'Kudu Backups')
+  root = await mkdtemp(join(tmpdir(), 'tokkip-win-traces-'))
+  backupDir.path = join(root, 'Tokkip Backups')
   exec.mockReset()
   vi.mocked(unlink).mockReset()
   seal.removeSeals.mockClear()

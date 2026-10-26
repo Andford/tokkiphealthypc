@@ -101,7 +101,7 @@ export function assertCustomFolderPath(path: string, home = homedir()): void {
         : ['/usr', '/bin', '/sbin', '/etc', '/boot', '/dev', '/proc', '/sys', '/root']
   if (
     protectedRoots.some((root) => within(resolved, root) || within(root, resolved)) ||
-    /(^|[\\/])(\$recycle\.bin|system volume information|Kudu (Downloads|Custom Folder) Recovery-[^\\/]*)($|[\\/])/i.test(
+    /(^|[\\/])(\$recycle\.bin|system volume information|Tokkip (Downloads|Custom Folder) Recovery-[^\\/]*)($|[\\/])/i.test(
       resolved
     )
   )
@@ -264,6 +264,9 @@ export class CustomFolders {
             const path = join(directory.path, entry.name)
             try {
               if (
+                entry.name.startsWith('Tokkip Downloads Recovery-') ||
+                entry.name.startsWith('Tokkip Custom Folder Recovery-') ||
+                // Made by the first version, under the original app's name.
                 entry.name.startsWith('Kudu Downloads Recovery-') ||
                 entry.name.startsWith('Kudu Custom Folder Recovery-')
               ) {
@@ -370,7 +373,7 @@ export class CustomFolders {
                   )
                 },
                 undefined,
-                'Kudu Custom Folder Recovery-'
+                'Tokkip Custom Folder Recovery-'
               )
               claims.set(parent, claim)
             }

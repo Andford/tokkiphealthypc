@@ -94,7 +94,7 @@ function AppearanceMenu() {
 
   const selectTheme = (nextTheme: ThemeMode) => {
     updateSettings({ theme: nextTheme })
-    window.kudu?.settingsSet?.({ theme: nextTheme }).catch(() => {})
+    window.tokkip?.settingsSet?.({ theme: nextTheme }).catch(() => {})
     setOpen(false)
   }
 

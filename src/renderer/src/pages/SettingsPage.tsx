@@ -30,7 +30,7 @@ export function SettingsPage() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    window.kudu
+    window.tokkip
       ?.settingsGet?.()
       .then(setSettings)
       .catch(() => {})
@@ -38,13 +38,13 @@ export function SettingsPage() {
 
   const save = (partial: Partial<typeof settings>) => {
     updateSettings(partial)
-    window.kudu?.settingsSet?.(partial).catch(() => {})
+    window.tokkip?.settingsSet?.(partial).catch(() => {})
   }
 
   const saveStartup = async (enabled: boolean) => {
     save({ runAtStartup: enabled })
     try {
-      await window.kudu?.applyStartup?.(enabled)
+      await window.tokkip?.applyStartup?.(enabled)
     } catch {
       // Revert the toggle — the OS rejected the change
       save({ runAtStartup: !enabled })
@@ -61,7 +61,7 @@ export function SettingsPage() {
 
   const saveTray = (enabled: boolean) => {
     save({ minimizeToTray: enabled })
-    window.kudu?.applyTray?.(enabled)
+    window.tokkip?.applyTray?.(enabled)
   }
 
   const addExclusion = () => {
@@ -219,7 +219,7 @@ export function SettingsPage() {
           <BackupFolderRow
             path={settings.backupPath}
             onPick={async () => {
-              const picked = await window.kudu?.settingsSelectBackupDir?.()
+              const picked = await window.tokkip?.settingsSelectBackupDir?.()
               if (picked) {
                 save({ backupPath: picked })
                 toast.success(t('backupFolderUpdatedToast', 'Backup folder updated'), {
@@ -231,7 +231,7 @@ export function SettingsPage() {
               }
             }}
             onOpen={() => {
-              window.kudu?.settingsOpenBackupDir?.().catch(() => {})
+              window.tokkip?.settingsOpenBackupDir?.().catch(() => {})
             }}
             onReset={() => save({ backupPath: '' })}
           />

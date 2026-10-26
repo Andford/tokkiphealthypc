@@ -197,7 +197,7 @@ describe('scan-store', () => {
     useScanStore.getState().setResults([result])
     useScanStore.getState().toggleSubcategory(result)
     expect(useScanStore.getState().excludedSubcategories.has('temp')).toBe(true)
-    const stored = JSON.parse(storage.get('kudu:excluded-subcategories')!)
+    const stored = JSON.parse(storage.get('tokkip:excluded-subcategories')!)
     expect(stored).toContain('temp')
   })
 

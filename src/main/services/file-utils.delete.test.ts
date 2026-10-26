@@ -98,7 +98,7 @@ function createTree(): { root: string; removable: string; locked: string } {
 
 describe('granular directory deletion fallback', () => {
   beforeEach(() => {
-    testDir = mkdtempSync(join(tmpdir(), 'kudu-delete-'))
+    testDir = mkdtempSync(join(tmpdir(), 'tokkip-delete-'))
     state.receiptRoot = testDir
     state.rootPath = ''
     state.rootFailuresRemaining = 0

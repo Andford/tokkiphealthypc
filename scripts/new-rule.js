@@ -70,7 +70,7 @@ function insertSorted(apps, newApp) {
 }
 
 async function main() {
-  console.log('\n🧹 Kudu — New Cleaner Rule Generator\n')
+  console.log('\n🧹 Tokkip — New Cleaner Rule Generator\n')
 
   // App name
   const name = await ask('App display name (e.g. "Notion")')

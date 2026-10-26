@@ -9,9 +9,9 @@ const NODE = process.execPath
 it('executes with the supplied environment instead of inheriting removed overrides', async () => {
   const result = await execTracked(
     NODE,
-    ['-e', 'process.stdout.write(process.env.KUDU_COMMAND_TEST || "missing")'],
+    ['-e', 'process.stdout.write(process.env.TOKKIP_COMMAND_TEST || "missing")'],
     {
-      env: { ...process.env, KUDU_COMMAND_TEST: 'isolated' }
+      env: { ...process.env, TOKKIP_COMMAND_TEST: 'isolated' }
     }
   )
   expect(result.stdout).toBe('isolated')
@@ -26,9 +26,9 @@ describe('spawnTrackedLines', () => {
     const lines: string[] = []
     const result = await spawnTrackedLines(
       NODE,
-      nodeEval('console.log(process.env.KUDU_COMMAND_TEST)'),
+      nodeEval('console.log(process.env.TOKKIP_COMMAND_TEST)'),
       (line) => lines.push(line),
-      { env: { ...process.env, KUDU_COMMAND_TEST: 'isolated' } }
+      { env: { ...process.env, TOKKIP_COMMAND_TEST: 'isolated' } }
     )
     expect(result.code).toBe(0)
     expect(lines).toEqual(['isolated'])
@@ -119,7 +119,7 @@ describe('spawnTrackedLines', () => {
 
   it('rejects when the executable does not exist', async () => {
     await expect(
-      spawnTrackedLines('kudu-no-such-binary-xyz', [], () => {}, { timeout: 5_000 })
+      spawnTrackedLines('tokkip-no-such-binary-xyz', [], () => {}, { timeout: 5_000 })
     ).rejects.toThrow()
   })
 })

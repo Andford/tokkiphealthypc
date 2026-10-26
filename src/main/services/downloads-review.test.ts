@@ -20,7 +20,7 @@ describe('DownloadsReview filesystem safety', () => {
   let fixture: string, root: string, configured: string, exclusions: string[]
   let trash: ReturnType<typeof vi.fn>, reveal: ReturnType<typeof vi.fn>, review: DownloadsReview
   beforeEach(async () => {
-    fixture = await realpath(await mkdtemp(join(tmpdir(), 'kudu-downloads-')))
+    fixture = await realpath(await mkdtemp(join(tmpdir(), 'tokkip-downloads-')))
     root = join(fixture, 'Downloads')
     await mkdir(root)
     configured = root

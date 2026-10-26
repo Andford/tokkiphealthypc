@@ -26,7 +26,7 @@ import type {
   StartupBootTrace,
   DiskNode,
   DriveInfo,
-  KuduSettings,
+  AppSettings,
   BloatwareApp,
   ScanHistoryEntry,
   DeletionLogPage,
@@ -362,8 +362,8 @@ const api = {
   onboardingSet: (value: boolean): Promise<void> => ipcRenderer.invoke(IPC.ONBOARDING_SET, value),
 
   // Settings
-  settingsGet: (): Promise<KuduSettings> => ipcRenderer.invoke(IPC.SETTINGS_GET),
-  settingsSet: (settings: Partial<KuduSettings>): Promise<void> =>
+  settingsGet: (): Promise<AppSettings> => ipcRenderer.invoke(IPC.SETTINGS_GET),
+  settingsSet: (settings: Partial<AppSettings>): Promise<void> =>
     ipcRenderer.invoke(IPC.SETTINGS_SET, settings),
   settingsSelectBackupDir: (): Promise<string | null> =>
     ipcRenderer.invoke(IPC.SETTINGS_SELECT_BACKUP_DIR),
@@ -777,6 +777,6 @@ const api = {
   }
 }
 
-export type KuduAPI = typeof api
+export type TokkipAPI = typeof api
 
-contextBridge.exposeInMainWorld('kudu', api)
+contextBridge.exposeInMainWorld('tokkip', api)

@@ -4,7 +4,7 @@ import { describe, it, expect, vi } from 'vitest'
 vi.mock('electron', () => ({
   app: {
     isPackaged: false,
-    getPath: () => '/tmp/test-kudu'
+    getPath: () => '/tmp/test-tokkip'
   }
 }))
 

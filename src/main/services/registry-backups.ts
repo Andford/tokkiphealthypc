@@ -29,7 +29,7 @@ import type {
  *  2. none of its top-level keys is a hive, a hive's direct child, or one of the
  *     branch roots those full exports cover (`BROAD_ROOTS`); and
  *  3. it has at most `MAX_SECTIONS` keys and `MAX_TARGETED_BYTES` bytes; and
- *  4. its exact bytes match the seal Kudu recorded in HKLM when writing it
+ *  4. its exact bytes match the seal Tokkip recorded in HKLM when writing it
  *     (`registry-backup-seal.ts`), since the backup folder is user-writable
  *     while the import runs elevated.
  * Importing a broad export would roll back every unrelated change made since.
@@ -280,7 +280,7 @@ export type BackupAssessment = {
 
 /**
  * Decide whether a backup's contents may be imported. `sealed` says whether its
- * bytes match the seal Kudu recorded; unsealed files are never restorable, and
+ * bytes match the seal Tokkip recorded; unsealed files are never restorable, and
  * only a sealed pre-restore backup may delete anything. Pure — exported for tests.
  */
 export function assessRegistryBackup(name: string, buf: Buffer, sealed: boolean): BackupAssessment {
@@ -299,7 +299,7 @@ export function assessRegistryBackup(name: string, buf: Buffer, sealed: boolean)
       FORBIDDEN_KEYS.some((re) => re.test(k)) ||
       !scopes.some((scope) => isUnder(k, scope))
   )
-  // A tombstone may only remove a key Kudu itself restored (or a parent that
+  // A tombstone may only remove a key Tokkip itself restored (or a parent that
   // restore created), never a scope or branch root.
   if (forbidden || sections.some((s) => s.deleted && !isDeletableAncestor(s.key, scopes)))
     return { ...result, blocked: 'forbidden-key' }
@@ -371,7 +371,7 @@ async function describeBackup(
   return backup
 }
 
-/** Names of the Kudu backups that are regular files directly in `dir` (no links). */
+/** Names of the Tokkip backups that are regular files directly in `dir` (no links). */
 async function backupFileNames(dir: string): Promise<string[]> {
   return (await readdir(dir, { withFileTypes: true }))
     .filter((f) => f.isFile() && BACKUP_NAME.test(f.name) && !f.name.includes('..'))
@@ -379,7 +379,7 @@ async function backupFileNames(dir: string): Promise<string[]> {
 }
 
 /**
- * List Kudu-made registry backups in the backup folder, newest first, dropping
+ * List Tokkip-made registry backups in the backup folder, newest first, dropping
  * the seals of backups that no longer exist. Windows only.
  */
 export async function listRegistryBackups(): Promise<RegistryBackup[]> {
@@ -750,7 +750,7 @@ export async function restoreRegistryBackup(name: unknown): Promise<RegistryRest
     // Exports and the import copy live where unelevated processes cannot rewrite them.
     let tempDir: string
     try {
-      tempDir = await createPrivateTempDir('kudu-reg-restore-')
+      tempDir = await createPrivateTempDir('tokkip-reg-restore-')
     } catch (error) {
       throw new Error(
         `Could not prepare a private working folder, so nothing was imported: ${error instanceof Error ? error.message : error}`,

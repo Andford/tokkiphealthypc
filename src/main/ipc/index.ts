@@ -165,7 +165,7 @@ export function registerCleanerIpc(getWindow: WindowGetter): void {
     }
     if (typeof validated.language === 'string') {
       await flushSettings()
-      app.emit('kudu:language-changed')
+      app.emit('tokkip:language-changed')
     }
     // Restart game detector when gameMode settings change
     if ('gameMode' in validated) {
@@ -305,7 +305,7 @@ export function registerCleanerIpc(getWindow: WindowGetter): void {
     const win = getWindow()
     const opts: Electron.SaveDialogOptions = {
       title: 'Export deleted files',
-      defaultPath: 'kudu-deleted-files.csv',
+      defaultPath: 'tokkip-deleted-files.csv',
       filters: [{ name: 'CSV', extensions: ['csv'] }]
     }
     const result =

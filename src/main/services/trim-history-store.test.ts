@@ -22,7 +22,7 @@ import {
 
 describe('trim-history-store', () => {
   beforeEach(() => {
-    testDir = mkdtempSync(join(tmpdir(), 'kudu-trim-test-'))
+    testDir = mkdtempSync(join(tmpdir(), 'tokkip-trim-test-'))
     _resetTrimHistoryPathCache()
   })
 

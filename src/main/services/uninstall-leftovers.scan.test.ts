@@ -42,7 +42,7 @@ async function observeOwner(name = 'OldApp') {
 }
 beforeEach(async () => {
   Object.defineProperty(process, 'platform', { value: 'win32', configurable: true })
-  state.root = await mkdtemp(join(tmpdir(), 'kudu-leftovers-'))
+  state.root = await mkdtemp(join(tmpdir(), 'tokkip-leftovers-'))
   await mkdir(join(state.root, 'installed'))
   programs = [owner('Unrelated Software')]
   running = 'C:\\Windows\\System32\\svchost.exe'

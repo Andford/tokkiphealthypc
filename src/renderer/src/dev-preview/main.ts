@@ -12,7 +12,7 @@ const empty = new URLSearchParams(location.search).get('state') === 'empty'
 // Explicit sample access states for checking conversion and recovery flows.
 const settings = structuredClone(defaultSettings)
 settings.dashboardView =
-  localStorage.getItem('kudu-preview-dashboard-view') === 'advanced' ? 'advanced' : 'simple'
+  localStorage.getItem('tokkip-preview-dashboard-view') === 'advanced' ? 'advanced' : 'simple'
 settings.theme = new URLSearchParams(location.search).get('theme') === 'light' ? 'light' : 'dark'
 settings.language = new URLSearchParams(location.search).get('lang') === 'es' ? 'es' : 'en'
 settings.schedules = empty
@@ -421,7 +421,7 @@ const reads: Record<string, (...args: any[]) => unknown> = {
   settingsSet: (partial) => {
     Object.assign(settings, partial)
     if (partial.dashboardView)
-      localStorage.setItem('kudu-preview-dashboard-view', partial.dashboardView)
+      localStorage.setItem('tokkip-preview-dashboard-view', partial.dashboardView)
     return settings
   },
   onboardingGet: () => true,
@@ -575,7 +575,7 @@ const reads: Record<string, (...args: any[]) => unknown> = {
   shredderSelectFolders: () => []
 }
 
-window.kudu = new Proxy(
+window.tokkip = new Proxy(
   {},
   {
     get: (_, name: string) => {
@@ -595,7 +595,7 @@ window.kudu = new Proxy(
       }
     }
   }
-) as typeof window.kudu
+) as typeof window.tokkip
 
 useSettingsStore.getState().setSettings(settings)
 

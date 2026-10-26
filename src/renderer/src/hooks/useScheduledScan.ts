@@ -28,33 +28,33 @@ const CLEANER_TASKS: Record<
 > = {
   'cleaner:system': {
     label: 'System',
-    scan: () => window.kudu.systemScan(),
-    clean: (ids) => window.kudu.systemClean(ids)
+    scan: () => window.tokkip.systemScan(),
+    clean: (ids) => window.tokkip.systemClean(ids)
   },
   'cleaner:browsers': {
     label: 'Browsers',
-    scan: () => window.kudu.browserScan(),
-    clean: (ids) => window.kudu.browserClean(ids)
+    scan: () => window.tokkip.browserScan(),
+    clean: (ids) => window.tokkip.browserClean(ids)
   },
   'cleaner:apps': {
     label: 'Applications',
-    scan: () => window.kudu.appScan(),
-    clean: (ids) => window.kudu.appClean(ids)
+    scan: () => window.tokkip.appScan(),
+    clean: (ids) => window.tokkip.appClean(ids)
   },
   'cleaner:gaming': {
     label: 'Gaming',
-    scan: () => window.kudu.gamingScan(),
-    clean: (ids) => window.kudu.gamingClean(ids)
+    scan: () => window.tokkip.gamingScan(),
+    clean: (ids) => window.tokkip.gamingClean(ids)
   },
   'cleaner:recycleBin': {
     label: 'Recycle Bin',
-    scan: () => window.kudu.recycleBinScan(),
-    clean: () => window.kudu.recycleBinClean()
+    scan: () => window.tokkip.recycleBinScan(),
+    clean: () => window.tokkip.recycleBinClean()
   },
   'cleaner:databases': {
     label: 'Databases',
-    scan: () => window.kudu.databaseScan(),
-    clean: (ids) => window.kudu.databaseClean(ids)
+    scan: () => window.tokkip.databaseScan(),
+    clean: (ids) => window.tokkip.databaseClean(ids)
   }
 }
 
@@ -72,7 +72,7 @@ export async function runSchedule(payload: ScheduleRunPayload): Promise<void> {
     startedTasks.add(taskType)
   }
   const assertAllowed = async () => {
-    const result = await window.kudu.scheduleAuthorize(payload.scheduleId, payload.runId)
+    const result = await window.tokkip.scheduleAuthorize(payload.scheduleId, payload.runId)
     if (!result.allowed) throw new ScheduleConditionChanged(result.reason ?? 'unavailable')
   }
   let status: 'success' | 'partial' | 'failed' | 'skipped' = 'success'
@@ -136,7 +136,7 @@ export async function runSchedule(payload: ScheduleRunPayload): Promise<void> {
       restorePointAttempted = true
       if (!useSettingsStore.getState().settings.cleaner.createRestorePoint) return
       try {
-        await window.kudu.createRestorePoint(`Kudu scheduled clean — ${payload.scheduleName}`)
+        await window.tokkip.createRestorePoint(`Tokkip scheduled clean — ${payload.scheduleName}`)
       } catch (error) {
         if (error instanceof ScheduleConditionChanged) throw error
         // Best-effort — don't block the clean
@@ -204,14 +204,14 @@ export async function runSchedule(payload: ScheduleRunPayload): Promise<void> {
       if (taskType === 'registry') {
         try {
           markStarted(taskType)
-          const entries = await window.kudu.registryScan()
+          const entries = await window.tokkip.registryScan()
           const found = entries.length
           totalItems += found
           if (payload.autoApply && found > 0) {
             const ids = entries.map((e) => e.id)
             try {
               await assertAllowed()
-              const result = await window.kudu.registryFix(ids)
+              const result = await window.tokkip.registryFix(ids)
               if (result.failed > 0) status = 'partial'
               totalCleaned += result.fixed
               categoryResults['Registry'] = { found, cleaned: result.fixed, size: 0 }
@@ -233,14 +233,14 @@ export async function runSchedule(payload: ScheduleRunPayload): Promise<void> {
       if (taskType === 'drivers') {
         try {
           markStarted(taskType)
-          const result = await window.kudu.driverUpdateScan()
+          const result = await window.tokkip.driverUpdateScan()
           const found = result.updates.length
           totalItems += found
           if (payload.autoApply && found > 0) {
             const ids = result.updates.map((u) => u.updateId)
             try {
               await assertAllowed()
-              const installResult = await window.kudu.driverUpdateInstall(ids)
+              const installResult = await window.tokkip.driverUpdateInstall(ids)
               if (installResult.failed > 0) status = 'partial'
               totalCleaned += installResult.installed
               categoryResults['Drivers'] = { found, cleaned: installResult.installed, size: 0 }
@@ -262,14 +262,14 @@ export async function runSchedule(payload: ScheduleRunPayload): Promise<void> {
       if (taskType === 'software-update') {
         try {
           markStarted(taskType)
-          const result = await window.kudu.softwareUpdateCheck()
+          const result = await window.tokkip.softwareUpdateCheck()
           const found = result.apps.length
           totalItems += found
           if (payload.autoApply && found > 0) {
             const items = result.apps.map((a) => ({ id: a.id, source: a.source }))
             try {
               await assertAllowed()
-              const updateResult = await window.kudu.softwareUpdateRun(items)
+              const updateResult = await window.tokkip.softwareUpdateRun(items)
               if (updateResult.failed > 0) status = 'partial'
               totalCleaned += updateResult.succeeded
               categoryResults['Software'] = { found, cleaned: updateResult.succeeded, size: 0 }
@@ -293,8 +293,8 @@ export async function runSchedule(payload: ScheduleRunPayload): Promise<void> {
     await recordHistory()
 
     // Notify main process and refresh renderer state so the UI shows updated status
-    window.kudu.notifyScheduledScanComplete?.(totalSize, totalItems)
-    await window.kudu.scheduleRunComplete?.(payload.scheduleId, status, payload.runId)
+    window.tokkip.notifyScheduledScanComplete?.(totalSize, totalItems)
+    await window.tokkip.scheduleRunComplete?.(payload.scheduleId, status, payload.runId)
     refreshSettings()
 
     const desc = payload.autoApply
@@ -309,7 +309,7 @@ export async function runSchedule(payload: ScheduleRunPayload): Promise<void> {
       store.setProgress(null)
       status = started ? 'partial' : 'skipped'
       if (started) await recordHistory()
-      await window.kudu.scheduleRunComplete?.(
+      await window.tokkip.scheduleRunComplete?.(
         payload.scheduleId,
         started ? 'partial' : 'deferred',
         payload.runId
@@ -325,7 +325,7 @@ export async function runSchedule(payload: ScheduleRunPayload): Promise<void> {
     store.setProgress(null)
     status = 'failed'
     try {
-      await window.kudu.scheduleRunComplete?.(payload.scheduleId, status, payload.runId)
+      await window.tokkip.scheduleRunComplete?.(payload.scheduleId, status, payload.runId)
     } catch {
       /* main releases the run itself once the window reports back or goes away */
     }
@@ -345,7 +345,7 @@ export function useScheduledScan(): void {
   const queueRef = useRef<ScheduleRunPayload[]>([])
 
   useEffect(() => {
-    if (!window.kudu?.onScheduleRunTrigger) return undefined
+    if (!window.tokkip?.onScheduleRunTrigger) return undefined
 
     const waitForIdle = async (): Promise<boolean> => {
       // Wait up to 5 minutes for any manual scan/clean to finish
@@ -365,7 +365,7 @@ export function useScheduledScan(): void {
             // Wait for any manual work to finish before running
             const idle = await waitForIdle()
             if (!idle) {
-              await window.kudu.scheduleRunComplete?.(next.scheduleId, 'deferred', next.runId)
+              await window.tokkip.scheduleRunComplete?.(next.scheduleId, 'deferred', next.runId)
               toast.warning(`"${next.scheduleName}" skipped`, {
                 description: 'Timed out waiting for manual scan to finish.'
               })
@@ -375,7 +375,7 @@ export function useScheduledScan(): void {
           } catch (error) {
             if (error instanceof ScheduleConditionChanged) throw error
             // Ensure completion is reported even on unexpected errors
-            await window.kudu.scheduleRunComplete?.(next.scheduleId, 'failed', next.runId)
+            await window.tokkip.scheduleRunComplete?.(next.scheduleId, 'failed', next.runId)
           }
         }
       } finally {
@@ -383,9 +383,9 @@ export function useScheduledScan(): void {
       }
     }
 
-    const unsubscribe = window.kudu.onScheduleRunTrigger((payload: ScheduleRunPayload) => {
+    const unsubscribe = window.tokkip.onScheduleRunTrigger((payload: ScheduleRunPayload) => {
       // Main rolls back triggers nobody acknowledges (renderer not mounted yet, reload).
-      void window.kudu.scheduleRunAck?.(payload.scheduleId, payload.runId).catch(() => {})
+      void window.tokkip.scheduleRunAck?.(payload.scheduleId, payload.runId).catch(() => {})
       queueRef.current.push(payload)
       if (!runningRef.current) {
         runningRef.current = true

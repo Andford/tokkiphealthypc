@@ -104,7 +104,7 @@ export function registerStorageHistoryIpc(getWindow: WindowGetter) {
     const snapshot = await readStorageSnapshot(id),
       scope = (await getStorageIndex()).scopes.find((s) => s.id === snapshot.scopeId)
     const result = await dialog.showSaveDialog({
-      defaultPath: 'kudu-storage-snapshot.json',
+      defaultPath: 'tokkip-storage-snapshot.json',
       filters: [{ name: 'JSON', extensions: ['json'] }]
     })
     if (result.canceled || !result.filePath) return false

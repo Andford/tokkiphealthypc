@@ -15,7 +15,7 @@ module.exports = async function buildPortableZip(context) {
   const version = target.packager.appInfo.version
   const outputs = []
   for (const [arch, appOutDir] of target.archs) {
-    const output = path.join(outDir, `Kudu-Portable-${version}-${Arch[arch]}.zip`)
+    const output = path.join(outDir, `Tokkip-Portable-${version}-${Arch[arch]}.zip`)
     const staging = await mkdtemp(path.join(outDir, 'portable-zip-'))
     try {
       await cp(appOutDir, staging, { recursive: true })

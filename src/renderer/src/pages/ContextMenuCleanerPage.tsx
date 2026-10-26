@@ -33,7 +33,7 @@ import type {
   ContextMenuStatus
 } from '@shared/types'
 
-const WIN11_NOTICE_KEY = 'kudu.contextMenu.win11Notice.dismissed'
+const WIN11_NOTICE_KEY = 'tokkip.contextMenu.win11Notice.dismissed'
 
 const SOURCE_PILL_COLOR: Record<ContextMenuSource, { bg: string; text: string }> = {
   '7-Zip': { bg: 'rgba(59,130,246,0.10)', text: '#60a5fa' },
@@ -132,7 +132,7 @@ function ContextMenuCleanerPageContent() {
 
   // Subscribe to apply-progress events from main.
   useEffect(() => {
-    const cleanup = window.kudu.onContextMenuApplyProgress((data) => {
+    const cleanup = window.tokkip.onContextMenuApplyProgress((data) => {
       useContextMenuStore.getState().setApplyProgress(data)
     })
     cleanupRef.current = cleanup
@@ -147,7 +147,7 @@ function ContextMenuCleanerPageContent() {
     store.setApplyResult(null)
     store.setError(null)
     try {
-      const result = await window.kudu.contextMenuScan()
+      const result = await window.tokkip.contextMenuScan()
       const sorted = [...(result.entries ?? [])].sort((a, b) => {
         if (a.source === b.source) return a.displayName.localeCompare(b.displayName)
         if (a.source === 'Unknown') return 1
@@ -166,7 +166,7 @@ function ContextMenuCleanerPageContent() {
 
   const handleScanCancel = useCallback(async () => {
     try {
-      await window.kudu.contextMenuScanCancel()
+      await window.tokkip.contextMenuScanCancel()
     } catch {
       /* ignore */
     }
@@ -253,7 +253,7 @@ function ContextMenuCleanerPageContent() {
       store.setApplyResult(null)
       store.setApplyProgress({ current: 0, total: reqs.length, currentLabel: t('applyingTitle') })
       try {
-        const result = await window.kudu.contextMenuApply(reqs)
+        const result = await window.tokkip.contextMenuApply(reqs)
         const s = useContextMenuStore.getState()
         s.setApplyResult(result)
         if (result.updates.length > 0) s.applyUpdates(result.updates)
@@ -632,7 +632,7 @@ function ContextMenuCleanerPageContent() {
           <AlertTriangle className="h-4 w-4 shrink-0 text-violet-400" strokeWidth={1.8} />
           <span className="flex-1 text-zinc-300">{t('elevationPrompt')}</span>
           <button
-            onClick={() => window.kudu.elevationRelaunch?.().catch(() => {})}
+            onClick={() => window.tokkip.elevationRelaunch?.().catch(() => {})}
             className="rounded-md px-3 py-1 text-[11px] font-medium text-violet-400"
             style={{ background: 'rgba(167, 139, 250,0.10)' }}
           >

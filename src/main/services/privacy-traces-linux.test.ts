@@ -28,7 +28,7 @@ const ctx = (overrides: Partial<TraceScanContext> = {}): TraceScanContext => ({
 })
 
 beforeEach(async () => {
-  home = await mkdtemp(join(tmpdir(), 'kudu-linux-traces-'))
+  home = await mkdtemp(join(tmpdir(), 'tokkip-linux-traces-'))
   share = join(home, '.local', 'share')
   await mkdir(join(share, 'RecentDocuments'), { recursive: true })
 })

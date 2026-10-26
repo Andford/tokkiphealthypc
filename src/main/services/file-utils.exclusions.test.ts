@@ -12,7 +12,7 @@ import { deletionTouchesExclusions } from './file-utils'
 
 let root: string
 beforeEach(() => {
-  root = mkdtempSync(join(tmpdir(), 'kudu-excl-'))
+  root = mkdtempSync(join(tmpdir(), 'tokkip-excl-'))
   mkdirSync(join(root, 'App', 'saves'), { recursive: true })
   writeFileSync(join(root, 'App', 'cache.bin'), 'x')
   writeFileSync(join(root, 'App', 'saves', 'slot1.sav'), 'x')

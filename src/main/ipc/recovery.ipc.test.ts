@@ -8,7 +8,7 @@ const mocks = vi.hoisted(() => ({
   openPath: vi.fn(async () => ''),
   showItemInFolder: vi.fn(),
   resolveBackupFile: vi.fn(),
-  backupDir: 'C:/kudu-test/Kudu Backups',
+  backupDir: 'C:/tokkip-test/Tokkip Backups',
   readdir: vi.fn(),
   lstat: vi.fn()
 }))

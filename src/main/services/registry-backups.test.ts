@@ -86,7 +86,7 @@ function regFile(sections: string[], header = HEADER): Buffer {
 }
 const keysFile = (keys: string[]) => regFile(keys.map((k) => `[${k}]`))
 const sha = (b: Buffer) => createHash('sha256').update(b).digest('hex')
-/** Record a seal for a file already in the backup folder, as Kudu would when writing it. */
+/** Record a seal for a file already in the backup folder, as Tokkip would when writing it. */
 const seal = (name: string) =>
   mocks.seals.set(name.toLowerCase(), sha(readFileSync(join(dir, name))))
 
@@ -113,8 +113,8 @@ beforeEach(() => {
     return path
   })
   Object.defineProperty(process, 'platform', { value: 'win32', configurable: true })
-  dir = mkdtempSync(join(tmpdir(), 'kudu-reg-backups-'))
-  outside = mkdtempSync(join(tmpdir(), 'kudu-reg-outside-'))
+  dir = mkdtempSync(join(tmpdir(), 'tokkip-reg-backups-'))
+  outside = mkdtempSync(join(tmpdir(), 'tokkip-reg-outside-'))
   mocks.dir = dir
   mocks.sealedDir = dir
 })
@@ -395,7 +395,7 @@ describe('buildTombstones', () => {
 })
 
 describe('listRegistryBackups', () => {
-  it('lists only Kudu-prefixed .reg files, newest first', async () => {
+  it('lists only Tokkip-prefixed .reg files, newest first', async () => {
     const files: Record<string, Buffer> = {
       [TARGETED]: keysFile([RUN, DNS]),
       'registry-backup-2026-09-19T04-54-02-325Z.reg': keysFile(['HKEY_LOCAL_MACHINE\\SOFTWARE']),
@@ -473,7 +473,7 @@ describe('listRegistryBackups', () => {
 
   it('keeps the seals of a previous backup folder when the folder changes', async () => {
     writeSealed(TARGETED, keysFile([RUN]))
-    // The user points Kudu at another, existing folder and opens Recovery.
+    // The user points Tokkip at another, existing folder and opens Recovery.
     mocks.dir = outside
     writeFileSync(join(outside, 'registry-backup-targeted-2026-09-14T04-54-02-325Z.reg'), '')
     await listRegistryBackups()
@@ -600,7 +600,7 @@ describe('restoreRegistryBackup', () => {
     ])
     // The import reads a private copy holding exactly the validated bytes.
     const [imp] = importCalls()
-    expect(mocks.privateTemp).toHaveBeenCalledWith('kudu-reg-restore-')
+    expect(mocks.privateTemp).toHaveBeenCalledWith('tokkip-reg-restore-')
     expect(imp[1]).toEqual(['import', join(privateDirs[0]!, 'restore.reg')])
     expect(imported).toEqual(keysFile([RUN, DNS]))
     expect(mocks.tracked.mock.invocationCallOrder[0]).toBeLessThan(callOrder(exportCalls()[0]))
@@ -989,7 +989,7 @@ describe('existence check batching', () => {
   })
 })
 
-/** Write a backup into the folder and seal it, as Kudu does when creating one. */
+/** Write a backup into the folder and seal it, as Tokkip does when creating one. */
 function writeSealed(name: string, buf: Buffer) {
   writeFileSync(join(dir, name), buf)
   seal(name)

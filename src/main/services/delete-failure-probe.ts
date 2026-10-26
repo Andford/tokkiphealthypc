@@ -12,7 +12,7 @@ using System;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
 
-public static class KuduDeleteAccessProbe {
+public static class TokkipDeleteAccessProbe {
   [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
   static extern SafeFileHandle CreateFileW(string name, uint access, uint share,
     IntPtr security, uint creation, uint flags, IntPtr template);
@@ -30,7 +30,7 @@ $out = @($paths | ForEach-Object {
   $path = [string]$_
   [PSCustomObject]@{
     path = $path
-    code = [KuduDeleteAccessProbe]::Probe($path, [IO.Directory]::Exists($path))
+    code = [TokkipDeleteAccessProbe]::Probe($path, [IO.Directory]::Exists($path))
   }
 })
 ConvertTo-Json -InputObject $out -Compress`
@@ -66,7 +66,7 @@ export async function probeWindowsDeleteFailures(
   const uniquePaths = [...new Set(paths)].slice(0, MAX_PROBED_PATHS)
   if (uniquePaths.length === 0) return new Map()
 
-  const tempDir = await mkdtemp(join(tmpdir(), 'kudu-delete-probe-'))
+  const tempDir = await mkdtemp(join(tmpdir(), 'tokkip-delete-probe-'))
   const pathFile = join(tempDir, 'paths.json')
   try {
     await writeFile(pathFile, JSON.stringify(uniquePaths), 'utf8')

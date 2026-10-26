@@ -79,7 +79,7 @@ interface SoftwareUpdaterState {
 const severityOrder = { major: 0, minor: 1, patch: 2, unknown: 3 }
 
 function persistIgnoredIds(ids: Set<string>): void {
-  window.kudu?.settingsSet?.({ ignoredSoftwareUpdates: [...ids] }).catch(() => {})
+  window.tokkip?.settingsSet?.({ ignoredSoftwareUpdates: [...ids] }).catch(() => {})
 }
 
 export const useUpdaterStore = create<SoftwareUpdaterState>((set, get) => ({

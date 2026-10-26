@@ -9,7 +9,7 @@ import {
 
 /**
  * GTK and KDE keep these lists under $XDG_DATA_HOME, which defaults to
- * ~/.local/share. The spec ignores a relative value, so Kudu does too.
+ * ~/.local/share. The spec ignores a relative value, so Tokkip does too.
  */
 function xdgDataHome(ctx: TraceScanContext): string {
   const configured = ctx.env.XDG_DATA_HOME

@@ -26,7 +26,7 @@ i18n.use(initReactI18next).init({
 })
 
 // Sync language from persisted settings
-window.kudu
+window.tokkip
   ?.settingsGet?.()
   .then((settings) => {
     if (settings?.language && settings.language !== i18n.language) {

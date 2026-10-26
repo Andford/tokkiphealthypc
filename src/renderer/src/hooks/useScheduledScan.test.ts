@@ -51,7 +51,7 @@ const api = {
 beforeEach(() => {
   vi.clearAllMocks()
   mocks.createRestorePoint = false
-  vi.stubGlobal('window', { kudu: api })
+  vi.stubGlobal('window', { tokkip: api })
   api.scheduleAuthorize.mockReset().mockResolvedValue({ allowed: true, reason: null })
   api.systemScan.mockResolvedValue([result('Cache', 'one'), result('Logs', 'two')])
   api.systemClean.mockResolvedValue({ filesDeleted: 1, totalCleaned: 10, errors: [] })

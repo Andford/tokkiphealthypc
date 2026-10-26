@@ -17,7 +17,7 @@ import { resolveChildSubdirs, resolveRecursivePathMatches, scanAppRule } from '.
 const tempRoots: string[] = []
 
 async function tempRoot(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'kudu-recursive-rule-'))
+  const root = await mkdtemp(join(tmpdir(), 'tokkip-recursive-rule-'))
   tempRoots.push(root)
   return root
 }

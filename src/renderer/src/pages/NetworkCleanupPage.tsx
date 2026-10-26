@@ -77,7 +77,7 @@ export function NetworkCleanupPage() {
     store.setSelectedIds(new Set())
     store.setCleanResult(null)
     try {
-      const result = await window.kudu.networkScan()
+      const result = await window.tokkip.networkScan()
       const s = useNetworkStore.getState()
       s.setItems(result)
       const preSelected = new Set(result.filter((i) => i.selected).map((i) => i.id))
@@ -96,7 +96,7 @@ export function NetworkCleanupPage() {
     const cleanStart = Date.now()
     try {
       const { selectedIds: currentSelectedIds, items: currentItems } = useNetworkStore.getState()
-      const result = await window.kudu.networkClean([...currentSelectedIds])
+      const result = await window.tokkip.networkClean([...currentSelectedIds])
       const s = useNetworkStore.getState()
       s.setCleanResult(result)
       // Remove cleaned items from list
@@ -134,7 +134,7 @@ export function NetworkCleanupPage() {
       // Re-scan after cleaning to show the actual current state —
       // without this, items like DNS/ARP appear removed but come back on next manual scan
       try {
-        const freshItems = await window.kudu.networkScan()
+        const freshItems = await window.tokkip.networkScan()
         const ns = useNetworkStore.getState()
         ns.setItems(freshItems)
         ns.setSelectedIds(new Set())

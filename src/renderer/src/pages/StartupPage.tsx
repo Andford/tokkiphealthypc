@@ -435,7 +435,7 @@ export function StartupPage() {
   const safetyLoading = useStartupStore((s) => s.safetyLoading)
   const expandedItemId = useStartupStore((s) => s.expandedItemId)
 
-  const isCloudLinked = false // Safety ratings needed Kudu Cloud
+  const isCloudLinked = false // Safety ratings needed Tokkip Cloud
 
   const store = useStartupStore
 
@@ -443,7 +443,7 @@ export function StartupPage() {
     store.getState().setLoading(true)
     store.getState().setError(null)
     try {
-      const list = await window.kudu.startupList()
+      const list = await window.tokkip.startupList()
       store.getState().setItems(list)
     } catch (err) {
       console.error('Failed to load startup items:', err)
@@ -455,7 +455,7 @@ export function StartupPage() {
   const loadBootTrace = useCallback(async () => {
     store.getState().setTraceLoading(true)
     try {
-      const trace = await window.kudu.startupBootTrace()
+      const trace = await window.tokkip.startupBootTrace()
       store.getState().setBootTrace(trace)
     } catch (err) {
       console.error('Failed to load boot trace:', err)
@@ -483,7 +483,7 @@ export function StartupPage() {
     const startTime = Date.now()
     store.getState().updateItem(item.id, { enabled })
     try {
-      const success = await window.kudu.startupToggle(
+      const success = await window.tokkip.startupToggle(
         item.name,
         item.location,
         item.command,
@@ -546,7 +546,7 @@ export function StartupPage() {
   const handleDelete = async (item: StartupItem) => {
     const startTime = Date.now()
     try {
-      const success = await window.kudu.startupDelete(
+      const success = await window.tokkip.startupDelete(
         item.name,
         item.source === 'startup-folder' ? item.command : item.location,
         item.source

@@ -30,7 +30,7 @@ describe('Custom folders', () => {
   let fixture: string, root: string, store: string, exclusions: string[]
   let trash: ReturnType<typeof vi.fn>, folders: CustomFolders
   beforeEach(async () => {
-    fixture = await realpath(await mkdtemp(join(tmpdir(), 'kudu-custom-folders-')))
+    fixture = await realpath(await mkdtemp(join(tmpdir(), 'tokkip-custom-folders-')))
     root = join(fixture, 'portable', 'cache')
     store = join(fixture, 'userData', 'custom-folders.json')
     await mkdir(root, { recursive: true })
@@ -130,8 +130,8 @@ describe('Custom folders', () => {
 
   it('recursively previews files, respects exclusions and skips links and recovery folders', async () => {
     await mkdir(join(root, 'nested'))
-    await mkdir(join(root, 'Kudu Custom Folder Recovery-existing'))
-    await writeFile(join(root, 'Kudu Custom Folder Recovery-existing', 'held.log'), 'held')
+    await mkdir(join(root, 'Tokkip Custom Folder Recovery-existing'))
+    await writeFile(join(root, 'Tokkip Custom Folder Recovery-existing', 'held.log'), 'held')
     await writeFile(join(root, 'nested', 'one.log'), 'data')
     await writeFile(join(root, 'skip.tmp'), 'skip')
     await link(join(root, 'nested', 'one.log'), join(root, 'linked.log'))
@@ -165,7 +165,7 @@ describe('Custom folders', () => {
     expect(result.trashedIds).toEqual([selected.id])
     expect(result.skippedIds).toEqual([join(root, 'two.log')])
     expect(trash).toHaveBeenCalledOnce()
-    expect(trash.mock.calls[0][0]).toContain('Kudu Custom Folder Recovery-')
+    expect(trash.mock.calls[0][0]).toContain('Tokkip Custom Folder Recovery-')
     expect(await readFile(join(root, 'two.log'), 'utf8')).toBe('two')
     expect(await readFile(join(root, 'nested', 'new.log'), 'utf8')).toBe('new')
     expect((await folders.trashSelected(scan.scanId, [selected.id])).skippedIds).toEqual([

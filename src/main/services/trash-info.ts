@@ -31,7 +31,7 @@ export function trashEntryNames(trashFilesPath: string, cleanedPaths: string[]):
  * `files/<name>`. Emptying `files/` leaves those records behind, so the trash
  * keeps a list of what was deleted and where it came from. Only records whose
  * item no longer exists are removed; anything that can't be checked is kept.
- * Records for `cleaned` entries — ones Kudu itself just deleted — are removed
+ * Records for `cleaned` entries — ones Tokkip itself just deleted — are removed
  * at once; other orphans only once they are past the in-flight grace period,
  * since they may belong to a trash operation still in progress.
  * A no-op for trash folders that don't follow the spec (e.g. macOS ~/.Trash).

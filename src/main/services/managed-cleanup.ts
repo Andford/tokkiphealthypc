@@ -48,7 +48,7 @@ export async function scanManagedCleanup(
   fallbackPath: string
 ): Promise<ScanResult> {
   const empty: ScanResult = { category, subcategory: label, items: [], totalSize: 0, itemCount: 0 }
-  // Native tools cannot honor arbitrary Kudu exclusions; never bypass them.
+  // Native tools cannot honor arbitrary Tokkip exclusions; never bypass them.
   if (!actions.has(action) || (getSettings().exclusions ?? []).length) return empty
   let path = fallbackPath
   let dockerTarget: ScanItem['dockerTarget']

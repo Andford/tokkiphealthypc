@@ -57,7 +57,7 @@ export function AboutPage() {
           <div className="mt-5 flex items-center gap-3">
             {updateStatus.state === 'idle' && (
               <button
-                onClick={() => window.kudu?.updaterCheck?.()}
+                onClick={() => window.tokkip?.updaterCheck?.()}
                 className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[12px] font-medium text-zinc-400 transition-colors"
                 style={{ border: '1px solid var(--border-medium)' }}
               >
@@ -81,7 +81,7 @@ export function AboutPage() {
                   {t('upToDate')}
                 </span>
                 <button
-                  onClick={() => window.kudu?.updaterCheck?.()}
+                  onClick={() => window.tokkip?.updaterCheck?.()}
                   className="flex items-center gap-2 rounded-xl px-3 py-2 text-[12px] font-medium text-zinc-400 transition-colors"
                   style={{ border: '1px solid var(--border-medium)' }}
                 >
@@ -95,7 +95,7 @@ export function AboutPage() {
                   {t('versionAvailable', { version: updateStatus.version })}
                 </span>
                 <button
-                  onClick={() => window.kudu?.updaterDownload?.()}
+                  onClick={() => window.tokkip?.updaterDownload?.()}
                   className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[12px] font-medium text-zinc-200 transition-colors"
                   style={{ background: 'var(--accent)', color: 'var(--text-on-accent)' }}
                 >
@@ -130,7 +130,7 @@ export function AboutPage() {
             )}
             {updateStatus.state === 'downloaded' && (
               <button
-                onClick={() => window.kudu?.updaterInstall?.()}
+                onClick={() => window.tokkip?.updaterInstall?.()}
                 className="flex items-center gap-2 rounded-xl px-4 py-2.5 text-[12px] font-medium transition-colors"
                 style={{ background: '#22c55e', color: 'var(--text-on-accent)' }}
               >
@@ -145,7 +145,7 @@ export function AboutPage() {
                   {updateStatus.error}
                 </span>
                 <button
-                  onClick={() => window.kudu?.updaterCheck?.()}
+                  onClick={() => window.tokkip?.updaterCheck?.()}
                   className="flex items-center gap-2 rounded-xl px-3 py-2 text-[12px] font-medium text-zinc-400 transition-colors"
                   style={{ border: '1px solid var(--border-medium)' }}
                 >

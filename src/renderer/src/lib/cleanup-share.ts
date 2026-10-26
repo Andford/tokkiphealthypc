@@ -121,7 +121,7 @@ export function cleanupCardSvg(
   <circle cx="970" cy="100" r="390" fill="url(#glow)"/>
   <g font-family="Arial, sans-serif">
   <rect x="56" y="52" width="48" height="48" rx="14" fill="#a78bfa"/>
-  ${text(67, 87, 32, 'k', '#18181b', 700)}${text(119, 88, 32, 'kudu', ink, 700)}
+  ${text(67, 87, 32, 'k', '#18181b', 700)}${text(119, 88, 32, 'tokkip', ink, 700)}
   ${text(56, 150, 18, t(data.cleanups > 1 ? 'share.historyEyebrow' : 'share.cleanupEyebrow'), muted)}
   ${text(56, heroY, 76, formatBytes(data.bytes, 1), accent, 700)}
   ${text(59, heroY + 43, 22, t('share.recovered'), muted)}

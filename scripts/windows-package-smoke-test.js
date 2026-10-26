@@ -17,7 +17,7 @@ async function main() {
   const version = require('../package.json').version
   const suffix = process.arch === 'arm64' ? '-arm64' : ''
   const channel = `latest${suffix}`
-  const installerName = `Kudu-Setup-${version}${suffix}.exe`
+  const installerName = `Tokkip-Setup-${version}${suffix}.exe`
   const installer = path.resolve('dist', installerName)
   const manifest = yaml.load(readFileSync(path.resolve('dist', `${channel}.yml`), 'utf8'))
   assert.equal(manifest.version, version)
@@ -30,7 +30,7 @@ async function main() {
   assert.equal(manifest.files[0].sha512, createHash('sha512').update(contents).digest('base64'))
   assert.equal(manifest.files[0].size, contents.length)
 
-  const temporary = mkdtempSync(path.join(tmpdir(), 'kudu-windows-smoke-'))
+  const temporary = mkdtempSync(path.join(tmpdir(), 'tokkip-windows-smoke-'))
   const installed = path.join(temporary, 'installed')
   const portable = path.join(temporary, 'portable')
   const run = (file, args) => {
@@ -50,7 +50,7 @@ async function main() {
     assert.equal(config.channel || 'latest', channel, 'Wrong packaged update channel')
     run(process.execPath, [
       path.resolve(__dirname, 'package-smoke-test.js'),
-      path.join(directory, 'Kudu.exe')
+      path.join(directory, 'Tokkip.exe')
     ])
   }
   try {
@@ -59,14 +59,14 @@ async function main() {
     // Reinstall through the same NSIS path used by the updater, retaining native architecture.
     run(installer, ['/S', '--updated', `/D=${installed}`])
     smoke(installed, false)
-    const zip = path.resolve('dist', `Kudu-Portable-${version}-${process.arch}.zip`)
+    const zip = path.resolve('dist', `Tokkip-Portable-${version}-${process.arch}.zip`)
     run(await getPath7za(), ['x', zip, `-o${portable}`, '-y'])
     smoke(portable, true)
     console.log(
       `Windows ${process.arch} install, reinstall, update metadata, and portable ZIP passed`
     )
   } finally {
-    const uninstaller = path.join(installed, 'Uninstall Kudu.exe')
+    const uninstaller = path.join(installed, 'Uninstall Tokkip.exe')
     if (existsSync(uninstaller)) run(uninstaller, ['/S', `_?=${installed}`])
     assert.equal(path.dirname(temporary), path.resolve(tmpdir()))
     await rm(temporary, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 })

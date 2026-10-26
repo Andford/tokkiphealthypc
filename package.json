@@ -1,7 +1,7 @@
 {
   "name": "tokkip-healthy-pc",
-  "version": "0.1.0",
-  "description": "Tokkip Healthy PC — keep your PC healthy with Tokkip. Based on Kudu.",
+  "version": "0.2.0",
+  "description": "Tokkip Healthy PC — keep your PC healthy with Tokkip. Based on Tokkip.",
   "main": "./out/main/index.js",
   "scripts": {
     "dev": "electron-vite dev",

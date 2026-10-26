@@ -57,7 +57,7 @@ import { registerDuplicateFinderIpc } from './duplicate-finder.ipc'
 // For now, test file creation and hashing correctness with crypto directly
 import { createHash } from 'crypto'
 
-const TEST_DIR = join(tmpdir(), `kudu-dup-test-${Date.now()}`)
+const TEST_DIR = join(tmpdir(), `tokkip-dup-test-${Date.now()}`)
 
 beforeAll(() => {
   mkdirSync(TEST_DIR, { recursive: true })
@@ -200,7 +200,7 @@ describe('duplicate finder global exclusions', () => {
     mocks.settings.exclusions = []
     registerDuplicateFinderIpc(() => null)
     // Scans walk the real path (e.g. /private/var on macOS), so compare against it.
-    root = realpathSync.native(mkdtempSync(join(tmpdir(), 'kudu-dup-exclusions-')))
+    root = realpathSync.native(mkdtempSync(join(tmpdir(), 'tokkip-dup-exclusions-')))
     mkdirSync(join(root, 'keep'))
     for (const name of ['a.bin', 'b.bin', 'c.log', join('keep', 'd.bin')]) {
       writeFileSync(join(root, name), 'same content')
@@ -273,7 +273,7 @@ describe('duplicate finder deletion safety', () => {
     mocks.trashItem.mockReset()
     mocks.onRealpath = null
     registerDuplicateFinderIpc(() => null)
-    root = realpathSync.native(mkdtempSync(join(tmpdir(), 'kudu-dup-safety-')))
+    root = realpathSync.native(mkdtempSync(join(tmpdir(), 'tokkip-dup-safety-')))
     // Reverse alphabetical, so listing order cannot come from directory order.
     a = join(root, 'z.bin')
     bb = join(root, 'yy.bin')
@@ -352,7 +352,7 @@ describe('duplicate finder deletion safety', () => {
   it('keeps a hard-linked file and only deletes the copy that frees space', async (ctx) => {
     rmSync(ccc)
     // bb has a second name outside the scanned folder, so deleting it frees nothing.
-    const outside = mkdtempSync(join(tmpdir(), 'kudu-dup-links-'))
+    const outside = mkdtempSync(join(tmpdir(), 'tokkip-dup-links-'))
     try {
       if (!tryLink(() => linkSync(bb, join(outside, 'alias.bin')), ctx)) return
       const [group] = (await scan()).groups
@@ -468,7 +468,7 @@ describe('duplicate finder deletion safety', () => {
     const inDir = join(dir, 'yy.bin')
     writeFileSync(inDir, 'same content')
     await scan()
-    const elsewhere = mkdtempSync(join(tmpdir(), 'kudu-dup-elsewhere-'))
+    const elsewhere = mkdtempSync(join(tmpdir(), 'tokkip-dup-elsewhere-'))
     try {
       writeFileSync(join(elsewhere, 'yy.bin'), 'same content')
       renameSync(dir, join(root, 'dir-moved'))

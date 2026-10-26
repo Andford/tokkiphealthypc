@@ -1123,7 +1123,7 @@ function DeletedFilesSection({ from, to }: { from: string; to: string }) {
     setLoading(true)
     // origin: a cloud-triggered clean can overlap this run's window; its
     // deletions belong to Cloud history, not to this entry.
-    window.kudu
+    window.tokkip
       .deletionLogQuery({ from, to, origin: 'local', offset: 0, limit: DELETED_FILES_PAGE })
       .then((page) => {
         if (cancelled) return
@@ -1148,7 +1148,7 @@ function DeletedFilesSection({ from, to }: { from: string; to: string }) {
   const loadMore = async () => {
     setLoadingMore(true)
     try {
-      const page = await window.kudu.deletionLogQuery({
+      const page = await window.tokkip.deletionLogQuery({
         from,
         to,
         origin: 'local',
@@ -1166,7 +1166,7 @@ function DeletedFilesSection({ from, to }: { from: string; to: string }) {
   const handleExport = async () => {
     setExporting(true)
     try {
-      const savedTo = await window.kudu.deletionLogExport({ from, to, origin: 'local' })
+      const savedTo = await window.tokkip.deletionLogExport({ from, to, origin: 'local' })
       if (savedTo) toast.success(t('detail.deletedFiles.exported', { count: total }))
     } catch {
       toast.error(t('detail.deletedFiles.exportFailed'))
@@ -1199,7 +1199,7 @@ function DeletedFilesSection({ from, to }: { from: string; to: string }) {
             <IconButton
               icon={FolderOpen}
               label={t('detail.deletedFiles.openLog')}
-              onClick={() => window.kudu.deletionLogReveal()}
+              onClick={() => window.tokkip.deletionLogReveal()}
             />
           </div>
         )}

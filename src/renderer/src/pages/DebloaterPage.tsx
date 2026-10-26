@@ -51,7 +51,7 @@ export function DebloaterPage({ embedded }: { embedded?: boolean }) {
   const recomputeStats = useStatsStore((s) => s.recompute)
 
   useEffect(() => {
-    const cleanup = window.kudu.onDebloaterRemoveProgress((data) => {
+    const cleanup = window.tokkip.onDebloaterRemoveProgress((data) => {
       store.getState().setRemoveProgress(data)
     })
     return cleanup
@@ -63,7 +63,7 @@ export function DebloaterPage({ embedded }: { embedded?: boolean }) {
     store.getState().setRemoveResult(null)
     store.getState().setError(null)
     try {
-      const results = await window.kudu.debloaterScan()
+      const results = await window.tokkip.debloaterScan()
       store.getState().setApps(results)
       store.getState().setHasScanned(true)
     } catch (err) {
@@ -92,7 +92,7 @@ export function DebloaterPage({ embedded }: { embedded?: boolean }) {
     const selectedApps = currentApps.filter((a) => a.selected)
     const selectedPkgs = selectedApps.map((a) => a.packageName)
     try {
-      const result = await window.kudu.debloaterRemove(selectedPkgs)
+      const result = await window.tokkip.debloaterRemove(selectedPkgs)
       store.getState().setRemoveResult(result)
 
       // Build category breakdown by app category
@@ -127,7 +127,7 @@ export function DebloaterPage({ embedded }: { embedded?: boolean }) {
       recomputeStats()
 
       if (result.removed > 0) {
-        const results = await window.kudu.debloaterScan()
+        const results = await window.tokkip.debloaterScan()
         store.getState().setApps(results)
       }
     } catch (err) {

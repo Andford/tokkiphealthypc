@@ -2053,13 +2053,13 @@ async function createTargetedBackup(
   // Export into a folder unelevated processes cannot write, so the consolidated
   // file can be sealed as exactly what reg.exe exported. Without one (not
   // elevated), fall back to the user's temp folder and leave the backup unsealed:
-  // it is still written, but cannot be restored from inside Kudu.
+  // it is still written, but cannot be restored from inside Tokkip.
   let tempDir: string
   let sealable = true
   try {
-    tempDir = await createPrivateTempDir('kudu-reg-backup-')
+    tempDir = await createPrivateTempDir('tokkip-reg-backup-')
   } catch {
-    tempDir = mkdtempSync(join(tmpdir(), 'kudu-reg-backup-'))
+    tempDir = mkdtempSync(join(tmpdir(), 'tokkip-reg-backup-'))
     sealable = false
   }
   try {

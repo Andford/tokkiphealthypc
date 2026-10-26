@@ -4,7 +4,7 @@ import { join } from 'path'
 import { rmSync, mkdirSync, existsSync, readFileSync, writeFileSync, readdirSync } from 'fs'
 import { randomUUID } from 'crypto'
 
-const TEST_DIR = join(tmpdir(), `kudu-test-${randomUUID()}`)
+const TEST_DIR = join(tmpdir(), `tokkip-test-${randomUUID()}`)
 
 vi.mock('electron', () => ({
   app: {
@@ -27,7 +27,7 @@ import {
   getMachineId
 } from './settings-store'
 
-const DATA_DIR = join(TEST_DIR, 'Kudu-Dev')
+const DATA_DIR = join(TEST_DIR, 'Tokkip-Dev')
 const CONFIG_PATH = join(DATA_DIR, 'config.json')
 const onDisk = (): any => JSON.parse(readFileSync(CONFIG_PATH, 'utf-8'))
 

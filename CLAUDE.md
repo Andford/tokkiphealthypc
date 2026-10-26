@@ -15,9 +15,14 @@ and Wear OS, Tokkip Notas, Tokkip PC — all in Andford/coucousaltymod).
 - Tokkip's pieces live in `src/renderer/src/tokkip/` (drawing, health, party,
   sounds, shapes, theme in `tokkip.css`). Tokkip PC hears this app through
   `%APPDATA%/Tokkip/shared/healthy-pc.json` (`src/main/services/tokkip-notice.ts`).
-- Internal names (`window.kudu`, `KuduSettings`, CSS classes `kudu-*`) stay as
-  they are: they're never shown, and renaming them would only make merging
-  Kudu's fixes harder.
+- Everything is named Tokkip, inside too (`window.tokkip`, `AppSettings`, CSS
+  classes `tokkip-*`, logs, temp folders). Kudu's name stays only in LICENSE,
+  the About credit and README's credits. Kudu's fixes are ported by hand.
+- What 0.1.0 saved under Kudu's name is read once and never written: the
+  `KuduStartup` task (deleted when startup is set), `HKLM\SOFTWARE\Kudu\
+  RegistryBackupSeals` (read and cleaned in `registry-backup-seal.ts`), the
+  `Kudu … Recovery-` folders, and `kudu…` localStorage keys
+  (`src/renderer/src/tokkip/legacy.ts`). Keep these until nobody has 0.1.0.
 - Builds: `.github/workflows/build.yml` (Windows installer and portable on every
   push; a `v*` tag publishes a release the updater reads).
 

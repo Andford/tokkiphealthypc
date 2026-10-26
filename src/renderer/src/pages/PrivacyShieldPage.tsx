@@ -258,12 +258,12 @@ function PrivacySettingsPanel({ embedded }: { embedded?: boolean }) {
     // Listen for progress
     progressCleanupRef.current?.()
     progressCleanupRef.current =
-      window.kudu.onPrivacyProgress?.((data) => {
+      window.tokkip.onPrivacyProgress?.((data) => {
         usePrivacyStore.getState().setProgress(data)
       }) ?? null
 
     try {
-      const result = await window.kudu.privacyScan()
+      const result = await window.tokkip.privacyScan()
       usePrivacyStore.getState().setState(result)
       // Auto-expand categories with unprotected settings
       const unprotected = new Set<string>()
@@ -293,10 +293,10 @@ function PrivacySettingsPanel({ embedded }: { embedded?: boolean }) {
     store.setStatus('applying')
     store.setApplyResult(null)
     try {
-      const result = await window.kudu.privacyApply(unprotectedIds)
+      const result = await window.tokkip.privacyApply(unprotectedIds)
       usePrivacyStore.getState().setApplyResult(result)
       // Re-scan to get updated state
-      const updated = await window.kudu.privacyScan()
+      const updated = await window.tokkip.privacyScan()
       usePrivacyStore.getState().setState(updated)
       usePrivacyStore.getState().setStatus('done')
 
@@ -360,9 +360,9 @@ function PrivacySettingsPanel({ embedded }: { embedded?: boolean }) {
       store.setStatus('applying')
       store.setApplyResult(null)
       try {
-        const result = await window.kudu.privacyApply(ids)
+        const result = await window.tokkip.privacyApply(ids)
         usePrivacyStore.getState().setApplyResult(result)
-        const updated = await window.kudu.privacyScan()
+        const updated = await window.tokkip.privacyScan()
         usePrivacyStore.getState().setState(updated)
         usePrivacyStore.getState().setStatus('done')
         if (result.succeeded > 0)
@@ -429,9 +429,9 @@ function PrivacySettingsPanel({ embedded }: { embedded?: boolean }) {
       store.setStatus('applying')
       try {
         const result = isEnabling
-          ? await window.kudu.privacyApply([settingId])
-          : await window.kudu.privacyRevert([settingId])
-        const updated = await window.kudu.privacyScan()
+          ? await window.tokkip.privacyApply([settingId])
+          : await window.tokkip.privacyRevert([settingId])
+        const updated = await window.tokkip.privacyScan()
         usePrivacyStore.getState().setState(updated)
         usePrivacyStore.getState().setStatus('done')
 

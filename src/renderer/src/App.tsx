@@ -60,7 +60,7 @@ export function App() {
     const apply = (mode: 'dark' | 'light') => {
       root.classList.remove('dark', 'light')
       root.classList.add(mode)
-      window.kudu?.windowSetChromeTheme?.(mode)
+      window.tokkip?.windowSetChromeTheme?.(mode)
     }
     if (theme === 'system') {
       const mq = window.matchMedia('(prefers-color-scheme: dark)')
@@ -79,7 +79,7 @@ export function App() {
   }, [i18n.language])
 
   useEffect(() => {
-    const p = window.kudu?.onboardingGet?.()
+    const p = window.tokkip?.onboardingGet?.()
     if (p) {
       p.then((done) => {
         setShowOnboarding(!done)
@@ -98,11 +98,11 @@ export function App() {
   const handleOnboardingComplete = async () => {
     setShowOnboarding(false)
     try {
-      await window.kudu?.onboardingSet?.(true)
+      await window.tokkip?.onboardingSet?.(true)
     } catch (err) {
       // Swallowing this is what let the wizard come back on every launch with
       // nothing to go on (issue #269). The main process forwards renderer
-      // console errors into kudu.log.
+      // console errors into tokkip.log.
       console.error('[onboarding] failed to persist completion:', err)
     }
   }
@@ -257,7 +257,7 @@ function PageTitleUpdater() {
     if (entry) {
       name = t(entry.key)
     }
-    document.title = name ? `${name} - Kudu` : 'Kudu'
+    document.title = name ? `${name} - Tokkip` : 'Tokkip'
   }, [location.pathname, t])
   return null
 }

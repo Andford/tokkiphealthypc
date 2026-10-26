@@ -21,20 +21,20 @@ afterEach(async () => {
 })
 
 async function fixture() {
-  const directory = await mkdtemp(join(tmpdir(), 'kudu-release-test-'))
+  const directory = await mkdtemp(join(tmpdir(), 'tokkip-release-test-'))
   directories.push(directory)
   const names = expectedAssetNames(tag)
   const targets = {
-    'latest.yml': ['Kudu-Setup-2.9.0.exe'],
-    'latest-arm64.yml': ['Kudu-Setup-2.9.0-arm64.exe'],
+    'latest.yml': ['Tokkip-Setup-2.9.0.exe'],
+    'latest-arm64.yml': ['Tokkip-Setup-2.9.0-arm64.exe'],
     'latest-mac.yml': [
-      'Kudu-2.9.0-x64.dmg',
-      'Kudu-2.9.0-x64.zip',
-      'Kudu-2.9.0-arm64.dmg',
-      'Kudu-2.9.0-arm64.zip'
+      'Tokkip-2.9.0-x64.dmg',
+      'Tokkip-2.9.0-x64.zip',
+      'Tokkip-2.9.0-arm64.dmg',
+      'Tokkip-2.9.0-arm64.zip'
     ],
-    'latest-linux.yml': ['Kudu-x86_64.AppImage', 'Kudu-2.9.0-amd64.deb'],
-    'latest-linux-arm64.yml': ['Kudu-arm64.AppImage', 'Kudu-2.9.0-arm64.deb']
+    'latest-linux.yml': ['Tokkip-x86_64.AppImage', 'Tokkip-2.9.0-amd64.deb'],
+    'latest-linux-arm64.yml': ['Tokkip-arm64.AppImage', 'Tokkip-2.9.0-arm64.deb']
   }
   for (const name of names.filter((name: string) => !name.endsWith('.yml'))) {
     await writeFile(join(directory, name), name)
@@ -72,7 +72,7 @@ describe('release artifact verification', () => {
       const directory = await fixture()
       await editManifest(directory, name, (manifest) => {
         manifest.files[0].url =
-          name === 'latest.yml' ? 'Kudu-Setup-2.9.0-arm64.exe' : 'Kudu-Setup-2.9.0.exe'
+          name === 'latest.yml' ? 'Tokkip-Setup-2.9.0-arm64.exe' : 'Tokkip-Setup-2.9.0.exe'
       })
       await expect(verifyReleaseArtifacts(directory, tag)).rejects.toThrow(
         'unexpected update target'
@@ -82,17 +82,17 @@ describe('release artifact verification', () => {
 
   it('rejects a missing installer before publishing', async () => {
     const directory = await fixture()
-    await rm(join(directory, 'Kudu-2.9.0-arm64.dmg'))
+    await rm(join(directory, 'Tokkip-2.9.0-arm64.dmg'))
     await expect(verifyReleaseArtifacts(directory, tag)).rejects.toThrow('Missing release artifact')
   })
 
   it('requires the portable ZIP and never offers it as an installer update', async () => {
     const directory = await fixture()
     await editManifest(directory, 'latest.yml', (manifest) => {
-      manifest.files[0].url = 'Kudu-Portable-2.9.0-x64.zip'
+      manifest.files[0].url = 'Tokkip-Portable-2.9.0-x64.zip'
     })
     await expect(verifyReleaseArtifacts(directory, tag)).rejects.toThrow('unexpected update target')
-    await rm(join(directory, 'Kudu-Portable-2.9.0-x64.zip'))
+    await rm(join(directory, 'Tokkip-Portable-2.9.0-x64.zip'))
     await expect(verifyReleaseArtifacts(directory, tag)).rejects.toThrow('Missing release artifact')
   })
 
@@ -111,9 +111,9 @@ describe('release artifact verification', () => {
 
   it('rejects empty or unexpected artifacts', async () => {
     const directory = await fixture()
-    await writeFile(join(directory, 'Kudu-Setup-2.9.0.exe'), '')
+    await writeFile(join(directory, 'Tokkip-Setup-2.9.0.exe'), '')
     await expect(verifyReleaseArtifacts(directory, tag)).rejects.toThrow('Empty artifact')
-    await writeFile(join(directory, 'Kudu-Setup-2.9.0.exe'), 'Kudu-Setup-2.9.0.exe')
+    await writeFile(join(directory, 'Tokkip-Setup-2.9.0.exe'), 'Tokkip-Setup-2.9.0.exe')
     await writeFile(join(directory, 'builder-effective-config.yaml'), 'not a release asset')
     await expect(verifyReleaseArtifacts(directory, tag)).rejects.toThrow(
       'Unexpected release artifact'
@@ -129,9 +129,9 @@ describe('release artifact verification', () => {
   })
 
   it.each([
-    'Kudu-x86_64.AppImage',
-    '../Kudu-arm64.AppImage',
-    'https://example.com/Kudu-arm64.AppImage'
+    'Tokkip-x86_64.AppImage',
+    '../Tokkip-arm64.AppImage',
+    'https://example.com/Tokkip-arm64.AppImage'
   ])('rejects wrong-architecture or unsafe update target %s', async (url) => {
     const directory = await fixture()
     await editManifest(directory, 'latest-linux-arm64.yml', (manifest) => {
@@ -142,7 +142,7 @@ describe('release artifact verification', () => {
 
   it('rejects a manifest pointing at a modified installer', async () => {
     const directory = await fixture()
-    await writeFile(join(directory, 'Kudu-Setup-2.9.0.exe'), 'corrupted')
+    await writeFile(join(directory, 'Tokkip-Setup-2.9.0.exe'), 'corrupted')
     await expect(verifyReleaseArtifacts(directory, tag)).rejects.toThrow('checksum mismatch')
   })
 

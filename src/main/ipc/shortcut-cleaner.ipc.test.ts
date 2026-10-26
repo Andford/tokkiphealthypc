@@ -579,7 +579,7 @@ describe('shortcut directories structure', () => {
 
 describe('probePath', () => {
   it('reports a real file as present and a missing path as missing', async () => {
-    const dir = mkdtempSync(join(tmpdir(), 'kudu-probe-'))
+    const dir = mkdtempSync(join(tmpdir(), 'tokkip-probe-'))
     try {
       writeFileSync(join(dir, 'app'), 'x')
       expect(await probePath(join(dir, 'app'))).toBe('present')
@@ -593,7 +593,7 @@ describe('probePath', () => {
   it.skipIf(process.platform === 'win32')(
     'follows a dangling symlink to its missing target',
     async () => {
-      const dir = mkdtempSync(join(tmpdir(), 'kudu-probe-'))
+      const dir = mkdtempSync(join(tmpdir(), 'tokkip-probe-'))
       try {
         symlinkSync(join(dir, 'removed-binary'), join(dir, 'launcher'))
         expect(await probePath(join(dir, 'launcher'))).toBe('missing')
@@ -635,7 +635,7 @@ describe('shortcut scan global exclusions', () => {
   function writeBrokenEntry(dir: string, name: string): string {
     mkdirSync(dir, { recursive: true })
     const path = join(dir, name)
-    writeFileSync(path, '[Desktop Entry]\nExec=/nonexistent-kudu-test/app %u\n')
+    writeFileSync(path, '[Desktop Entry]\nExec=/nonexistent-tokkip-test/app %u\n')
     return path
   }
 
@@ -652,7 +652,7 @@ describe('shortcut scan global exclusions', () => {
     // The Linux resolver reads .desktop files directly, so it runs on any host.
     Object.defineProperty(process, 'platform', { value: 'linux', configurable: true })
     // Scans resolve real paths (8.3 names expanded on Windows), so use one here.
-    home = realpathSync.native(mkdtempSync(join(tmpdir(), 'kudu-shortcuts-')))
+    home = realpathSync.native(mkdtempSync(join(tmpdir(), 'tokkip-shortcuts-')))
     mocks.home = home
     mocks.settings.exclusions = []
     mocks.handlers.clear()
@@ -706,7 +706,7 @@ describe('shortcut scan global exclusions', () => {
 // Runs the real PowerShell walk, so Windows only.
 describe.skipIf(process.platform !== 'win32')('resolveWinShortcuts pruning', () => {
   it('never enumerates an excluded subfolder', async () => {
-    const root = realpathSync.native(mkdtempSync(join(tmpdir(), 'kudu-lnk-')))
+    const root = realpathSync.native(mkdtempSync(join(tmpdir(), 'tokkip-lnk-')))
     try {
       mkdirSync(join(root, 'Keep'))
       mkdirSync(join(root, 'Private'))
@@ -719,7 +719,7 @@ describe.skipIf(process.platform !== 'win32')('resolveWinShortcuts pruning', () 
       expect(await resolveWinShortcuts(root, ['*.lnk'])).toEqual([])
 
       // A junction inside the root pointing at an excluded folder is never followed.
-      const privateApps = realpathSync.native(mkdtempSync(join(tmpdir(), 'kudu-lnk-private-')))
+      const privateApps = realpathSync.native(mkdtempSync(join(tmpdir(), 'tokkip-lnk-private-')))
       try {
         writeFileSync(join(privateApps, 'secret.lnk'), 'x')
         symlinkSync(privateApps, join(root, 'Apps'), 'junction')

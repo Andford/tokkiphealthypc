@@ -901,7 +901,7 @@ describe('wingetRemedies', () => {
   })
 
   it('runs the same upgrade by hand when there is no mapped remedy', () => {
-    // Kudu runs winget silently, so the same command interactively is what
+    // Tokkip runs winget silently, so the same command interactively is what
     // finally shows winget's output.
     expect(wingetRemedies('Some.App')).toEqual(['winget upgrade --id "Some.App" --exact'])
     expect(wingetRemedies('Some.App', 1603)).toEqual(['winget upgrade --id "Some.App" --exact'])

@@ -29,7 +29,7 @@ describe('parseRestartManagerBlockers', () => {
         },
         { pid: 20, name: 'Slack', processName: 'slack', executablePath: 'C:\\Slack\\slack.exe' }
       ]),
-      'C:\\Program Files\\Kudu\\Kudu.exe'
+      'C:\\Program Files\\Tokkip\\Tokkip.exe'
     )
 
     expect(result).toEqual([
@@ -38,16 +38,16 @@ describe('parseRestartManagerBlockers', () => {
     ])
   })
 
-  it('omits Kudu processes because they cannot be closed from the cleaner UI', () => {
+  it('omits Tokkip processes because they cannot be closed from the cleaner UI', () => {
     const result = parseRestartManagerBlockers(
       JSON.stringify([
         {
           pid: 30,
-          name: 'Kudu',
-          processName: 'Kudu',
-          executablePath: 'C:\\Program Files\\Kudu\\Kudu.exe'
+          name: 'Tokkip',
+          processName: 'Tokkip',
+          executablePath: 'C:\\Program Files\\Tokkip\\Tokkip.exe'
         },
-        { pid: 31, name: 'Kudu', processName: 'Kudu', executablePath: '' },
+        { pid: 31, name: 'Tokkip', processName: 'Tokkip', executablePath: '' },
         {
           pid: 32,
           name: 'Firefox',
@@ -55,7 +55,7 @@ describe('parseRestartManagerBlockers', () => {
           executablePath: 'C:\\Firefox\\firefox.exe'
         }
       ]),
-      'C:\\Program Files\\Kudu\\Kudu.exe'
+      'C:\\Program Files\\Tokkip\\Tokkip.exe'
     )
 
     expect(result).toEqual([{ pid: 32, name: 'Firefox', processName: 'firefox', isBrowser: true }])
@@ -69,7 +69,7 @@ describe('parseRestartManagerBlockers', () => {
 
 describe('collectBlockerCandidateFiles', () => {
   it('expands selected directories to files without following links', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'kudu-blocker-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'tokkip-blocker-test-'))
     tempDirs.push(root)
     const selected = join(root, 'selected')
     const outside = join(root, 'outside')
@@ -101,7 +101,7 @@ describe('collectBlockerCandidateFiles', () => {
   })
 
   it('keeps the preflight bounded and spreads candidates across subcategories', async () => {
-    const root = await mkdtemp(join(tmpdir(), 'kudu-blocker-test-'))
+    const root = await mkdtemp(join(tmpdir(), 'tokkip-blocker-test-'))
     tempDirs.push(root)
     const items: ScanItem[] = []
     for (let index = 0; index < 10; index++) {

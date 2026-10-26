@@ -25,7 +25,7 @@ export function StorageHistoryPage() {
   const [scopeId, setScopeId] = useState(''),
     [offset, setOffset] = useState(0)
   const [data, setData] = useState<Awaited<
-    ReturnType<typeof window.kudu.storageHistoryList>
+    ReturnType<typeof window.tokkip.storageHistoryList>
   > | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(''),
@@ -34,11 +34,11 @@ export function StorageHistoryPage() {
     [after, setAfter] = useState(''),
     [page, setPage] = useState(0)
   const [comparison, setComparison] = useState<Awaited<
-    ReturnType<typeof window.kudu.storageHistoryCompare>
+    ReturnType<typeof window.tokkip.storageHistoryCompare>
   > | null>(null)
   const [deleting, setDeleting] = useState<{ id: string; scope: boolean } | null>(null)
   const refresh = useCallback(async () => {
-    const result = await window.kudu.storageHistoryList(scopeId, offset)
+    const result = await window.tokkip.storageHistoryList(scopeId, offset)
     setData(result)
     if (!scopeId && result.scopes[0]) setScopeId(result.scopes[0].id)
   }, [scopeId, offset])
@@ -46,7 +46,7 @@ export function StorageHistoryPage() {
     let mounted = true
     const read = async () => {
       try {
-        const result = await window.kudu.storageHistoryList(scopeId, offset)
+        const result = await window.tokkip.storageHistoryList(scopeId, offset)
         if (mounted) {
           setData(result)
           setError('')
@@ -82,7 +82,7 @@ export function StorageHistoryPage() {
   const compare = async (nextPage = 0) => {
     setPage(nextPage)
     await run(async () =>
-      setComparison(await window.kudu.storageHistoryCompare(before, after, nextPage))
+      setComparison(await window.tokkip.storageHistoryCompare(before, after, nextPage))
     )
   }
   const button = 'feature-button'
@@ -99,7 +99,7 @@ export function StorageHistoryPage() {
           disabled={busy}
           onClick={() =>
             void run(async () => {
-              const added = await window.kudu.storageHistoryAdd()
+              const added = await window.tokkip.storageHistoryAdd()
               if (added) {
                 setScopeId(added.id)
                 setOffset(0)
@@ -160,7 +160,7 @@ export function StorageHistoryPage() {
           <button
             className={button}
             onClick={() =>
-              void window.kudu.storageHistoryCancel().catch((e) => setError(String(e)))
+              void window.tokkip.storageHistoryCancel().catch((e) => setError(String(e)))
             }
           >
             {t('storage.cancel')}
@@ -177,7 +177,7 @@ export function StorageHistoryPage() {
                 disabled={busy || !!capture}
                 onClick={() =>
                   void run(async () => {
-                    await window.kudu.storageHistoryCapture(scope.id)
+                    await window.tokkip.storageHistoryCapture(scope.id)
                     setOffset(0)
                   })
                 }
@@ -200,7 +200,9 @@ export function StorageHistoryPage() {
                 key={scope.id}
                 scope={scope}
                 disabled={busy}
-                save={(config) => run(() => window.kudu.storageHistoryConfigure(scope.id, config))}
+                save={(config) =>
+                  run(() => window.tokkip.storageHistoryConfigure(scope.id, config))
+                }
               />
             </details>
           </div>
@@ -302,7 +304,7 @@ export function StorageHistoryPage() {
                           <button
                             className={button}
                             disabled={busy}
-                            onClick={() => void run(() => window.kudu.storageHistoryExport(s.id))}
+                            onClick={() => void run(() => window.tokkip.storageHistoryExport(s.id))}
                           >
                             {t('storage.export')}
                           </button>
@@ -392,7 +394,7 @@ export function StorageHistoryPage() {
                               className={button}
                               disabled={busy || row.after === null}
                               onClick={() =>
-                                void run(() => window.kudu.storageHistoryOpen(after, row.path))
+                                void run(() => window.tokkip.storageHistoryOpen(after, row.path))
                               }
                             >
                               {t('storage.open')}
@@ -443,7 +445,7 @@ export function StorageHistoryPage() {
           const item = deleting!
           setDeleting(null)
           void run(async () => {
-            await window.kudu.storageHistoryDelete(item.id, item.scope)
+            await window.tokkip.storageHistoryDelete(item.id, item.scope)
             setBefore('')
             setAfter('')
             setComparison(null)

@@ -15,7 +15,7 @@ vi.mock('systeminformation', () => ({
   default: { blockDevices: mocks.blocks, fsSize: mocks.sizes }
 }))
 vi.mock('electron', () => ({
-  app: { getPath: () => '/kudu-private' },
+  app: { getPath: () => '/tokkip-private' },
   Notification: { isSupported: () => false },
   powerMonitor: {}
 }))

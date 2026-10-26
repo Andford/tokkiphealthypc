@@ -1,14 +1,14 @@
 import { create } from 'zustand'
-import type { KuduSettings } from '@shared/types'
+import type { AppSettings } from '@shared/types'
 
 interface SettingsState {
-  settings: KuduSettings
+  settings: AppSettings
   loaded: boolean
-  setSettings: (settings: KuduSettings) => void
-  updateSettings: (partial: Partial<KuduSettings>) => void
+  setSettings: (settings: AppSettings) => void
+  updateSettings: (partial: Partial<AppSettings>) => void
 }
 
-export const defaultSettings: KuduSettings = {
+export const defaultSettings: AppSettings = {
   theme: 'system',
   dashboardView: 'simple',
   language: 'en',
@@ -87,7 +87,7 @@ export const useSettingsStore = create<SettingsState>((set) => ({
 
 /** Re-fetch settings from main process into the store */
 export function refreshSettings(): void {
-  window.kudu
+  window.tokkip
     ?.settingsGet?.()
     .then((settings) => {
       useSettingsStore.getState().setSettings(settings)
@@ -97,6 +97,6 @@ export function refreshSettings(): void {
 
 // Hydrate settings eagerly so pages that depend on them (e.g. ThreatMonitorPage)
 // don't see stale defaults before the user visits Settings.
-if (typeof window !== 'undefined' && window.kudu) {
+if (typeof window !== 'undefined' && window.tokkip) {
   refreshSettings()
 }

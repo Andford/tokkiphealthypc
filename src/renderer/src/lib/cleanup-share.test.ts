@@ -5,8 +5,8 @@ import type { ScanHistoryEntry } from '@shared/types'
 
 describe('cleanup share privacy projection', () => {
   it('encodes captions and titles without introducing extra query parameters', () => {
-    const caption = 'Recovered 2 GB & more #Kudu + friends? https://usekudu.com'
-    const title = 'Kudu & friends'
+    const caption = 'Recovered 2 GB & more #Tokkip + friends? https://usetokkip.com'
+    const title = 'Tokkip & friends'
     const links = cleanupShareLinks(caption, title)
     for (const platform of links) {
       const url = new URL(platform.url)

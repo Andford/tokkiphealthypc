@@ -64,11 +64,11 @@ if (process.argv.includes('--cli')) {
 
 // ─── Data directory override ────────────────────────────────
 // When relaunched as root (macOS/Linux), the elevated process receives
-// --kudu-data-dir=<path> so it reads/writes the original user's config
+// --tokkip-data-dir=<path> so it reads/writes the original user's config
 // instead of /var/root/... or /root/...
-const dataDirFlag = process.argv.find((a) => a.startsWith('--kudu-data-dir='))
+const dataDirFlag = process.argv.find((a) => a.startsWith('--tokkip-data-dir='))
 if (dataDirFlag) {
-  const dir = dataDirFlag.slice('--kudu-data-dir='.length)
+  const dir = dataDirFlag.slice('--tokkip-data-dir='.length)
   if (dir && require('path').isAbsolute(dir)) {
     app.setPath('userData', dir)
   }
@@ -117,7 +117,7 @@ if (process.argv.includes('--cli')) {
 
 function initGui(): void {
   // Prevent multiple instances — if another is already running, focus it and quit this one
-  // Development previews can run alongside an installed Kudu copy. Packaged
+  // Development previews can run alongside an installed Tokkip copy. Packaged
   // builds keep the normal single-instance guarantee.
   const gotLock = app.isPackaged ? app.requestSingleInstanceLock() : true
   if (!gotLock) {
@@ -181,7 +181,9 @@ function initGui(): void {
     return nativeImage.createFromPath(iconPath).resize({ width: 16, height: 16 })
   }
 
-  const TASK_NAME = 'KuduStartup'
+  const TASK_NAME = 'TokkipHealthyPCStartup'
+  /** The startup task's name in the first version; removed whenever startup is set. */
+  const LEGACY_TASK_NAME = 'KuduStartup'
   /** The only arguments the startup task is allowed to carry — verified after registration. */
   const TASK_ARGUMENTS = '--startup'
 
@@ -191,6 +193,14 @@ function initGui(): void {
     // the exe manifest is requireAdministrator — Windows silently skips
     // Run-key entries for executables with an admin manifest.
     const exePath = app.getPath('exe')
+
+    try {
+      await execNativeUtf8('schtasks', ['/Delete', '/TN', LEGACY_TASK_NAME, '/F'], {
+        timeout: 10000
+      })
+    } catch {
+      /* not there: nothing to clean */
+    }
 
     if (enabled) {
       // Remove any stale task first, then create a fresh one
@@ -243,7 +253,7 @@ function initGui(): void {
       // camp on, and the post-registration check below is what actually settles
       // it: whatever ends up registered has to be the command we asked for.
       const { writeFile, unlink, mkdtemp, rmdir } = await import('fs/promises')
-      const tmpDir = await mkdtemp(join(app.getPath('temp'), 'kudu-task-'))
+      const tmpDir = await mkdtemp(join(app.getPath('temp'), 'tokkip-task-'))
       const tmpPath = join(tmpDir, `${randomUUID()}.xml`)
       await writeFile(tmpPath, '\uFEFF' + xml, 'utf-16le')
 
@@ -651,7 +661,7 @@ function initGui(): void {
     })
 
     // Rebuild tray menu when language changes so labels update immediately
-    app.on('kudu:language-changed' as any, () => {
+    app.on('tokkip:language-changed' as any, () => {
       rebuildTrayMenu()
     })
 

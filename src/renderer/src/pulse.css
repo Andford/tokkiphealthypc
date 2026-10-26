@@ -116,7 +116,7 @@
   --selection-bg: #efb35345;
 }
 .app-titlebar,
-.kudu-sidebar {
+.tokkip-sidebar {
   backdrop-filter: none;
   -webkit-backdrop-filter: none;
 }
@@ -131,7 +131,7 @@
   border-bottom: 1px solid var(--border-default);
   box-shadow: none;
 }
-.kudu-sidebar {
+.tokkip-sidebar {
   border-right: 1px solid var(--border-default) !important;
 }
 .app-content,

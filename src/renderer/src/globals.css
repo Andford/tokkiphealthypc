@@ -804,13 +804,13 @@ summary,
 .app-content > * {
   width: 100%;
 }
-.kudu-sidebar nav {
+.tokkip-sidebar nav {
   scrollbar-width: none;
 }
-.kudu-sidebar nav::-webkit-scrollbar {
+.tokkip-sidebar nav::-webkit-scrollbar {
   display: none;
 }
-.kudu-sidebar [role='group'] > div:first-child span {
+.tokkip-sidebar [role='group'] > div:first-child span {
   color: var(--nav-section-fg) !important;
   letter-spacing: 0.13em;
 }
@@ -1046,17 +1046,17 @@ thead {
     padding-right: 24px;
     padding-left: 24px;
   }
-  .kudu-sidebar {
+  .tokkip-sidebar {
     width: 78px !important;
   }
-  .kudu-sidebar .calm-nav-item {
+  .tokkip-sidebar .calm-nav-item {
     justify-content: center;
     padding-right: 0;
     padding-left: 0;
   }
-  .kudu-sidebar .calm-nav-item > span,
-  .kudu-sidebar .calm-nav-item > svg:last-child,
-  .kudu-sidebar [role='group'] > div:first-child,
+  .tokkip-sidebar .calm-nav-item > span,
+  .tokkip-sidebar .calm-nav-item > svg:last-child,
+  .tokkip-sidebar [role='group'] > div:first-child,
   .automatic-care-card,
   .sidebar-submenu {
     display: none;
@@ -1454,37 +1454,37 @@ thead {
   }
 }
 
-/* Kudu 2.0 home — briefing-led layout with an independent care rail. */
+/* Tokkip 2.0 home — briefing-led layout with an independent care rail. */
 .app-content[data-route='/'] {
   padding: 0;
 }
-.kudu-home {
+.tokkip-home {
   min-height: 100%;
 }
-.kudu-home-grid {
+.tokkip-home-grid {
   display: grid;
   min-height: 100%;
   grid-template-columns: minmax(0, 1fr) 306px;
 }
-.kudu-home-main {
+.tokkip-home-main {
   min-width: 0;
   padding: 34px 38px 52px;
 }
-.kudu-home-greeting {
+.tokkip-home-greeting {
   display: flex;
   min-height: 92px;
   align-items: center;
   justify-content: space-between;
   gap: 28px;
 }
-.kudu-home-kicker {
+.tokkip-home-kicker {
   margin: 0 0 4px !important;
   color: var(--brand-solid) !important;
   font-size: 8px !important;
   font-weight: 800;
   letter-spacing: 0.18em;
 }
-.kudu-home-greeting h1 {
+.tokkip-home-greeting h1 {
   margin: 0;
   color: var(--text-primary);
   font-size: clamp(27px, 2.3vw, 36px);
@@ -1492,12 +1492,12 @@ thead {
   letter-spacing: -0.048em;
   line-height: 1.08;
 }
-.kudu-home-greeting p:not(.kudu-home-kicker) {
+.tokkip-home-greeting p:not(.tokkip-home-kicker) {
   margin: 7px 0 0;
   color: var(--text-muted);
   font-size: 11px;
 }
-.kudu-device-avatar {
+.tokkip-device-avatar {
   display: grid;
   width: 40px;
   height: 40px;
@@ -1510,7 +1510,7 @@ thead {
   font-size: 12px;
   font-weight: 800;
 }
-.kudu-briefing {
+.tokkip-briefing {
   position: relative;
   display: grid;
   min-height: 166px;
@@ -1524,8 +1524,8 @@ thead {
   box-shadow: 0 18px 46px rgba(15, 45, 36, 0.11);
   color: #f8f5ec;
 }
-.kudu-briefing::before,
-.kudu-briefing::after {
+.tokkip-briefing::before,
+.tokkip-briefing::after {
   position: absolute;
   right: -74px;
   width: 240px;
@@ -1534,27 +1534,27 @@ thead {
   border-radius: 50%;
   content: '';
 }
-.kudu-briefing::before {
+.tokkip-briefing::before {
   top: -108px;
 }
-.kudu-briefing::after {
+.tokkip-briefing::after {
   bottom: -160px;
   right: -1px;
   border-width: 30px;
   opacity: 0.55;
 }
-.kudu-briefing-copy {
+.tokkip-briefing-copy {
   position: relative;
   z-index: 1;
   min-width: 0;
 }
-.kudu-briefing-copy > span {
+.tokkip-briefing-copy > span {
   color: #9eb8ae;
   font-size: 8px;
   font-weight: 800;
   letter-spacing: 0.2em;
 }
-.kudu-briefing h2 {
+.tokkip-briefing h2 {
   max-width: 680px;
   margin: 10px 0 7px;
   color: #fffaf0;
@@ -1563,52 +1563,52 @@ thead {
   letter-spacing: -0.04em;
   line-height: 1.13;
 }
-.kudu-briefing p {
+.tokkip-briefing p {
   max-width: 650px;
   margin: 0;
   color: #b9ccc5;
   font-size: 10px;
   line-height: 1.55;
 }
-.kudu-briefing-score {
+.tokkip-briefing-score {
   position: relative;
   z-index: 2;
   display: grid;
   place-items: center;
 }
-.kudu-briefing-score .text-white {
+.tokkip-briefing-score .text-white {
   color: #fffaf0 !important;
 }
-.kudu-briefing-score span:last-child {
+.tokkip-briefing-score span:last-child {
   color: #b9ccc5 !important;
 }
-.kudu-home-section {
+.tokkip-home-section {
   margin-top: 25px;
 }
-.kudu-section-title {
+.tokkip-section-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 18px;
   margin-bottom: 10px;
 }
-.kudu-section-title h2 {
+.tokkip-section-title h2 {
   margin: 0;
   color: var(--text-primary);
   font-size: 12px;
   font-weight: 760;
   letter-spacing: -0.015em;
 }
-.kudu-section-title span {
+.tokkip-section-title span {
   color: var(--text-muted);
   font-size: 8px;
 }
-.kudu-recommendations {
+.tokkip-recommendations {
   display: grid;
   grid-template-columns: 1.35fr 0.9fr;
   gap: 12px;
 }
-.kudu-recommendation {
+.tokkip-recommendation {
   display: grid;
   min-height: 74px;
   grid-template-columns: 40px minmax(0, 1fr) auto;
@@ -1626,20 +1626,20 @@ thead {
     border-color 0.18s ease,
     box-shadow 0.18s ease;
 }
-.kudu-recommendation:hover {
+.tokkip-recommendation:hover {
   transform: translateY(-1px);
   border-color: var(--border-strong);
   box-shadow: 0 12px 26px rgba(20, 46, 38, 0.08);
 }
-.kudu-recommendation:disabled {
+.tokkip-recommendation:disabled {
   opacity: 0.6;
 }
-.kudu-recommendation.is-primary {
+.tokkip-recommendation.is-primary {
   border-color: #f3b640;
   background: #f3b640;
   color: #193a31;
 }
-.kudu-recommendation-icon {
+.tokkip-recommendation-icon {
   display: grid;
   width: 40px;
   height: 40px;
@@ -1648,20 +1648,20 @@ thead {
   background: var(--brand-surface);
   color: var(--brand-solid);
 }
-.kudu-recommendation-icon svg {
+.tokkip-recommendation-icon svg {
   width: 18px;
   height: 18px;
 }
-.kudu-recommendation.is-primary .kudu-recommendation-icon {
+.tokkip-recommendation.is-primary .tokkip-recommendation-icon {
   background: #174438;
   color: #fff7e8;
 }
-.kudu-recommendation b {
+.tokkip-recommendation b {
   display: block;
   font-size: 11px;
   font-weight: 760;
 }
-.kudu-recommendation small {
+.tokkip-recommendation small {
   display: block;
   overflow: hidden;
   margin-top: 2px;
@@ -1670,15 +1670,15 @@ thead {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.kudu-recommendation.is-primary small {
+.tokkip-recommendation.is-primary small {
   color: #29483f;
 }
-.kudu-recommendation > i {
+.tokkip-recommendation > i {
   font-size: 15px;
   font-style: normal;
   opacity: 0.45;
 }
-.kudu-operation {
+.tokkip-operation {
   margin-top: 14px;
   padding: 13px 15px;
   border: 1px solid var(--accent-muted-border);
@@ -1686,57 +1686,57 @@ thead {
   background: var(--accent-muted-bg);
   color: var(--text-secondary);
 }
-.kudu-operation > div:first-child {
+.tokkip-operation > div:first-child {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.kudu-operation > div:first-child > span {
+.tokkip-operation > div:first-child > span {
   flex: 1;
   font-size: 10px;
 }
-.kudu-operation > div:first-child > b {
+.tokkip-operation > div:first-child > b {
   color: var(--text-muted);
   font-size: 9px;
 }
-.kudu-operation-track,
-.kudu-drive-track,
-.kudu-glance-track {
+.tokkip-operation-track,
+.tokkip-drive-track,
+.tokkip-glance-track {
   overflow: hidden;
   border-radius: 99px;
   background: var(--bg-subtle-2);
 }
-.kudu-operation-track {
+.tokkip-operation-track {
   height: 4px;
   margin-top: 10px;
 }
-.kudu-operation-track i {
+.tokkip-operation-track i {
   display: block;
   height: 100%;
   border-radius: inherit;
   background: var(--accent);
 }
-.kudu-operation.is-complete,
-.kudu-operation.is-warning {
+.tokkip-operation.is-complete,
+.tokkip-operation.is-warning {
   display: flex;
   align-items: flex-start;
   gap: 10px;
 }
-.kudu-operation.is-complete {
+.tokkip-operation.is-complete {
   border-color: color-mix(in srgb, var(--success), transparent 72%);
   background: color-mix(in srgb, var(--success), transparent 91%);
   color: var(--success);
 }
-.kudu-operation.is-warning {
+.tokkip-operation.is-warning {
   border-color: color-mix(in srgb, var(--danger), transparent 68%);
   background: color-mix(in srgb, var(--danger), transparent 91%);
   color: var(--danger);
 }
-.kudu-operation:is(.is-complete, .is-warning) b {
+.tokkip-operation:is(.is-complete, .is-warning) b {
   color: var(--text-primary);
   font-size: 10px;
 }
-.kudu-operation:is(.is-complete, .is-warning) p {
+.tokkip-operation:is(.is-complete, .is-warning) p {
   display: flex;
   flex-wrap: wrap;
   gap: 5px 14px;
@@ -1744,25 +1744,25 @@ thead {
   color: var(--text-muted);
   font-size: 9px;
 }
-.kudu-operation:is(.is-complete, .is-warning) button {
+.tokkip-operation:is(.is-complete, .is-warning) button {
   border: 0;
   background: none;
   color: var(--brand-solid);
   font: inherit;
 }
-.kudu-glance-grid {
+.tokkip-glance-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 10px;
 }
-.kudu-glance-card {
+.tokkip-glance-card {
   padding: 14px 15px;
   border: 1px solid var(--border-default);
   border-radius: 15px;
   background: var(--card-bg);
   box-shadow: 0 3px 14px rgba(20, 46, 38, 0.03);
 }
-.kudu-glance-meta {
+.tokkip-glance-meta {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1770,52 +1770,52 @@ thead {
   color: var(--text-muted);
   font-size: 8px;
 }
-.kudu-glance-meta > span {
+.tokkip-glance-meta > span {
   display: flex;
   align-items: center;
   gap: 6px;
 }
-.kudu-glance-meta svg {
+.tokkip-glance-meta svg {
   width: 12px;
   height: 12px;
 }
-.kudu-glance-meta b {
+.tokkip-glance-meta b {
   color: var(--text-muted);
   font-size: 8px;
   font-weight: 600;
 }
-.kudu-glance-card h3 {
+.tokkip-glance-card h3 {
   margin: 7px 0 9px;
   color: var(--text-primary);
   font-size: 15px;
   font-weight: 740;
   letter-spacing: -0.025em;
 }
-.kudu-glance-track {
+.tokkip-glance-track {
   height: 4px;
 }
-.kudu-glance-track i {
+.tokkip-glance-track i {
   display: block;
   height: 100%;
   border-radius: inherit;
 }
-.kudu-glance-card.is-gold .kudu-glance-track i {
+.tokkip-glance-card.is-gold .tokkip-glance-track i {
   background: #eaae37;
 }
-.kudu-glance-card.is-green .kudu-glance-track i {
+.tokkip-glance-card.is-green .tokkip-glance-track i {
   background: #729989;
 }
-.kudu-glance-card.is-clay .kudu-glance-track i {
+.tokkip-glance-card.is-clay .tokkip-glance-track i {
   background: #c98058;
 }
-.kudu-activity-strip {
+.tokkip-activity-strip {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   margin-top: 14px;
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
 }
-.kudu-activity-strip > div {
+.tokkip-activity-strip > div {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -1823,18 +1823,18 @@ thead {
   padding: 12px 15px;
   border-right: 1px solid var(--border-subtle);
 }
-.kudu-activity-strip > div:last-child {
+.tokkip-activity-strip > div:last-child {
   border-right: 0;
 }
-.kudu-activity-strip span {
+.tokkip-activity-strip span {
   color: var(--text-muted);
   font-size: 8px;
 }
-.kudu-activity-strip b {
+.tokkip-activity-strip b {
   color: var(--text-primary);
   font-size: 10px;
 }
-.kudu-cloud-upsell {
+.tokkip-cloud-upsell {
   position: relative;
   display: grid;
   overflow: hidden;
@@ -1854,7 +1854,7 @@ thead {
     var(--card-bg);
   box-shadow: 0 8px 28px rgba(20, 46, 38, 0.045);
 }
-.kudu-cloud-upsell::after {
+.tokkip-cloud-upsell::after {
   position: absolute;
   right: 105px;
   width: 150px;
@@ -1864,11 +1864,11 @@ thead {
   content: '';
   pointer-events: none;
 }
-.kudu-cloud-upsell > * {
+.tokkip-cloud-upsell > * {
   position: relative;
   z-index: 1;
 }
-.kudu-cloud-upsell-icon {
+.tokkip-cloud-upsell-icon {
   display: grid;
   width: 44px;
   height: 44px;
@@ -1878,35 +1878,35 @@ thead {
   background: var(--brand-surface);
   color: var(--brand-solid);
 }
-.kudu-cloud-upsell-icon svg {
+.tokkip-cloud-upsell-icon svg {
   width: 19px;
   height: 19px;
 }
-.kudu-cloud-upsell-copy {
+.tokkip-cloud-upsell-copy {
   min-width: 0;
 }
-.kudu-cloud-upsell-copy > span {
+.tokkip-cloud-upsell-copy > span {
   color: var(--brand-solid);
   font-size: 10px;
   font-weight: 800;
   letter-spacing: 0.13em;
   text-transform: uppercase;
 }
-.kudu-cloud-upsell h2 {
+.tokkip-cloud-upsell h2 {
   margin: 4px 0 3px;
   color: var(--text-primary);
   font-size: 15px;
   font-weight: 760;
   letter-spacing: -0.02em;
 }
-.kudu-cloud-upsell p {
+.tokkip-cloud-upsell p {
   max-width: 730px;
   margin: 0;
   color: var(--text-muted);
   font-size: 12px;
   line-height: 1.55;
 }
-.kudu-cloud-upsell > button {
+.tokkip-cloud-upsell > button {
   display: flex;
   min-height: 40px;
   align-items: center;
@@ -1924,12 +1924,12 @@ thead {
     background 0.18s ease,
     transform 0.18s ease;
 }
-.kudu-cloud-upsell > button:hover {
+.tokkip-cloud-upsell > button:hover {
   transform: translateY(-1px);
   border-color: color-mix(in srgb, var(--brand-solid), transparent 55%);
   background: color-mix(in srgb, var(--brand-solid), transparent 88%);
 }
-.kudu-attention-rail {
+.tokkip-attention-rail {
   display: flex;
   min-height: 100%;
   flex-direction: column;
@@ -1937,27 +1937,27 @@ thead {
   border-left: 1px solid var(--border-default);
   background: var(--sidebar-bg);
 }
-.kudu-attention-heading {
+.tokkip-attention-heading {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   gap: 14px;
   padding-bottom: 15px;
 }
-.kudu-attention-heading span {
+.tokkip-attention-heading span {
   color: var(--text-dim);
   font-size: 7px;
   font-weight: 800;
   letter-spacing: 0.18em;
 }
-.kudu-attention-heading h2 {
+.tokkip-attention-heading h2 {
   margin: 3px 0 0;
   color: var(--text-primary);
   font-size: 13px;
   font-weight: 760;
   letter-spacing: -0.02em;
 }
-.kudu-attention-heading > b {
+.tokkip-attention-heading > b {
   display: grid;
   min-width: 24px;
   height: 24px;
@@ -1967,10 +1967,10 @@ thead {
   color: #1b392f;
   font-size: 9px;
 }
-.kudu-attention-list {
+.tokkip-attention-list {
   border-bottom: 1px solid var(--border-default);
 }
-.kudu-attention-list > button {
+.tokkip-attention-list > button {
   display: grid;
   width: 100%;
   grid-template-columns: 32px minmax(0, 1fr) auto;
@@ -1983,10 +1983,10 @@ thead {
   color: var(--text-primary);
   text-align: left;
 }
-.kudu-attention-list > button:hover b {
+.tokkip-attention-list > button:hover b {
   color: var(--brand-solid);
 }
-.kudu-attention-icon {
+.tokkip-attention-icon {
   display: grid;
   width: 30px;
   height: 30px;
@@ -1996,37 +1996,37 @@ thead {
   background: var(--card-bg);
   color: var(--brand-solid);
 }
-.kudu-attention-icon svg {
+.tokkip-attention-icon svg {
   width: 13px;
   height: 13px;
 }
-.kudu-attention-icon.is-success {
+.tokkip-attention-icon.is-success {
   color: var(--success);
 }
-.kudu-attention-list b,
-.kudu-rail-link b {
+.tokkip-attention-list b,
+.tokkip-rail-link b {
   display: block;
   color: var(--text-primary);
   font-size: 9px;
   font-weight: 720;
   transition: color 0.18s ease;
 }
-.kudu-attention-list small,
-.kudu-rail-link small {
+.tokkip-attention-list small,
+.tokkip-rail-link small {
   display: block;
   margin-top: 2px;
   color: var(--text-muted);
   font-size: 7px;
   line-height: 1.45;
 }
-.kudu-attention-list em {
+.tokkip-attention-list em {
   color: #a46b13;
   font-size: 7px;
   font-style: normal;
   font-weight: 800;
   letter-spacing: 0.06em;
 }
-.kudu-drive-card {
+.tokkip-drive-card {
   margin-top: 22px;
   padding: 16px;
   border: 1px solid var(--border-default);
@@ -2034,37 +2034,37 @@ thead {
   background: var(--card-bg);
   box-shadow: 0 5px 18px rgba(20, 46, 38, 0.035);
 }
-.kudu-drive-card > div:first-child {
+.tokkip-drive-card > div:first-child {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 10px;
 }
-.kudu-drive-card b {
+.tokkip-drive-card b {
   color: var(--text-primary);
   font-size: 8px;
 }
-.kudu-drive-card span {
+.tokkip-drive-card span {
   color: var(--text-secondary);
   font-size: 7px;
 }
-.kudu-drive-track {
+.tokkip-drive-track {
   height: 4px;
   margin-top: 13px;
 }
-.kudu-drive-track i {
+.tokkip-drive-track i {
   display: block;
   height: 100%;
   border-radius: inherit;
   background: #e8ad3b;
 }
-.kudu-drive-card p {
+.tokkip-drive-card p {
   margin: 8px 0 0;
   color: var(--text-muted);
   font-size: 7px;
   line-height: 1.5;
 }
-.kudu-drive-card button {
+.tokkip-drive-card button {
   margin: 9px 0 0;
   padding: 0;
   border: 0;
@@ -2073,7 +2073,7 @@ thead {
   font-size: 8px;
   font-weight: 700;
 }
-.kudu-rail-link {
+.tokkip-rail-link {
   display: grid;
   width: 100%;
   grid-template-columns: 32px minmax(0, 1fr) auto;
@@ -2087,11 +2087,11 @@ thead {
   color: var(--text-primary);
   text-align: left;
 }
-.kudu-rail-link > i {
+.tokkip-rail-link > i {
   color: var(--text-dim);
   font-style: normal;
 }
-.kudu-cloud-status {
+.tokkip-cloud-status {
   display: flex;
   align-items: center;
   gap: 8px;
@@ -2103,14 +2103,14 @@ thead {
   font-size: 8px;
   text-align: left;
 }
-.kudu-cloud-status > i {
+.tokkip-cloud-status > i {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: var(--text-faint);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--text-faint), transparent 86%);
 }
-.kudu-cloud-status > i.is-connected {
+.tokkip-cloud-status > i.is-connected {
   background: var(--success);
   box-shadow: 0 0 0 4px color-mix(in srgb, var(--success), transparent 85%);
 }
@@ -2126,26 +2126,26 @@ thead {
   backdrop-filter: blur(18px);
 }
 
-.dark .kudu-briefing {
+.dark .tokkip-briefing {
   background: #12392f;
   box-shadow: 0 18px 46px rgba(0, 0, 0, 0.22);
 }
-.dark .kudu-recommendation.is-primary {
+.dark .tokkip-recommendation.is-primary {
   border-color: #d99f35;
   background: #d99f35;
 }
-.dark .kudu-attention-list em {
+.dark .tokkip-attention-list em {
   color: #e5ad49;
 }
-.light .kudu-attention-list em {
+.light .tokkip-attention-list em {
   color: #875506;
 }
 
 @media (max-width: 1160px) {
-  .kudu-home-grid {
+  .tokkip-home-grid {
     grid-template-columns: minmax(0, 1fr) 272px;
   }
-  .kudu-home-main {
+  .tokkip-home-main {
     padding-right: 28px;
     padding-left: 28px;
   }
@@ -2154,46 +2154,46 @@ thead {
   .app-content[data-route='/'] {
     overflow-y: auto;
   }
-  .kudu-home-grid {
+  .tokkip-home-grid {
     grid-template-columns: 1fr;
   }
-  .kudu-attention-rail {
+  .tokkip-attention-rail {
     min-height: auto;
     border-top: 1px solid var(--border-default);
     border-left: 0;
   }
-  .kudu-cloud-status {
+  .tokkip-cloud-status {
     margin-top: 18px;
   }
 }
 @media (max-width: 680px) {
-  .kudu-home-main {
+  .tokkip-home-main {
     padding: 24px 20px 36px;
   }
-  .kudu-briefing {
+  .tokkip-briefing {
     grid-template-columns: 1fr;
   }
-  .kudu-briefing-score {
+  .tokkip-briefing-score {
     display: none;
   }
-  .kudu-recommendations,
-  .kudu-glance-grid {
+  .tokkip-recommendations,
+  .tokkip-glance-grid {
     grid-template-columns: 1fr;
   }
-  .kudu-activity-strip {
+  .tokkip-activity-strip {
     grid-template-columns: 1fr;
   }
-  .kudu-activity-strip > div {
+  .tokkip-activity-strip > div {
     border-right: 0;
     border-bottom: 1px solid var(--border-subtle);
   }
-  .kudu-activity-strip > div:last-child {
+  .tokkip-activity-strip > div:last-child {
     border-bottom: 0;
   }
-  .kudu-cloud-upsell {
+  .tokkip-cloud-upsell {
     grid-template-columns: 44px minmax(0, 1fr);
   }
-  .kudu-cloud-upsell > button {
+  .tokkip-cloud-upsell > button {
     grid-column: 1 / -1;
     justify-content: center;
   }
@@ -2442,14 +2442,14 @@ body {
 .window-control {
   height: 48px;
 }
-.kudu-sidebar {
+.tokkip-sidebar {
   width: 224px !important;
 }
 .calm-nav-item {
   min-height: 44px;
   font-size: 13px !important;
 }
-.kudu-sidebar [role='group'] > div:first-child span {
+.tokkip-sidebar [role='group'] > div:first-child span {
   font-size: 12px !important;
 }
 .automatic-care-card {
@@ -2541,106 +2541,106 @@ body {
   color: var(--text-dim) !important;
 }
 
-.kudu-home,
-.kudu-home-grid {
+.tokkip-home,
+.tokkip-home-grid {
   min-height: calc(100vh - 48px);
 }
-.kudu-home-main {
+.tokkip-home-main {
   padding-top: 38px;
 }
-.kudu-home-greeting {
+.tokkip-home-greeting {
   min-height: 105px;
 }
-.kudu-home-kicker {
+.tokkip-home-kicker {
   margin-bottom: 6px !important;
   font-size: 12px !important;
 }
-.kudu-home-greeting h1 {
+.tokkip-home-greeting h1 {
   font-size: clamp(31px, 2.5vw, 40px);
 }
-.kudu-home-greeting p:not(.kudu-home-kicker) {
+.tokkip-home-greeting p:not(.tokkip-home-kicker) {
   margin-top: 9px;
   font-size: 13px;
 }
-.kudu-device-avatar {
+.tokkip-device-avatar {
   width: 44px;
   height: 44px;
   flex-basis: 44px;
   font-size: 13px;
 }
-.kudu-briefing {
+.tokkip-briefing {
   min-height: 188px;
   padding: 29px 32px;
   grid-template-columns: minmax(0, 1fr) 188px;
 }
-.kudu-briefing-copy > span {
+.tokkip-briefing-copy > span {
   font-size: 12px;
 }
-.kudu-briefing h2 {
+.tokkip-briefing h2 {
   margin-top: 12px;
   font-size: clamp(26px, 2.25vw, 34px);
 }
-.kudu-briefing p {
+.tokkip-briefing p {
   max-width: 710px;
   font-size: 13px;
   line-height: 1.6;
 }
-.kudu-home-section {
+.tokkip-home-section {
   margin-top: 29px;
 }
-.kudu-section-title {
+.tokkip-section-title {
   margin-bottom: 12px;
 }
-.kudu-section-title h2 {
+.tokkip-section-title h2 {
   font-size: 15px;
 }
-.kudu-section-title span {
+.tokkip-section-title span {
   font-size: 12px;
 }
-.kudu-recommendation {
+.tokkip-recommendation {
   min-height: 84px;
   padding: 15px 18px;
 }
-.kudu-recommendation b {
+.tokkip-recommendation b {
   font-size: 13px;
 }
-.kudu-recommendation small {
+.tokkip-recommendation small {
   margin-top: 4px;
   font-size: 12px;
 }
-.kudu-recommendation > i {
+.tokkip-recommendation > i {
   font-size: 18px;
 }
-.kudu-glance-card {
+.tokkip-glance-card {
   position: relative;
   min-height: 126px;
   padding: 16px 17px;
   --glance-color: #eaae37;
 }
-.kudu-glance-card.is-green {
+.tokkip-glance-card.is-green {
   --glance-color: #729989;
 }
-.kudu-glance-card.is-clay {
+.tokkip-glance-card.is-clay {
   --glance-color: #c98058;
 }
-.kudu-glance-meta {
+.tokkip-glance-meta {
   font-size: 12px;
 }
-.kudu-glance-meta svg {
+.tokkip-glance-meta svg {
   width: 14px;
   height: 14px;
 }
-.kudu-glance-body {
+.tokkip-glance-body {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 14px;
 }
-.kudu-glance-card h3 {
+.tokkip-glance-card h3 {
   margin: 10px 0 12px;
   font-size: 18px;
 }
-.kudu-glance-dial {
+.tokkip-glance-dial {
   position: relative;
   display: grid;
   width: 42px;
@@ -2649,20 +2649,20 @@ body {
   place-items: center;
   border-radius: 50%;
 }
-.kudu-glance-dial::before {
+.tokkip-glance-dial::before {
   position: absolute;
   inset: 5px;
   border-radius: 50%;
   background: var(--card-bg);
   content: '';
 }
-.kudu-glance-dial span {
+.tokkip-glance-dial span {
   position: relative;
   color: var(--text-secondary);
   font-size: 12px;
   font-weight: 750;
 }
-.kudu-glance-track {
+.tokkip-glance-track {
   position: relative;
   height: 5px;
   background:
@@ -2680,85 +2680,85 @@ body {
     ),
     var(--bg-subtle-2);
 }
-.kudu-activity-strip span {
+.tokkip-activity-strip span {
   font-size: 12px;
 }
-.kudu-activity-strip b {
+.tokkip-activity-strip b {
   font-size: 12px;
 }
-.kudu-operation > div:first-child > span,
-.kudu-operation:is(.is-complete, .is-warning) b {
+.tokkip-operation > div:first-child > span,
+.tokkip-operation:is(.is-complete, .is-warning) b {
   font-size: 12px;
 }
-.kudu-operation > div:first-child > b,
-.kudu-operation:is(.is-complete, .is-warning) p {
+.tokkip-operation > div:first-child > b,
+.tokkip-operation:is(.is-complete, .is-warning) p {
   font-size: 12px;
 }
 
-.kudu-attention-rail {
+.tokkip-attention-rail {
   min-height: calc(100vh - 48px);
   align-self: stretch;
   padding: 42px 27px 29px;
 }
-.kudu-attention-heading {
+.tokkip-attention-heading {
   padding-bottom: 18px;
 }
-.kudu-attention-heading span {
+.tokkip-attention-heading span {
   font-size: 12px;
 }
-.kudu-attention-heading h2 {
+.tokkip-attention-heading h2 {
   margin-top: 5px;
   font-size: 16px;
 }
-.kudu-attention-heading > b {
+.tokkip-attention-heading > b {
   min-width: 28px;
   height: 28px;
   font-size: 11px;
 }
-.kudu-attention-list > button {
+.tokkip-attention-list > button {
   grid-template-columns: 38px minmax(0, 1fr) auto;
   gap: 11px;
   padding: 17px 0;
 }
-.kudu-attention-icon {
+.tokkip-attention-icon {
   width: 36px;
   height: 36px;
   border-radius: 12px;
 }
-.kudu-attention-icon svg {
+.tokkip-attention-icon svg {
   width: 16px;
   height: 16px;
 }
-.kudu-attention-list b,
-.kudu-rail-link b {
+.tokkip-attention-list b,
+.tokkip-rail-link b {
   font-size: 13px;
 }
-.kudu-attention-list small,
-.kudu-rail-link small {
+.tokkip-attention-list small,
+.tokkip-rail-link small {
   margin-top: 3px;
   font-size: 12px;
 }
-.kudu-attention-list em {
+.tokkip-attention-list em {
   font-size: 12px;
 }
-.kudu-drive-card {
+.tokkip-drive-card {
   padding: 18px;
 }
-.kudu-drive-card b {
+.tokkip-drive-card b {
   font-size: 12px;
 }
-.kudu-drive-card span {
+.tokkip-drive-card span {
   font-size: 12px;
 }
-.kudu-drive-card p {
+.tokkip-drive-card p {
   margin-top: 10px;
   font-size: 12px;
 }
-.kudu-drive-card button {
+.tokkip-drive-card button {
   margin-top: 11px;
   font-size: 12px;
 }
-.kudu-cloud-status {
+.tokkip-cloud-status {
   font-size: 12px;
 }
 
@@ -2913,12 +2913,12 @@ body {
 }
 
 /* Accessibility floor for navigation chrome that sits outside app-content. */
-.kudu-sidebar .text-\[8px\],
-.kudu-sidebar .text-\[9px\],
-.kudu-sidebar .text-\[10px\] {
+.tokkip-sidebar .text-\[8px\],
+.tokkip-sidebar .text-\[9px\],
+.tokkip-sidebar .text-\[10px\] {
   font-size: 12px !important;
 }
-.kudu-sidebar .h-\[16px\] {
+.tokkip-sidebar .h-\[16px\] {
   min-width: 20px !important;
   height: 20px !important;
 }
@@ -3081,7 +3081,7 @@ body {
     width: 82px;
     flex-basis: 82px;
   }
-  .kudu-sidebar {
+  .tokkip-sidebar {
     width: 82px !important;
   }
 }
@@ -3092,14 +3092,14 @@ body {
   }
 }
 @media (max-width: 920px) {
-  .kudu-home,
-  .kudu-home-grid,
-  .kudu-attention-rail {
+  .tokkip-home,
+  .tokkip-home-grid,
+  .tokkip-attention-rail {
     min-height: auto;
   }
 }
 
-/* Native-modern window shell. The OS owns its controls; Kudu owns the canvas around them. */
+/* Native-modern window shell. The OS owns its controls; Tokkip owns the canvas around them. */
 html,
 body,
 #root,
@@ -3155,7 +3155,7 @@ body,
   padding-right: 8px;
 }
 
-.kudu-sidebar {
+.tokkip-sidebar {
   background: var(--sidebar-bg) !important;
   backdrop-filter: blur(32px) saturate(1.08);
   -webkit-backdrop-filter: blur(32px) saturate(1.08);

@@ -16,7 +16,7 @@ function trashed(name: string, { payload = true, ageMs = 10 * 60_000 } = {}) {
 }
 
 beforeEach(() => {
-  trash = join(mkdtempSync(join(tmpdir(), 'kudu-trash-')), 'Trash')
+  trash = join(mkdtempSync(join(tmpdir(), 'tokkip-trash-')), 'Trash')
   mkdirSync(files(), { recursive: true })
   mkdirSync(join(trash, 'info'), { recursive: true })
 })
@@ -60,7 +60,7 @@ describe('pruneOrphanedTrashInfo', () => {
   })
 })
 
-describe('pruneOrphanedTrashInfo for entries Kudu just cleaned', () => {
+describe('pruneOrphanedTrashInfo for entries Tokkip just cleaned', () => {
   it('removes a fresh record when its entry was just cleaned', async () => {
     // Emptied within the grace period: nothing would ever prune it later.
     trashed('just-trashed.txt', { payload: false, ageMs: 5_000 })

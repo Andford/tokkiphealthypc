@@ -17,7 +17,7 @@ beforeEach(() => {
   vi.stubEnv('PORTABLE_EXECUTABLE_DIR', '')
   Object.defineProperty(process, 'platform', { value: 'win32', configurable: true })
   Object.defineProperty(process, 'resourcesPath', {
-    value: 'D:\\My Apps\\Kudu\\resources',
+    value: 'D:\\My Apps\\Tokkip\\resources',
     configurable: true
   })
 })

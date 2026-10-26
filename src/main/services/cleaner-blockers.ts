@@ -43,7 +43,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
-public static class KuduRestartManager {
+public static class TokkipRestartManager {
   const int ERROR_SUCCESS = 0;
   const int ERROR_MORE_DATA = 234;
   const int CCH_RM_SESSION_KEY = 32;
@@ -118,7 +118,7 @@ public static class KuduRestartManager {
 }
 '@
 $paths = [string[]](Get-Content -Raw -LiteralPath '__PATH_FILE__' | ConvertFrom-Json)
-$out = @([KuduRestartManager]::Find($paths) | ForEach-Object {
+$out = @([TokkipRestartManager]::Find($paths) | ForEach-Object {
   $processId = [int]$_.Process.dwProcessId
   $process = Get-Process -Id $processId -ErrorAction SilentlyContinue
   [PSCustomObject]@{
@@ -177,7 +177,7 @@ export function parseRestartManagerBlockers(
     const restartManagerName = typeof entry.name === 'string' ? entry.name : ''
     const normalized = normalizedProcessName(processName)
 
-    // Every packaged Kudu window/utility process uses the same executable.
+    // Every packaged Tokkip window/utility process uses the same executable.
     // It cannot be closed while this UI is asking the user what to close, so
     // omit it from the actionable list. In development, do not hide every
     // Electron process merely because the current host is electron.exe.
@@ -286,7 +286,7 @@ export async function collectBlockerCandidateFiles(
 export async function findWindowsFileBlockers(paths: string[]): Promise<CleanerBlocker[]> {
   if (paths.length === 0) return []
 
-  const tempDir = await mkdtemp(join(tmpdir(), 'kudu-blockers-'))
+  const tempDir = await mkdtemp(join(tmpdir(), 'tokkip-blockers-'))
   const pathFile = join(tempDir, 'paths.json')
   try {
     await writeFile(pathFile, JSON.stringify(paths), 'utf8')

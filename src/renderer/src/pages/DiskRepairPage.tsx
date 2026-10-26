@@ -30,8 +30,8 @@ export function DiskRepairPage() {
 
   // Listen for disk repair progress events
   useEffect(() => {
-    if (!window.kudu?.onDiskRepairProgress) return
-    return window.kudu.onDiskRepairProgress((data) => store.setRepairProgress(data))
+    if (!window.tokkip?.onDiskRepairProgress) return
+    return window.tokkip.onDiskRepairProgress((data) => store.setRepairProgress(data))
   }, [])
 
   const handleRunSfc = async () => {
@@ -44,7 +44,7 @@ export function DiskRepairPage() {
       message: t('startingSfc')
     })
     try {
-      const result = await window.kudu.diskRepairSfc('C')
+      const result = await window.tokkip.diskRepairSfc('C')
       store.setSfcResult(result)
       if (result.needsAdmin) {
         toast.error(t('adminRequiredToast'), { description: t('adminRequiredSfcDesc') })
@@ -71,7 +71,7 @@ export function DiskRepairPage() {
       message: t('startingDism')
     })
     try {
-      const result = await window.kudu.diskRepairDism()
+      const result = await window.tokkip.diskRepairDism()
       store.setDismResult(result)
       if (result.needsAdmin) {
         toast.error(t('adminRequiredToast'), { description: t('adminRequiredDismDesc') })
@@ -98,7 +98,7 @@ export function DiskRepairPage() {
       message: t('startingChkdsk')
     })
     try {
-      const result = await window.kudu.diskRepairChkdsk('C')
+      const result = await window.tokkip.diskRepairChkdsk('C')
       store.setChkdskResult(result)
       if (result.needsAdmin) {
         toast.error(t('adminRequiredToast'), { description: t('adminRequiredChkdskDesc') })

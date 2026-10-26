@@ -19,7 +19,7 @@ const roots: string[] = []
 const old = new Date(Date.now() - 3 * 24 * 60 * 60 * 1000)
 
 async function fixture(): Promise<string> {
-  const root = await mkdtemp(join(tmpdir(), 'kudu-app-cache-'))
+  const root = await mkdtemp(join(tmpdir(), 'tokkip-app-cache-'))
   roots.push(root)
   return root
 }

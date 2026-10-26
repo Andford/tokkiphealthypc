@@ -179,7 +179,7 @@ rule Test_Simple {
 
 describe('YaraEngine.scanFile', () => {
   it('closes the file before passing its contents to the native scanner', () => {
-    const testDir = mkdtempSync(join(tmpdir(), 'kudu-yara-engine-'))
+    const testDir = mkdtempSync(join(tmpdir(), 'tokkip-yara-engine-'))
     try {
       const filePath = join(testDir, 'sample.bin')
       writeFileSync(filePath, Buffer.from('sample contents'))
@@ -199,7 +199,7 @@ describe('YaraEngine.scanFile', () => {
   })
 
   it('uses the native async matcher for responsive inline fallback scans', async () => {
-    const testDir = mkdtempSync(join(tmpdir(), 'kudu-yara-engine-'))
+    const testDir = mkdtempSync(join(tmpdir(), 'tokkip-yara-engine-'))
     try {
       const filePath = join(testDir, 'sample.bin')
       writeFileSync(filePath, Buffer.from('sample contents'))
@@ -219,7 +219,7 @@ describe('YaraEngine.scanFile', () => {
   })
 
   it('rebuilds an inline scanner instead of silently disabling YARA after a worker failure', async () => {
-    const testDir = mkdtempSync(join(tmpdir(), 'kudu-yara-recovery-'))
+    const testDir = mkdtempSync(join(tmpdir(), 'tokkip-yara-recovery-'))
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => {})
     try {
       const filePath = join(testDir, 'sample.bin')

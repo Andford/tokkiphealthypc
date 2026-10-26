@@ -4,7 +4,7 @@ import { join } from 'path'
 import { rmSync, existsSync, readFileSync, mkdirSync } from 'fs'
 import { randomUUID } from 'crypto'
 
-const TEST_DIR = join(tmpdir(), `kudu-test-${randomUUID()}`)
+const TEST_DIR = join(tmpdir(), `tokkip-test-${randomUUID()}`)
 
 vi.mock('electron', () => ({
   app: {
@@ -59,14 +59,14 @@ describe('settings persistence — game mode toggle round-trip (issue #172)', ()
     expect(initial.dashboardView).toBe('simple')
     setSettings({ dashboardView: 'advanced' })
     await flushSettings()
-    const persisted = JSON.parse(readFileSync(join(TEST_DIR, 'Kudu-Dev', 'config.json'), 'utf8'))
+    const persisted = JSON.parse(readFileSync(join(TEST_DIR, 'Tokkip-Dev', 'config.json'), 'utf8'))
     expect(persisted.settings.dashboardView).toBe('advanced')
     expect(persisted.settings.theme).toBe(initial.theme)
     expect(persisted.settings.cleaner).toEqual(initial.cleaner)
     setSettings({ dashboardView: 'simple' })
     await flushSettings()
     expect(
-      JSON.parse(readFileSync(join(TEST_DIR, 'Kudu-Dev', 'config.json'), 'utf8')).settings
+      JSON.parse(readFileSync(join(TEST_DIR, 'Tokkip-Dev', 'config.json'), 'utf8')).settings
         .dashboardView
     ).toBe('simple')
   })
@@ -88,7 +88,7 @@ describe('settings persistence — game mode toggle round-trip (issue #172)', ()
   })
 
   it('rejects a failed dashboard preference write and allows the next save', async () => {
-    const configPath = join(TEST_DIR, 'Kudu-Dev', 'config.json')
+    const configPath = join(TEST_DIR, 'Tokkip-Dev', 'config.json')
     rmSync(configPath)
     mkdirSync(configPath)
     try {

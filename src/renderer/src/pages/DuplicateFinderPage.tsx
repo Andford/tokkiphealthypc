@@ -61,8 +61,8 @@ export function DuplicateFinderPage() {
 
   // Subscribe to progress events
   useEffect(() => {
-    if (!window.kudu?.onDuplicatesProgress) return
-    return window.kudu.onDuplicatesProgress((data) => {
+    if (!window.tokkip?.onDuplicatesProgress) return
+    return window.tokkip.onDuplicatesProgress((data) => {
       useDuplicateStore.getState().setProgress(data)
     })
   }, [])
@@ -82,7 +82,7 @@ export function DuplicateFinderPage() {
   // ── Handlers ──
 
   const handleSelectDir = async () => {
-    const dir = await window.kudu?.duplicatesSelectDir?.()
+    const dir = await window.tokkip?.duplicatesSelectDir?.()
     if (dir) store.setDirectory(dir)
   }
 
@@ -91,7 +91,7 @@ export function DuplicateFinderPage() {
     store.reset()
     store.setStatus('scanning')
     try {
-      const result = await window.kudu?.duplicatesScan?.({
+      const result = await window.tokkip?.duplicatesScan?.({
         directory: store.directory,
         minFileSize: store.minFileSize,
         maxFileSize: store.maxFileSize,
@@ -112,7 +112,7 @@ export function DuplicateFinderPage() {
   }
 
   const handleCancel = async () => {
-    await window.kudu?.duplicatesCancel?.()
+    await window.tokkip?.duplicatesCancel?.()
   }
 
   const handleDelete = async () => {
@@ -121,7 +121,7 @@ export function DuplicateFinderPage() {
     store.setStatus('deleting')
     try {
       const paths = Array.from(deletingPaths)
-      const result = await window.kudu?.duplicatesDelete?.(paths, store.deleteMode)
+      const result = await window.tokkip?.duplicatesDelete?.(paths, store.deleteMode)
       if (result) {
         store.setDeleteResult(result)
         // Build the set of successfully deleted paths (remove failures)
@@ -703,7 +703,7 @@ export function DuplicateFinderPage() {
                                 <button
                                   onClick={(e) => {
                                     e.stopPropagation()
-                                    window.kudu?.duplicatesOpenLocation?.(file.path)
+                                    window.tokkip?.duplicatesOpenLocation?.(file.path)
                                   }}
                                   className="shrink-0 text-zinc-600 hover:text-zinc-400"
                                   title={t('openLocation')}

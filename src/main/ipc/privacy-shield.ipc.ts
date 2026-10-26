@@ -146,7 +146,7 @@ async function enableTask(taskPath: string): Promise<void> {
 // Persisted to disk so the cache survives app restarts.
 
 function getServiceCachePath(): string {
-  const dir = app.isPackaged ? app.getPath('userData') : join(app.getPath('userData'), 'Kudu-Dev')
+  const dir = app.isPackaged ? app.getPath('userData') : join(app.getPath('userData'), 'Tokkip-Dev')
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true })
   return join(dir, 'service-start-types.json')
 }

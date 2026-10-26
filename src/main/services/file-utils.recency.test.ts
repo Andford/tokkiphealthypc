@@ -78,7 +78,7 @@ function paths(result: { items: Array<{ path: string }> }): string[] {
 }
 
 beforeEach(() => {
-  testDir = mkdtempSync(join(tmpdir(), 'kudu-recency-'))
+  testDir = mkdtempSync(join(tmpdir(), 'tokkip-recency-'))
   state.exclusions = []
   state.items = []
 })

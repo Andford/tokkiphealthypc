@@ -10,7 +10,7 @@ import {
 } from '../../shared/recovery'
 
 const directory = () =>
-  join(app.getPath('userData'), app.isPackaged ? 'recovery' : 'Kudu-Dev/recovery')
+  join(app.getPath('userData'), app.isPackaged ? 'recovery' : 'Tokkip-Dev/recovery')
 let writes: Promise<unknown> = Promise.resolve()
 const file = () => join(directory(), 'changes.json')
 interface SealedEntry {

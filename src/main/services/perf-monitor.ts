@@ -409,7 +409,7 @@ export class PerfMonitorService {
         windows ? collectWindowsMemory() : Promise.resolve(undefined)
       ])
       // systeminformation can swallow provider failures into a resolved empty list.
-      // A running Kudu host always has processes; do not erase a good sample.
+      // A running Tokkip host always has processes; do not erase a good sample.
       if (!inventory.processes.length) throw new Error('Process inventory unavailable')
 
       const result: PerfProcessList = {

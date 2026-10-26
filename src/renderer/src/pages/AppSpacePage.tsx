@@ -60,7 +60,7 @@ export function AppSpacePage() {
     setBusy(true)
     setError('')
     try {
-      const next = await window.kudu.appSpaceScan()
+      const next = await window.tokkip.appSpaceScan()
       if (mounted.current) setReport(next)
     } catch {
       if (mounted.current) setError(t('scanError'))
@@ -81,7 +81,7 @@ export function AppSpacePage() {
     setError('')
     let reviewToken: string | null = null
     try {
-      const review = await window.kudu.appSpaceReview(
+      const review = await window.tokkip.appSpaceReview(
         entry.rules.map((rule) => rule.id),
         store.appSpaceHandoffToken
       )
@@ -111,7 +111,7 @@ export function AppSpacePage() {
         current.setStatus(previousStatus)
       // The scalar token keeps acknowledgements independent of the number of files.
       if (reviewToken)
-        await window.kudu
+        await window.tokkip
           .appSpaceRetain(reviewToken, useScanStore.getState().appSpaceHandoffToken)
           .catch((error) => console.error('Could not acknowledge app-space review', error))
       if (mounted.current) setReviewing(false)

@@ -344,7 +344,7 @@ export function DownloadsReviewPage() {
                       style={{ color: 'var(--text-secondary)' }}
                       onClick={() => {
                         if (store.result)
-                          void window.kudu
+                          void window.tokkip
                             .downloadsReveal(store.result.scanId, file.id)
                             .catch(() => toast.error(t('revealError')))
                       }}

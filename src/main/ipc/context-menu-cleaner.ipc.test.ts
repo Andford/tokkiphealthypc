@@ -9,7 +9,7 @@ import { join } from 'path'
 // pure helpers themselves don't touch electron at runtime.
 
 vi.mock('electron', () => ({
-  app: { getPath: () => '/tmp/kudu-test-userdata' },
+  app: { getPath: () => '/tmp/tokkip-test-userdata' },
   ipcMain: { handle: vi.fn() }
 }))
 
@@ -348,7 +348,7 @@ describe('CLSID_SAFELIST', () => {
 
 describe('pruneOldBackups', () => {
   it('prunes only its own backups, oldest runs first, and reports what it removed', () => {
-    const dir = mkdtempSync(join(tmpdir(), 'kudu-ctx-prune-'))
+    const dir = mkdtempSync(join(tmpdir(), 'tokkip-ctx-prune-'))
     try {
       const ts = (d: number) => `2026-01-0${d}T00-00-00-000Z`
       const own = (d: number, f: string) => `registry-backup-context-menu-${f}-${ts(d)}.reg`
