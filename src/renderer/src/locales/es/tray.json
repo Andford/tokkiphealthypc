@@ -1,10 +1,10 @@
 {
-  "trayTooltip": "Kudu",
-  "openKudu": "Abrir Kudu",
+  "trayTooltip": "Tokkip Healthy PC",
+  "openTokkip": "Abrir Tokkip",
   "quit": "Salir",
-  "scheduledTaskNotificationTitle": "Kudu - Tarea programada",
+  "scheduledTaskNotificationTitle": "Tokkip - Tarea programada",
   "scheduledTaskNotificationBody": "Ejecutando \"{{name}}\"...",
-  "scanCompleteNotificationTitle": "Kudu - Análisis completado",
+  "scanCompleteNotificationTitle": "Tokkip - Análisis completado",
   "scanCompleteNotificationBody": "Se encontraron {{itemCount}} elementos ({{sizeMB}} MB) que se pueden limpiar.",
   "scheduledScanName": "Análisis programado"
 }

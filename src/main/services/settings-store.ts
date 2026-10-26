@@ -1,7 +1,7 @@
 import { scheduleDefinition } from '../../shared/schedule-policy'
 import { readFileSync, writeFileSync, renameSync, unlinkSync, mkdirSync, existsSync } from 'fs'
 import { join } from 'path'
-import { app, safeStorage } from 'electron'
+import { app } from 'electron'
 import { randomUUID } from 'crypto'
 import { logError } from './logger'
 import { matchLocaleToLanguage } from '../../shared/languages'
@@ -77,18 +77,6 @@ const defaults: StoreData = {
       hour: 9
     },
     schedules: [],
-    cloud: {
-      apiKey: '',
-      telemetryIntervalSec: 60,
-      shareDiskHealth: true,
-      shareProcessList: true,
-      shareThreatMonitor: true,
-      // Opt-in: GHSA-67rx / remote command blast radius if API key is stolen.
-      allowRemotePower: false,
-      allowRemoteCleanup: false,
-      allowRemoteInstalls: false,
-      allowRemoteConfig: false
-    },
     windowsPackageManager: 'winget' as const,
     windowsPackageManagers: ['winget', 'choco', 'scoop', 'npm'] as WindowsPackageManager[],
     gameMode: {
@@ -147,46 +135,6 @@ export function resolveSystemLanguage(): string {
   return _systemLanguage
 }
 
-// ── API key encryption via Electron safeStorage ──────────────────────
-// Uses DPAPI (Windows), Keychain (macOS), or libsecret (Linux) to
-// encrypt the cloud API key at rest.  The config.json stores a base64-
-// encoded ciphertext in `cloud.apiKeyEncrypted` instead of plaintext.
-// Falls back to plaintext if safeStorage is unavailable (e.g. headless
-// Linux without a keyring).
-
-const ENCRYPTED_KEY_PREFIX = 'v1:enc:' // marker so we can tell encrypted from plain
-
-function encryptApiKey(plain: string): string {
-  if (!plain) return ''
-  try {
-    if (safeStorage.isEncryptionAvailable()) {
-      const cipher = safeStorage.encryptString(plain)
-      return ENCRYPTED_KEY_PREFIX + cipher.toString('base64')
-    }
-  } catch {
-    /* fall through */
-  }
-  return plain // fallback: store as-is if encryption unavailable
-}
-
-function decryptApiKey(stored: string): string {
-  if (!stored) return ''
-  if (stored.startsWith(ENCRYPTED_KEY_PREFIX)) {
-    // safeStorage may be unavailable in headless/daemon mode on Linux without
-    // a keyring.  If we can't decrypt, return empty — the daemon should set
-    // its own key via --api-key which will re-encrypt (or store plain).
-    try {
-      if (!safeStorage.isEncryptionAvailable()) return ''
-      const buf = Buffer.from(stored.slice(ENCRYPTED_KEY_PREFIX.length), 'base64')
-      return safeStorage.decryptString(buf)
-    } catch {
-      return '' // corrupted ciphertext — treat as unset
-    }
-  }
-  // Legacy plaintext key — will be re-encrypted on next write
-  return stored
-}
-
 /** Deep merge that handles nested objects like cleaner and schedule */
 export function deepMerge<T extends Record<string, any>>(target: T, source: Partial<T>): T {
   const result = { ...target }
@@ -224,10 +172,8 @@ function readStore(): StoreData {
       // data loss to anyone who opens the file (issue #269). Deleting it here
       // clears it from existing installs on their next write.
       delete (merged as { stats?: unknown }).stats
-      // Decrypt API key if stored encrypted
-      if (merged.settings.cloud.apiKey) {
-        merged.settings.cloud.apiKey = decryptApiKey(merged.settings.cloud.apiKey)
-      }
+      // Kudu Cloud's settings (and its API key) aren't used: drop them.
+      delete (merged.settings as { cloud?: unknown }).cloud
       // Migrate legacy single-manager preference → aggregation list. Existing
       // installs kept exactly one manager (winget or choco); preserve that as
       // their scanned set so an upgrade doesn't silently start scanning every
@@ -322,11 +268,7 @@ function sleepSync(ms: number): void {
  */
 function writeStore(data: StoreData): void {
   ensureDir()
-  // Encrypt API key before writing to disk
   const toWrite = JSON.parse(JSON.stringify(data)) as StoreData
-  if (toWrite.settings.cloud.apiKey) {
-    toWrite.settings.cloud.apiKey = encryptApiKey(toWrite.settings.cloud.apiKey)
-  }
   const json = JSON.stringify(toWrite, null, 2)
   const target = getConfigPath()
   const tmp = `${target}.${process.pid}.tmp`

@@ -28,8 +28,6 @@ export function SettingsPage() {
   const [newExclusion, setNewExclusion] = useState('')
   const navigate = useNavigate()
 
-  const isLinked = !!settings.cloud.apiKey
-
   useEffect(() => {
     window.kudu
       ?.settingsGet?.()
@@ -53,7 +51,8 @@ export function SettingsPage() {
         description: t('startupSettingFailedDesc'),
         action: {
           label: t('startupSettingFailedAction'),
-          onClick: () => window.open('https://usekudu.com/help/startup-failed', '_blank')
+          onClick: () =>
+            window.open('https://github.com/Andford/tokkiphealthypc#problemas', '_blank')
         }
       })
     }
@@ -141,7 +140,7 @@ export function SettingsPage() {
             <Row
               label={t('runAtStartupLabel')}
               desc={t('portableStartupDesc', {
-                defaultValue: 'Run at startup requires the installed version of Kudu.'
+                defaultValue: 'Run at startup requires the installed version of Tokkip Healthy PC.'
               })}
             >
               <span className="text-[12px] text-zinc-500">
@@ -209,43 +208,6 @@ export function SettingsPage() {
               />
             </Row>
           )}
-        </Section>
-
-        <Section id="sectionCloudDashboard" title={t('sectionCloudDashboard')}>
-          <button
-            onClick={() => navigate('/cloud')}
-            className="flex w-full items-center gap-4 rounded-xl p-4 text-left transition-all"
-            style={{
-              background: 'var(--accent-muted-bg)',
-              border: '1px solid var(--accent-muted-border)'
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.borderColor = 'rgba(245,158,11,0.3)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.borderColor = 'var(--accent-muted-border)'
-            }}
-          >
-            <div
-              className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-              style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
-            >
-              <Cloud className="h-5 w-5 text-black" strokeWidth={2} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-[13px] font-medium text-zinc-200">
-                {isLinked ? t('cloudLinkedCardTitle') : t('cloudUnlinkedCardTitle')}
-              </p>
-              <p className="mt-0.5 text-[12px]" style={{ color: 'var(--text-muted)' }}>
-                {isLinked ? t('cloudLinkedCardDesc') : t('cloudUnlinkedCardDesc')}
-              </p>
-            </div>
-            <ChevronRight
-              className="h-4 w-4 shrink-0"
-              style={{ color: 'var(--text-muted)' }}
-              strokeWidth={1.8}
-            />
-          </button>
         </Section>
 
         <Section id="sectionBackups" title={t('sectionBackups', 'Backups')}>
@@ -508,7 +470,7 @@ function BackupFolderRow({
   const isCustom = path.length > 0
   const displayPath = isCustom
     ? path
-    : t('backupFolderDefaultLabel', 'Default (Documents/Kudu Backups)')
+    : t('backupFolderDefaultLabel', 'Default (Documents/Tokkip Healthy PC Backups)')
   return (
     <div className="space-y-3">
       <div>
@@ -518,7 +480,7 @@ function BackupFolderRow({
         <p className="mt-0.5 text-[12px]" style={{ color: 'var(--text-muted)' }}>
           {t(
             'backupFolderDesc',
-            'Where Kudu writes registry and shell-extension backups before making changes. Existing backups stay in their previous location when you switch folders.'
+            'Where Tokkip Healthy PC writes registry and shell-extension backups before making changes. Existing backups stay in their previous location when you switch folders.'
           )}
         </p>
       </div>

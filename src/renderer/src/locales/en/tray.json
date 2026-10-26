@@ -1,10 +1,10 @@
 {
-  "trayTooltip": "Kudu",
-  "openKudu": "Open Kudu",
+  "trayTooltip": "Tokkip Healthy PC",
+  "openTokkip": "Open Tokkip",
   "quit": "Quit",
-  "scheduledTaskNotificationTitle": "Kudu - Scheduled Task",
+  "scheduledTaskNotificationTitle": "Tokkip - Scheduled Task",
   "scheduledTaskNotificationBody": "Running \"{{name}}\"...",
-  "scanCompleteNotificationTitle": "Kudu - Scan Complete",
+  "scanCompleteNotificationTitle": "Tokkip - Scan Complete",
   "scanCompleteNotificationBody": "Found {{itemCount}} items ({{sizeMB}} MB) that can be cleaned.",
   "scheduledScanName": "Scheduled Scan"
 }

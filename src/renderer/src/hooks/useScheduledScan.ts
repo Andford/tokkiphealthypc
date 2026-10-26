@@ -286,16 +286,6 @@ export async function runSchedule(payload: ScheduleRunPayload): Promise<void> {
           status = 'partial'
         }
       }
-      if (taskType === 'cve-scan') {
-        try {
-          markStarted(taskType)
-          const result = await window.kudu.cveFetch()
-          totalItems += result.total
-          categoryResults['Vulnerabilities'] = { found: result.total, cleaned: 0, size: 0 }
-        } catch {
-          status = 'partial'
-        }
-      }
     }
     store.setStatus(ScanStatus.Complete)
     store.setProgress(null)

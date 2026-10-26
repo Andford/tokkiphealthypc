@@ -132,7 +132,7 @@ export function UninstallerPage() {
   const safetyRatings = useUninstallerStore((s) => s.safetyRatings)
   const safetyLoading = useUninstallerStore((s) => s.safetyLoading)
   const expandedItemId = useUninstallerStore((s) => s.expandedItemId)
-  const isCloudLinked = !!useSettingsStore((s) => s.settings.cloud.apiKey)
+  const isCloudLinked = false // Safety ratings needed Kudu Cloud
 
   const [confirmProgram, setConfirmProgram] = useState<InstalledProgram | null>(null)
   const [confirmForceRemove, setConfirmForceRemove] = useState<InstalledProgram | null>(null)
@@ -1015,79 +1015,6 @@ export function UninstallerPage() {
                       )}
                     </div>
                     <div className="shrink-0 flex items-center gap-4">
-                      {/* Safety badge */}
-                      {isCloudLinked ? (
-                        rating ? (
-                          (() => {
-                            const colors = safetyScoreColor(rating.safetyScore)
-                            const Icon = safetyIcon(rating.safetyScore)
-                            const tooltipKey =
-                              rating.safetyScore >= 8
-                                ? 'safetyTooltipSafe'
-                                : rating.safetyScore >= 5
-                                  ? 'safetyTooltipCaution'
-                                  : rating.safetyScore >= 3
-                                    ? 'safetyTooltipWarning'
-                                    : 'safetyTooltipDanger'
-                            return (
-                              <SafetyTooltip text={t(tooltipKey)}>
-                                <button
-                                  onClick={() =>
-                                    useUninstallerStore
-                                      .getState()
-                                      .setExpandedItemId(isExpanded ? null : prog.id)
-                                  }
-                                  className="flex h-9 w-9 items-center justify-center rounded-xl transition-all hover:scale-110"
-                                  style={{ background: colors.bg }}
-                                >
-                                  <Icon
-                                    className="h-4.5 w-4.5"
-                                    style={{ color: colors.text }}
-                                    strokeWidth={1.8}
-                                  />
-                                </button>
-                              </SafetyTooltip>
-                            )
-                          })()
-                        ) : (
-                          <SafetyTooltip
-                            text={t(safetyLoading ? 'safetyTooltipPending' : 'safetyPending')}
-                          >
-                            <div
-                              className="flex h-9 w-9 items-center justify-center rounded-xl"
-                              style={{ background: 'var(--bg-hover)' }}
-                            >
-                              {safetyLoading ? (
-                                <Loader2
-                                  className="h-4 w-4 animate-spin"
-                                  style={{ color: 'var(--text-muted)' }}
-                                  strokeWidth={1.8}
-                                />
-                              ) : (
-                                <Shield
-                                  className="h-4.5 w-4.5"
-                                  style={{ color: 'var(--text-muted)', opacity: 0.5 }}
-                                  strokeWidth={1.8}
-                                />
-                              )}
-                            </div>
-                          </SafetyTooltip>
-                        )
-                      ) : (
-                        <SafetyTooltip text={t('safetyTooltipLocked')}>
-                          <button
-                            onClick={() => toast.info(t('safetyLinkCloud'))}
-                            className="flex h-9 w-9 items-center justify-center rounded-xl transition-all hover:scale-110"
-                            style={{ background: 'var(--bg-hover)' }}
-                          >
-                            <ShieldOff
-                              className="h-4.5 w-4.5"
-                              style={{ color: 'var(--text-muted)', opacity: 0.3 }}
-                              strokeWidth={1.8}
-                            />
-                          </button>
-                        </SafetyTooltip>
-                      )}
                       <div className="text-right">
                         <span className="text-[12px] font-medium text-zinc-400">
                           {formatBytes(prog.estimatedSize)}

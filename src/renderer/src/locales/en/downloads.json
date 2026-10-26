@@ -49,7 +49,7 @@
   "move": "Move to Bin / Trash",
   "confirmTitle_one": "Move {{count}} file to Bin / Trash?",
   "confirmTitle_other": "Move {{count}} files to Bin / Trash?",
-  "confirmDescription": "Check that you no longer need these downloads. Restoring them from Bin / Trash returns them to a Kudu recovery folder inside Downloads; move them back to Downloads afterwards. Changed or excluded files will be skipped.",
+  "confirmDescription": "Check that you no longer need these downloads. Restoring them from Bin / Trash returns them to a Tokkip recovery folder inside Downloads; move them back to Downloads afterwards. Changed or excluded files will be skipped.",
   "outcome_one": "{{count}} file moved to Bin / Trash.",
   "outcome_other": "{{count}} files moved to Bin / Trash.",
   "skipped_one": "{{count}} file couldn’t be moved or changed since the scan. Scan again to review it.",
@@ -76,6 +76,6 @@
   "skipped_few": "{{count}} files couldn’t be moved or changed since the scan. Scan again to review them.",
   "skipped_many": "{{count}} files couldn’t be moved or changed since the scan. Scan again to review them.",
   "recoveryTitle": "Some files were preserved for recovery",
-  "recoveryDescription": "Kudu could not safely put these files back in Downloads. They remain at the paths below; move them back manually when the destination is free.",
-  "restoreHint": "Restoring from Bin / Trash returns files to a Kudu recovery folder inside Downloads. Move them back to Downloads afterwards."
+  "recoveryDescription": "Tokkip could not safely put these files back in Downloads. They remain at the paths below; move them back manually when the destination is free.",
+  "restoreHint": "Restoring from Bin / Trash returns files to a Tokkip recovery folder inside Downloads. Move them back to Downloads afterwards."
 }

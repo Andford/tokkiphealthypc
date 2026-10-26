@@ -13,7 +13,7 @@ import type {
   ServiceApplyResult,
   ServiceScanProgress
 } from '../../shared/types'
-import type { HealthReport } from '../services/cloud-agent-types'
+import type { HealthReport } from '../services/health-types'
 
 // ─── Paths ─────────────────────────────────────────────────
 

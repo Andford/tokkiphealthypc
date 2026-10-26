@@ -19,7 +19,7 @@ import type {
 } from '../../shared/recovery'
 
 /**
- * Restore support for the `.reg` backups Kudu writes before changing the registry.
+ * Restore support for the `.reg` backups Tokkip Healthy PC writes before changing the registry.
  *
  * Only *targeted* backups are restorable. A file is targeted when:
  *  1. its name is `registry-backup-targeted-<ts>.reg` (registry cleaner),
@@ -640,7 +640,7 @@ async function createPreRestoreBackup(
   const name = `pre-restore-backup-${new Date().toISOString().replace(/[:.]/g, '-')}.reg`
   const text = REG_HEADER + '\r\n\r\n' + bodies.join('') + tombstones
   const body = Buffer.concat([Buffer.from([0xff, 0xfe]), Buffer.from(text, 'utf16le')])
-  // The snapshot is only a safety net if Kudu will restore it later. Keys that
+  // The snapshot is only a safety net if Tokkip Healthy PC will restore it later. Keys that
   // have grown past the targeted limits since the original backup would make
   // it unrestorable, so refuse the restore instead of importing without one.
   const blocked =
@@ -662,7 +662,7 @@ async function createPreRestoreBackup(
   if (!(await sealBackup(dir, name, body))) {
     await rm(join(dir, name), { force: true }).catch(() => {})
     throw new Error(
-      'Could not record the integrity seal for the pre-restore backup, so nothing was imported. Relaunch Kudu as administrator.'
+      'Could not record the integrity seal for the pre-restore backup, so nothing was imported. Relaunch Tokkip Healthy PC as administrator.'
     )
   }
   await prunePreRestoreBackups(dir, name)
@@ -702,21 +702,22 @@ async function prunePreRestoreBackups(dir: string, current: string): Promise<voi
 
 const BLOCK_MESSAGES: Record<RegistryBackupBlock, string> = {
   'full-export':
-    'This is a full-branch export. Importing it would roll back unrelated changes made since, so Kudu will not restore it.',
-  'too-large': 'This backup is too large to be a targeted backup, so Kudu will not restore it.',
-  format: 'This file is not a registry export in the format Kudu writes.',
-  deletion: 'This file deletes registry data, which Kudu backups never do.',
-  'forbidden-key': 'This file contains keys outside the areas Kudu changes.',
+    'This is a full-branch export. Importing it would roll back unrelated changes made since, so Tokkip Healthy PC will not restore it.',
+  'too-large':
+    'This backup is too large to be a targeted backup, so Tokkip Healthy PC will not restore it.',
+  format: 'This file is not a registry export in the format Tokkip Healthy PC writes.',
+  deletion: 'This file deletes registry data, which Tokkip Healthy PC backups never do.',
+  'forbidden-key': 'This file contains keys outside the areas Tokkip Healthy PC changes.',
   empty: 'This backup contains no registry keys.',
   unreadable: 'This backup could not be read.',
   'classes-root':
-    "This backup contains HKEY_CLASSES_ROOT keys. That view merges the machine and per-user classes, so Kudu can't tell which of them each key belongs to and will not restore it.",
+    "This backup contains HKEY_CLASSES_ROOT keys. That view merges the machine and per-user classes, so Tokkip Healthy PC can't tell which of them each key belongs to and will not restore it.",
   unverified:
-    "This backup can't be verified — it may have been changed since Kudu wrote it, so Kudu will not restore it."
+    "This backup can't be verified — it may have been changed since Tokkip Healthy PC wrote it, so Tokkip Healthy PC will not restore it."
 }
 
 const ADMIN_REQUIRED =
-  'Restoring a registry backup requires administrator privileges. Relaunch Kudu as administrator.'
+  'Restoring a registry backup requires administrator privileges. Relaunch Tokkip Healthy PC as administrator.'
 
 let restoring = false
 

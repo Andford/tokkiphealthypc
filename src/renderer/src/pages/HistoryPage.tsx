@@ -49,15 +49,9 @@ import { PageHeader } from '@/components/layout/PageHeader'
 import { EmptyState } from '@/components/shared/EmptyState'
 import { ConfirmDialog } from '@/components/shared/ConfirmDialog'
 import { useHistoryStore } from '@/stores/history-store'
-import { useCloudHistoryStore } from '@/stores/cloud-history-store'
 import { formatBytes } from '@/lib/utils'
 import { usePlatform } from '@/hooks/usePlatform'
-import type {
-  ScanHistoryEntry,
-  HistoryEntryType,
-  CloudActionEntry,
-  DeletedFileRecord
-} from '@shared/types'
+import type { ScanHistoryEntry, HistoryEntryType, DeletedFileRecord } from '@shared/types'
 
 const typeConfigBase: Record<
   HistoryEntryType,
@@ -156,7 +150,7 @@ const PIE_COLORS = [
   '#6366f1'
 ]
 
-type ViewMode = 'overview' | 'timeline' | 'cloud' | 'receipts'
+type ViewMode = 'overview' | 'timeline' | 'receipts'
 
 export function HistoryPage() {
   const [searchParams] = useSearchParams()
@@ -164,12 +158,6 @@ export function HistoryPage() {
   const typeConfig = useTypeConfig()
   const { features } = usePlatform()
   const { entries, loaded, load, clear } = useHistoryStore()
-  const {
-    entries: cloudEntries,
-    loaded: cloudLoaded,
-    load: loadCloud,
-    clear: clearCloud
-  } = useCloudHistoryStore()
   const [showClearConfirm, setShowClearConfirm] = useState(false)
   const [selectedEntry, setSelectedEntry] = useState<string | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>(
@@ -179,7 +167,6 @@ export function HistoryPage() {
 
   useEffect(() => {
     load()
-    loadCloud()
   }, [])
 
   const filtered = useMemo(
@@ -333,16 +320,6 @@ export function HistoryPage() {
               >
                 {t('receipts.title')}
               </button>
-              <button
-                onClick={() => setViewMode('cloud')}
-                className="px-4 py-2 text-[12px] font-medium transition-colors"
-                style={{
-                  background: viewMode === 'cloud' ? 'rgba(59,130,246,0.1)' : 'var(--bg-subtle)',
-                  color: viewMode === 'cloud' ? '#3b82f6' : 'var(--text-muted)'
-                }}
-              >
-                {t('viewCloud')}
-              </button>
             </div>
             {viewMode !== 'receipts' && (
               <button
@@ -370,7 +347,7 @@ export function HistoryPage() {
           typeConfig={typeConfig}
           entries={entries}
         />
-      ) : viewMode === 'timeline' ? (
+      ) : (
         <TimelineView
           entries={filtered}
           typeFilter={typeFilter}
@@ -379,27 +356,17 @@ export function HistoryPage() {
           setSelectedEntry={setSelectedEntry}
           typeConfig={typeConfig}
         />
-      ) : (
-        <CloudView entries={cloudEntries} loaded={cloudLoaded} />
       )}
 
       <ConfirmDialog
         open={showClearConfirm}
         onConfirm={() => {
-          if (viewMode === 'cloud') {
-            clearCloud()
-          } else {
-            clear()
-          }
+          clear()
           setShowClearConfirm(false)
         }}
         onCancel={() => setShowClearConfirm(false)}
-        title={viewMode === 'cloud' ? t('confirmClearCloudTitle') : t('confirmClearScanTitle')}
-        description={
-          viewMode === 'cloud'
-            ? t('confirmClearCloudDescription')
-            : t('confirmClearScanDescription')
-        }
+        title={t('confirmClearScanTitle')}
+        description={t('confirmClearScanDescription')}
         confirmLabel={t('confirmClearLabel')}
         variant="danger"
       />
@@ -1345,385 +1312,6 @@ function IconButton({
       <Icon className="h-3.5 w-3.5" strokeWidth={1.7} />
       {label}
     </button>
-  )
-}
-
-// ============ Cloud View ============
-
-const cloudCommandColors: Record<string, string> = {
-  scan: '#f59e0b',
-  clean: '#22c55e',
-  'software-update-check': '#06b6d4',
-  'software-update-run': '#06b6d4',
-  'get-status': 'var(--text-muted)',
-  'get-system-info': 'var(--text-muted)',
-  'get-health-report': '#3b82f6',
-  ping: 'var(--text-muted)',
-  shutdown: '#ef4444',
-  restart: '#f97316',
-  'windows-update-check': '#06b6d4',
-  'windows-update-install': '#06b6d4',
-  'run-sfc': '#8b5cf6',
-  'run-dism': '#8b5cf6',
-  'get-network-config': '#22c55e',
-  'get-event-log': '#6366f1',
-  'get-installed-apps': '#a855f7',
-  'driver-update-scan': '#8b5cf6',
-  'driver-update-install': '#8b5cf6',
-  'driver-clean': '#8b5cf6',
-  'startup-list': '#f97316',
-  'startup-toggle': '#f97316',
-  'disk-health': '#14b8a6',
-  'privacy-scan': '#14b8a6',
-  'privacy-apply': '#14b8a6',
-  'debloater-scan': '#a855f7',
-  'debloater-remove': '#a855f7',
-  'service-scan': '#6366f1',
-  'service-apply': '#6366f1',
-  'malware-quarantine': '#ef4444',
-  'malware-delete': '#ef4444',
-  'registry-scan': '#3b82f6',
-  'registry-fix': '#3b82f6'
-}
-
-const cloudCommandLabelKeys: Record<string, string> = {
-  scan: 'cloudCommandLabels.scan',
-  clean: 'cloudCommandLabels.clean',
-  'software-update-check': 'cloudCommandLabels.softwareUpdateCheck',
-  'software-update-run': 'cloudCommandLabels.softwareUpdateRun',
-  'get-status': 'cloudCommandLabels.getStatus',
-  'get-system-info': 'cloudCommandLabels.getSystemInfo',
-  'get-health-report': 'cloudCommandLabels.getHealthReport',
-  ping: 'cloudCommandLabels.ping',
-  shutdown: 'cloudCommandLabels.shutdown',
-  restart: 'cloudCommandLabels.restart',
-  'windows-update-check': 'cloudCommandLabels.windowsUpdateCheck',
-  'windows-update-install': 'cloudCommandLabels.windowsUpdateInstall',
-  'run-sfc': 'cloudCommandLabels.runSfc',
-  'run-dism': 'cloudCommandLabels.runDism',
-  'get-network-config': 'cloudCommandLabels.getNetworkConfig',
-  'get-event-log': 'cloudCommandLabels.getEventLog',
-  'get-installed-apps': 'cloudCommandLabels.getInstalledApps',
-  'driver-update-scan': 'cloudCommandLabels.driverUpdateScan',
-  'driver-update-install': 'cloudCommandLabels.driverUpdateInstall',
-  'driver-clean': 'cloudCommandLabels.driverClean',
-  'startup-list': 'cloudCommandLabels.startupList',
-  'startup-toggle': 'cloudCommandLabels.startupToggle',
-  'disk-health': 'cloudCommandLabels.diskHealth',
-  'privacy-scan': 'cloudCommandLabels.privacyScan',
-  'privacy-apply': 'cloudCommandLabels.privacyApply',
-  'debloater-scan': 'cloudCommandLabels.debloaterScan',
-  'debloater-remove': 'cloudCommandLabels.debloaterRemove',
-  'service-scan': 'cloudCommandLabels.serviceScan',
-  'service-apply': 'cloudCommandLabels.serviceApply',
-  'malware-quarantine': 'cloudCommandLabels.malwareQuarantine',
-  'malware-delete': 'cloudCommandLabels.malwareDelete',
-  'registry-scan': 'cloudCommandLabels.registryScan',
-  'registry-fix': 'cloudCommandLabels.registryFix'
-}
-
-function CloudView({ entries, loaded }: { entries: CloudActionEntry[]; loaded: boolean }) {
-  const { t } = useTranslation('history')
-  const [selectedId, setSelectedId] = useState<string | null>(null)
-
-  if (!loaded) return null
-
-  if (entries.length === 0) {
-    return (
-      <EmptyState
-        icon={Cloud}
-        title={t('cloud.emptyStateTitle')}
-        description={t('cloud.emptyStateDescription')}
-      />
-    )
-  }
-
-  const successCount = entries.filter((e) => e.success).length
-  const failCount = entries.filter((e) => !e.success).length
-  const avgDuration =
-    entries.length > 0 ? entries.reduce((s, e) => s + e.duration, 0) / entries.length : 0
-
-  const detail = entries.find((e) => e.id === selectedId) || null
-
-  return (
-    <>
-      {/* Stats row */}
-      <div className="mb-5 grid grid-cols-4 gap-3">
-        <MiniStat
-          icon={Cloud}
-          label={t('cloud.totalCommands')}
-          value={entries.length.toString()}
-          color="#3b82f6"
-        />
-        <MiniStat
-          icon={CheckCircle2}
-          label={t('cloud.succeeded')}
-          value={successCount.toString()}
-          color="#22c55e"
-        />
-        <MiniStat
-          icon={XCircle}
-          label={t('cloud.failed')}
-          value={failCount.toString()}
-          color="#ef4444"
-        />
-        <MiniStat
-          icon={Clock}
-          label={t('cloud.avgDuration')}
-          value={formatDuration(avgDuration, t)}
-          color="#a855f7"
-        />
-      </div>
-
-      {/* Table */}
-      <div
-        className="overflow-hidden rounded-2xl"
-        style={{ background: 'var(--card-bg)', border: '1px solid var(--border-default)' }}
-      >
-        <table className="w-full">
-          <thead>
-            <tr style={{ borderBottom: '1px solid var(--border-medium)' }}>
-              <th
-                className="w-10 px-4 py-3 text-center text-[11px] font-medium uppercase tracking-wider"
-                style={{ color: 'var(--text-muted)' }}
-              >
-                {t('cloud.columnStatus')}
-              </th>
-              <th
-                className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider"
-                style={{ color: 'var(--text-muted)' }}
-              >
-                {t('cloud.columnCommand')}
-              </th>
-              <th
-                className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider"
-                style={{ color: 'var(--text-muted)' }}
-              >
-                {t('cloud.columnSummary')}
-              </th>
-              <th
-                className="px-4 py-3 text-left text-[11px] font-medium uppercase tracking-wider"
-                style={{ color: 'var(--text-muted)' }}
-              >
-                {t('cloud.columnDate')}
-              </th>
-              <th
-                className="px-4 py-3 text-right text-[11px] font-medium uppercase tracking-wider"
-                style={{ color: 'var(--text-muted)' }}
-              >
-                {t('cloud.columnDuration')}
-              </th>
-              <th className="w-10 px-4 py-3" />
-            </tr>
-          </thead>
-          <tbody>
-            {entries.map((entry) => {
-              const labelKey = cloudCommandLabelKeys[entry.commandType]
-              const cfg = {
-                label: labelKey ? t(labelKey) : entry.commandType,
-                color: cloudCommandColors[entry.commandType] || 'var(--text-muted)'
-              }
-              return (
-                <tr
-                  key={entry.id}
-                  className="cursor-pointer transition-colors"
-                  style={{ borderBottom: '1px solid var(--bg-subtle)' }}
-                  onClick={() => setSelectedId(entry.id)}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'var(--bg-subtle)'
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'transparent'
-                  }}
-                >
-                  <td className="px-4 py-3 text-center">
-                    {entry.success ? (
-                      <CheckCircle2
-                        className="inline h-4 w-4"
-                        style={{ color: '#22c55e' }}
-                        strokeWidth={1.8}
-                      />
-                    ) : (
-                      <XCircle
-                        className="inline h-4 w-4"
-                        style={{ color: '#ef4444' }}
-                        strokeWidth={1.8}
-                      />
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    <div className="flex items-center gap-2">
-                      <span className="text-[12.5px] font-medium text-zinc-200">{cfg.label}</span>
-                      <span
-                        className="rounded-full px-2 py-0.5 text-[9px] font-medium"
-                        style={{ background: `${cfg.color}15`, color: cfg.color }}
-                      >
-                        {entry.commandType}
-                      </span>
-                    </div>
-                  </td>
-                  <td className="px-4 py-3 max-w-[240px]">
-                    <span
-                      className="block truncate text-[12px]"
-                      style={{ color: entry.error ? '#ef4444' : 'var(--text-muted)' }}
-                    >
-                      {entry.summary || entry.error || t('cloud.completed')}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3 text-[12px]" style={{ color: 'var(--text-muted)' }}>
-                    {new Date(entry.timestamp).toLocaleDateString(undefined, {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric'
-                    })}
-                    <span className="ml-1.5" style={{ color: 'var(--text-muted)' }}>
-                      {new Date(entry.timestamp).toLocaleTimeString(undefined, {
-                        hour: '2-digit',
-                        minute: '2-digit'
-                      })}
-                    </span>
-                  </td>
-                  <td
-                    className="px-4 py-3 text-right font-mono text-[12px]"
-                    style={{ color: 'var(--text-muted)' }}
-                  >
-                    {formatDuration(entry.duration, t)}
-                  </td>
-                  <td className="px-4 py-3 text-center">
-                    <Info
-                      className="inline h-3.5 w-3.5"
-                      style={{ color: 'var(--text-muted)' }}
-                      strokeWidth={1.8}
-                    />
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {/* Detail popup */}
-      {detail && <CloudDetailPopup entry={detail} onClose={() => setSelectedId(null)} />}
-    </>
-  )
-}
-
-// ============ Cloud Detail Popup ============
-
-function CloudDetailPopup({ entry, onClose }: { entry: CloudActionEntry; onClose: () => void }) {
-  const { t } = useTranslation('history')
-  const labelKey = cloudCommandLabelKeys[entry.commandType]
-  const cfg = {
-    label: labelKey ? t(labelKey) : entry.commandType,
-    color: cloudCommandColors[entry.commandType] || 'var(--text-muted)'
-  }
-
-  return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center">
-      <div
-        className="absolute inset-0"
-        style={{ background: 'rgba(0,0,0,0.6)', backdropFilter: 'blur(8px)' }}
-        onClick={onClose}
-      />
-      <div
-        className="relative w-full max-w-md animate-scale-in rounded-2xl p-6"
-        style={{
-          background: 'var(--card-bg)',
-          border: '1px solid var(--border-medium)',
-          boxShadow: '0 24px 80px rgba(0,0,0,0.5)'
-        }}
-      >
-        {/* Header */}
-        <div className="mb-5 flex items-center gap-3">
-          <div
-            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl"
-            style={{ background: entry.success ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)' }}
-          >
-            {entry.success ? (
-              <CheckCircle2 className="h-5 w-5" style={{ color: '#22c55e' }} strokeWidth={1.8} />
-            ) : (
-              <XCircle className="h-5 w-5" style={{ color: '#ef4444' }} strokeWidth={1.8} />
-            )}
-          </div>
-          <div className="flex-1">
-            <h3 className="text-[15px] font-semibold text-white">{cfg.label}</h3>
-            <p className="text-[12px]" style={{ color: 'var(--text-muted)' }}>
-              {new Date(entry.timestamp).toLocaleDateString(undefined, {
-                weekday: 'short',
-                month: 'short',
-                day: 'numeric',
-                year: 'numeric'
-              })}
-              {' ' + t('timeline.dateAt') + ' '}
-              {new Date(entry.timestamp).toLocaleTimeString(undefined, {
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit'
-              })}
-            </p>
-          </div>
-          <button
-            onClick={onClose}
-            className="flex h-8 w-8 items-center justify-center rounded-lg transition-colors"
-            style={{ color: 'var(--text-muted)' }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.background = 'var(--bg-hover-2)'
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = 'transparent'
-            }}
-          >
-            <XCircle className="h-4 w-4" strokeWidth={1.8} />
-          </button>
-        </div>
-
-        {/* Detail rows */}
-        <div className="space-y-3 rounded-xl p-4" style={{ background: 'var(--bg-subtle)' }}>
-          <DetailRow label={t('cloud.detailCommand')} value={entry.commandType} color={cfg.color} />
-          <DetailRow
-            label={t('cloud.detailStatus')}
-            value={entry.success ? t('cloud.detailStatusSuccess') : t('cloud.detailStatusFailed')}
-            color={entry.success ? '#22c55e' : '#ef4444'}
-          />
-          <DetailRow label={t('cloud.detailDuration')} value={formatDuration(entry.duration, t)} />
-          <DetailRow label={t('cloud.detailRequestId')} value={entry.requestId} mono />
-          {entry.summary && <DetailRow label={t('cloud.detailSummary')} value={entry.summary} />}
-          {entry.error && (
-            <DetailRow label={t('cloud.detailError')} value={entry.error} color="#ef4444" />
-          )}
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function DetailRow({
-  label,
-  value,
-  color,
-  mono
-}: {
-  label: string
-  value: string
-  color?: string
-  mono?: boolean
-}) {
-  return (
-    <div className="flex items-start justify-between gap-4">
-      <span
-        className="shrink-0 text-[11px] font-medium uppercase tracking-wider"
-        style={{ color: 'var(--text-muted)' }}
-      >
-        {label}
-      </span>
-      <span
-        className={`text-right text-[12px] break-all ${mono ? 'font-mono' : ''}`}
-        style={{ color: color || 'var(--text-secondary)' }}
-      >
-        {value}
-      </span>
-    </div>
   )
 }
 

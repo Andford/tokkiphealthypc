@@ -29,7 +29,6 @@ import { registerMalwareScannerIpc } from './malware-scanner.ipc'
 import { registerPrivacyShieldIpc } from './privacy-shield.ipc'
 import { registerUninstallLeftoversIpc } from './uninstall-leftovers.ipc'
 import { registerDriverManagerIpc } from './driver-manager.ipc'
-import { registerPerformanceDiagnosticsIpc } from './performance-diagnostics.ipc'
 import { registerPerfMonitorIpc } from './perf-monitor.ipc'
 import { registerProgramUninstallerIpc } from './program-uninstaller.ipc'
 import { registerServiceManagerIpc } from './service-manager.ipc'
@@ -40,15 +39,10 @@ import { registerEnvironmentCleanerIpc } from './environment-cleaner.ipc'
 import { registerPrivacyTracesIpc } from './privacy-traces.ipc'
 import { showOpenDialog } from './open-dialog'
 import { registerDatabaseOptimizerIpc } from './database-optimizer.ipc'
-import { registerCloudAgentIpc } from './cloud-agent.ipc'
 import { registerLargeFileFinderIpc } from './large-file-finder.ipc'
 import { registerEmptyFolderCleanerIpc } from './empty-folder-cleaner.ipc'
 import { registerFileShredderIpc } from './file-shredder.ipc'
 import { registerGameModeIpc, refreshGameDetector } from './game-mode.ipc'
-import { registerCveScannerIpc } from './cve-scanner.ipc'
-import { registerBreachMonitorIpc } from './breach-monitor.ipc'
-import { registerStartupSafetyIpc } from './startup-safety.ipc'
-import { registerProgramSafetyIpc } from './program-safety.ipc'
 import {
   getSettings,
   setSettings,
@@ -59,7 +53,6 @@ import {
 import { getBackupDir } from '../services/backup-dir'
 import { isAdmin } from '../services/elevation'
 import { getHistory, addHistoryEntry, clearHistory } from '../services/history-store'
-import { getCloudHistory, clearCloudHistory } from '../services/cloud-history-store'
 import {
   queryDeletions,
   queryAllDeletions,
@@ -117,16 +110,10 @@ export function registerCleanerIpc(getWindow: WindowGetter): void {
   registerPrivacyShieldIpc(getWindow)
   registerDriverManagerIpc(getWindow)
   registerPerfMonitorIpc(getWindow)
-  registerPerformanceDiagnosticsIpc()
   registerProgramUninstallerIpc(getWindow)
   registerServiceManagerIpc(getWindow)
   registerFirewallAuditIpc(getWindow)
   registerSoftwareUpdaterIpc(getWindow)
-  registerCloudAgentIpc()
-  registerCveScannerIpc()
-  registerBreachMonitorIpc()
-  registerStartupSafetyIpc()
-  registerProgramSafetyIpc()
   registerFileShredderIpc(getWindow)
   registerGameModeIpc(getWindow)
 
@@ -191,7 +178,7 @@ export function registerCleanerIpc(getWindow: WindowGetter): void {
   ipcMain.handle(IPC.SETTINGS_SELECT_BACKUP_DIR, async () => {
     const win = getWindow()
     const opts: Electron.OpenDialogOptions = {
-      title: 'Choose Kudu backup folder',
+      title: 'Choose the Tokkip Healthy PC backup folder',
       properties: ['openDirectory', 'createDirectory'],
       defaultPath: getBackupDir()
     }
@@ -274,7 +261,7 @@ export function registerCleanerIpc(getWindow: WindowGetter): void {
   ipcMain.handle(IPC.RESTORE_POINT_CREATE, (_event, description: string) => {
     if (typeof description !== 'string') description = ''
     // Sanitize: restrict to safe characters and cap length
-    const sanitized = (description || 'Kudu pre-clean restore point')
+    const sanitized = (description || 'Tokkip Healthy PC pre-clean restore point')
       .replace(/[^A-Za-z0-9 ._\-()]/g, '')
       .slice(0, 200)
     return createRestorePoint(sanitized)
@@ -355,8 +342,6 @@ export function registerCleanerIpc(getWindow: WindowGetter): void {
   ipcMain.handle(IPC.DELETION_LOG_CLEAR, () => clearDeletionLog())
 
   // Cloud action history
-  ipcMain.handle(IPC.CLOUD_HISTORY_GET, () => getCloudHistory())
-  ipcMain.handle(IPC.CLOUD_HISTORY_CLEAR, () => clearCloudHistory())
 
   // Auto-updater
   ipcMain.handle(IPC.UPDATER_CHECK, () => checkForUpdates())

@@ -1,6 +1,6 @@
-appId: com.kudu.app
-productName: Kudu
-copyright: Copyright © 2024-2026 Kudu Contributors
+appId: mx.loperstack.tokkiphealthypc
+productName: Tokkip Healthy PC
+copyright: Copyright © 2026 Andy (LoperStack) · based on Kudu, © 2024-2026 Advent Development Inc
 
 directories:
   buildResources: resources
@@ -40,7 +40,7 @@ win:
 nsis:
   oneClick: true
   # Must stay in sync with win.requestedExecutionLevel above.
-  # requestedExecutionLevel only patches the manifest of Kudu.exe — it has no
+  # requestedExecutionLevel only patches the manifest of Tokkip Healthy PC.exe — it has no
   # effect on the installer. Left per-user (the default), the installer compiles
   # with `RequestExecutionLevel user`, so it never elevates and then drops an
   # admin-manifested exe into the user-writable %LOCALAPPDATA%\Programs. Going
@@ -49,11 +49,11 @@ nsis:
   perMachine: true
   allowToChangeInstallationDirectory: false
   deleteAppDataOnUninstall: false
-  shortcutName: Kudu
-  artifactName: Kudu-Setup-${version}.${ext}
+  shortcutName: Tokkip Healthy PC
+  artifactName: TokkipHealthyPC-Setup-${version}.${ext}
 
 portable:
-  artifactName: Kudu-Portable-${version}.${ext}
+  artifactName: TokkipHealthyPC-Portable-${version}.${ext}
   requestExecutionLevel: admin
 
 mac:
@@ -71,8 +71,8 @@ mac:
   hardenedRuntime: true
   entitlements: resources/entitlements.mac.plist
   entitlementsInherit: resources/entitlements.mac.plist
-  notarize: true
-  artifactName: Kudu-${version}-${arch}.${ext}
+  notarize: false
+  artifactName: TokkipHealthyPC-${version}-${arch}.${ext}
 
 linux:
   target:
@@ -91,10 +91,10 @@ linux:
 # A versioned basename makes doInstall delete the old file and write a new
 # name, leaving desktop/menu Exec= paths pointing at a missing binary.
 appImage:
-  artifactName: Kudu-${arch}.${ext}
+  artifactName: TokkipHealthyPC-${arch}.${ext}
 
 deb:
-  artifactName: Kudu-${version}-${arch}.${ext}
+  artifactName: TokkipHealthyPC-${version}-${arch}.${ext}
   depends:
     - libgtk-3-0
     - libnss3
@@ -106,4 +106,6 @@ deb:
 
 publish:
   provider: github
+  owner: Andford
+  repo: tokkiphealthypc
   releaseType: release

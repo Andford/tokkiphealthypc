@@ -70,19 +70,9 @@ export const useStartupStore = create<StartupState>((set) => ({
     }),
   setSafetyLoading: (safetyLoading) => set({ safetyLoading }),
   setExpandedItemId: (expandedItemId) => set({ expandedItemId }),
-  fetchSafetyRatings: async () => {
-    set({ safetyLoading: true })
-    try {
-      const result = await window.kudu.startupSafetyFetch()
-      const ratings = Array.isArray(result?.ratings) ? result.ratings : []
-      set({
-        safetyRatings: Object.fromEntries(ratings.map((r) => [r.name, r])),
-        safetyLoading: false
-      })
-    } catch {
-      set({ safetyLoading: false })
-    }
-  },
+  // Safety ratings came from Kudu Cloud; Tokkip Healthy PC has no cloud, so none.
+  fetchSafetyRatings: async () => set({ safetyLoading: false }),
+
   reset: () =>
     set({
       items: [],
@@ -97,20 +87,3 @@ export const useStartupStore = create<StartupState>((set) => ({
       expandedItemId: null
     })
 }))
-
-// Listen for cloud-pushed safety rating updates (HMR-safe via guard flag)
-let _safetyListenerRegistered = false
-if (
-  typeof window !== 'undefined' &&
-  window.kudu?.onStartupSafetyUpdated &&
-  !_safetyListenerRegistered
-) {
-  _safetyListenerRegistered = true
-  window.kudu.onStartupSafetyUpdated((result) => {
-    const ratings = Array.isArray(result?.ratings) ? result.ratings : []
-    useStartupStore.setState({
-      safetyRatings: Object.fromEntries(ratings.map((r) => [r.name, r])),
-      safetyLoading: false
-    })
-  })
-}

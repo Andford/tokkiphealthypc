@@ -12,12 +12,14 @@ win:
         - arm64
 
 nsis:
-  artifactName: Kudu-Setup-${version}-arm64.${ext}
+  artifactName: TokkipHealthyPC-Setup-${version}-arm64.${ext}
 
 portable:
-  artifactName: Kudu-Portable-${version}-arm64.${ext}
+  artifactName: TokkipHealthyPC-Portable-${version}-arm64.${ext}
 
 publish:
   provider: github
+  owner: Andford
+  repo: tokkiphealthypc
   releaseType: release
   channel: latest-arm64

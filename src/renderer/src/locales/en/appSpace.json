@@ -5,7 +5,7 @@
   "scanning": "Analyzing...",
   "refresh": "Refresh analysis",
   "introTitle": "Your apps, with the space explained.",
-  "introDescription": "Compare reported installation sizes with the files Kudu can offer for cleanup review. Find the biggest opportunities before you clean.",
+  "introDescription": "Compare reported installation sizes with the files Tokkip can offer for cleanup review. Find the biggest opportunities before you clean.",
   "privacy": "Analysis stays on this device. Nothing is removed during analysis.",
   "installed": "Installed size",
   "cache": "Reviewable files",

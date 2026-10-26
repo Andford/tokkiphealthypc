@@ -271,41 +271,6 @@ export function validateSettingsPartial(input: unknown): Record<string, unknown>
     if ('keepDeletionLog' in c && typeof c.keepDeletionLog !== 'boolean') return null
   }
 
-  // Validate cloud has expected shape if present
-  if ('cloud' in obj && obj.cloud !== undefined) {
-    const c = obj.cloud as Record<string, unknown>
-    if (typeof c !== 'object' || c === null || Array.isArray(c)) return null
-    const allowedCloudKeys = new Set([
-      'apiKey',
-      'telemetryIntervalSec',
-      'shareDiskHealth',
-      'shareProcessList',
-      'shareThreatMonitor',
-      'allowRemotePower',
-      'allowRemoteCleanup',
-      'allowRemoteInstalls',
-      'allowRemoteConfig'
-    ])
-    for (const key of Object.keys(c)) {
-      if (!allowedCloudKeys.has(key)) return null
-    }
-    if ('apiKey' in c && (typeof c.apiKey !== 'string' || c.apiKey.length > 200)) return null
-    if (
-      'telemetryIntervalSec' in c &&
-      (typeof c.telemetryIntervalSec !== 'number' ||
-        c.telemetryIntervalSec < 10 ||
-        c.telemetryIntervalSec > 3600)
-    )
-      return null
-    if ('shareDiskHealth' in c && typeof c.shareDiskHealth !== 'boolean') return null
-    if ('shareProcessList' in c && typeof c.shareProcessList !== 'boolean') return null
-    if ('shareThreatMonitor' in c && typeof c.shareThreatMonitor !== 'boolean') return null
-    if ('allowRemotePower' in c && typeof c.allowRemotePower !== 'boolean') return null
-    if ('allowRemoteCleanup' in c && typeof c.allowRemoteCleanup !== 'boolean') return null
-    if ('allowRemoteInstalls' in c && typeof c.allowRemoteInstalls !== 'boolean') return null
-    if ('allowRemoteConfig' in c && typeof c.allowRemoteConfig !== 'boolean') return null
-  }
-
   // Validate registryIgnoredTweaks is an array of tweak-signature strings if present
   if ('registryIgnoredTweaks' in obj && obj.registryIgnoredTweaks !== undefined) {
     if (!Array.isArray(obj.registryIgnoredTweaks)) return null

@@ -69,15 +69,18 @@ export function cleanupShareLinks(caption: string, title: string) {
     { name: 'X', url: link('https://x.com/intent/tweet', { text: caption }) },
     {
       name: 'Reddit',
-      url: link('https://www.reddit.com/submit', { url: 'https://usekudu.com', title })
+      url: link('https://www.reddit.com/submit', {
+        url: 'https://github.com/Andford/tokkiphealthypc',
+        title
+      })
     },
     { name: 'Bluesky', url: link('https://bsky.app/intent/compose', { text: caption }) },
     { name: 'WhatsApp', url: link('https://wa.me/', { text: caption }) },
     {
       name: 'Telegram',
       url: link('https://t.me/share/url', {
-        url: 'https://usekudu.com',
-        text: caption.replace('https://usekudu.com', '').trim()
+        url: 'https://github.com/Andford/tokkiphealthypc',
+        text: caption.replace('https://github.com/Andford/tokkiphealthypc', '').trim()
       })
     }
   ]
@@ -136,7 +139,7 @@ export function cleanupCardSvg(
   ${rows.length === 0 ? text(56, barsY + 38, 26, t('share.tagline'), ink, 500) : ''}
   <path d="M56 ${height - 100}H1024" stroke="${dark ? '#343438' : '#ddddda'}"/>
   ${text(56, height - 52, 17, t('share.footer'), muted)}
-  ${text(850, height - 52, 22, 'usekudu.com', accent, 700)}
+  ${text(850, height - 52, 22, 'github.com/Andford/tokkiphealthypc', accent, 700)}
   </g></svg>`
 }
 

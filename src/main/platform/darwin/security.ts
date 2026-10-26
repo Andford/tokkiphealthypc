@@ -1,7 +1,7 @@
 import { execFile } from 'child_process'
 import { promisify } from 'util'
 import type { PlatformSecurity } from '../types'
-import type { HealthReport } from '../../services/cloud-agent-types'
+import type { HealthReport } from '../../services/health-types'
 
 const execFileAsync = promisify(execFile)
 

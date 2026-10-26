@@ -684,7 +684,7 @@ async function applyOne(
     return { ok: false, reason: 'Entry is protected and cannot be modified.' }
   }
   if (entry.requiresAdmin && !isAdmin()) {
-    return { ok: false, reason: 'Access denied — run Kudu as administrator.' }
+    return { ok: false, reason: 'Access denied — run Tokkip Healthy PC as administrator.' }
   }
 
   try {
@@ -741,7 +741,8 @@ function cleanRegError(message: string): string {
   // reg.exe error messages usually start with "ERROR: ".
   const m = message.match(/ERROR:\s*(.+?)(?:\r?\n|$)/)
   if (m) return m[1].trim()
-  if (/access is denied/i.test(message)) return 'Access denied — run Kudu as administrator.'
+  if (/access is denied/i.test(message))
+    return 'Access denied — run Tokkip Healthy PC as administrator.'
   if (/cancel/i.test(message)) return 'Operation cancelled'
   return message.length > 200 ? message.substring(0, 200) + '…' : message
 }

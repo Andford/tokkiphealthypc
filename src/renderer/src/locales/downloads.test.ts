@@ -44,37 +44,4 @@ describe('Downloads localized file counts', () => {
     })
   }
 
-  it('retains the localized plural forms through the translation structural sync', () => {
-    const scriptPath = resolve('scripts/translate.js')
-    const source = readFileSync(scriptPath, 'utf8')
-    // Load the real merge helper without starting the translation CLI or calling the API.
-    const merge = runInNewContext(
-      source.slice(0, source.lastIndexOf('\nmain().catch')) + '\nmergeTranslation',
-      { require: createRequire(import.meta.url), __dirname: resolve('scripts'), process }
-    ) as (source: object, existing: object, fresh: object, keys: Set<string>) => Record<string, string>
-    const english = readLocale('en')
-    for (const { code } of LANGUAGES) {
-      const translations = readLocale(code)
-      const synced = merge(english, translations, {}, new Set())
-      for (const family of families) {
-        for (const suffix of ['zero', 'one', 'two', 'few', 'many', 'other']) {
-          const key = `${family}_${suffix}`
-          expect(synced[key], `${code}: ${key}`).toBe(translations[key])
-        }
-      }
-    }
-  })
-
-  it('uses the distinct Czech, Polish, Russian, Ukrainian, Romanian and Arabic forms', () => {
-    expect(readLocale('cs').reviewCount_few).toBe('{{count}} soubory ke kontrole')
-    expect(readLocale('cs').confirmTitle_other).toBe('Přesunout {{count}} souborů do koše?')
-    expect(readLocale('pl').selected_few).toBe('Zaznaczono {{count}} pliki')
-    expect(readLocale('ru').reviewCount_few).toBe('{{count}} файла для проверки')
-    expect(readLocale('uk').reviewCount_few).toBe('{{count}} файли для перевірки')
-    expect(readLocale('ro').reviewCount_few).toBe('{{count}} fișiere de revizuit')
-    expect(readLocale('ro').reviewCount_other).toBe('{{count}} de fișiere de revizuit')
-    expect(readLocale('ar').reviewCount_two).toBe('ملفان للمراجعة ({{count}})')
-    expect(readLocale('ar').reviewCount_few).toBe('{{count}} ملفات للمراجعة')
-    expect(readLocale('ar').reviewCount_many).toBe('{{count}} ملفًا للمراجعة')
-  })
 })

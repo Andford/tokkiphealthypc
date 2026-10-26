@@ -100,19 +100,6 @@ describe('settings-store', () => {
     expect(schedule.day).toBe(1)
   })
 
-  it('updateSettings deep-merges cloud settings', () => {
-    useSettingsStore.getState().updateSettings({
-      cloud: { apiKey: 'test-key', allowRemotePower: false }
-    } as any)
-
-    const { cloud } = useSettingsStore.getState().settings
-    expect(cloud.apiKey).toBe('test-key')
-    expect(cloud.allowRemotePower).toBe(false)
-    // Preserved
-    expect(cloud.telemetryIntervalSec).toBe(60)
-    expect(cloud.shareProcessList).toBe(true)
-  })
-
   it('updateSettings does not clobber nested objects when only top-level changes', () => {
     useSettingsStore.getState().updateSettings({ autoRestart: false })
     const { cleaner, schedule, cloud } = useSettingsStore.getState().settings

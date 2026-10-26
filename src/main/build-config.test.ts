@@ -33,26 +33,6 @@ function option(key: string, name: string): string | undefined {
 }
 
 describe('electron-builder.yml', () => {
-  it.each([
-    ['ubuntu-latest', Arch.x64],
-    ['ubuntu-24.04-arm', Arch.arm64]
-  ])('builds only native Linux release targets on %s', (runner, architecture) => {
-    const release = load(
-      readFileSync(path.resolve(__dirname, '../../.github/workflows/release.yml'), 'utf8')
-    ) as any
-    const job = release.jobs.build.strategy.matrix.include.find((job: any) => job.os === runner)
-    const args = configureBuildCommand(createYargs()).parseSync(job['build-args'].split(/\s+/))
-    const options = normalizeOptions(args)
-    // Exercise electron-builder's actual config fallback: architecture flags
-    // alone still expand the two architectures declared in electron-builder.yml.
-    const targets = computeArchToTargetNamesMap(
-      options.targets!.get(Platform.LINUX)!,
-      { platformSpecificBuildOptions: (load(CONFIG) as any).linux } as any,
-      Platform.LINUX
-    )
-    expect([...targets]).toEqual([[architecture, ['AppImage', 'deb']]])
-  })
-
   it('requests admin for the app executable', () => {
     // Kudu edits HKLM, system directories and other machine-wide state, so the
     // manifest asks for elevation rather than re-launching at runtime.
@@ -80,7 +60,7 @@ describe('electron-builder.yml', () => {
 
   it('publishes a Windows portable artifact alongside NSIS', () => {
     expect(block('win').some((l) => l.includes('target: portable'))).toBe(true)
-    expect(option('portable', 'artifactName')).toBe('Kudu-Portable-${version}.${ext}')
+    expect(option('portable', 'artifactName')).toBe('TokkipHealthyPC-Portable-${version}.${ext}')
     expect(option('portable', 'requestExecutionLevel')).toBe('admin')
     expect((load(CONFIG) as any).afterAllArtifactBuild).toBe('scripts/build-portable-zip.js')
   })
@@ -88,12 +68,12 @@ describe('electron-builder.yml', () => {
   it('publishes a stable AppImage name for in-place Linux auto-update', () => {
     // Versioned AppImage basenames make electron-updater write a new file and
     // delete the old one, breaking desktop Exec= paths (#401).
-    expect(option('appImage', 'artifactName')).toBe('Kudu-${arch}.${ext}')
+    expect(option('appImage', 'artifactName')).toBe('TokkipHealthyPC-${arch}.${ext}')
     expect(option('appImage', 'artifactName')).not.toContain('${version}')
   })
 
   it('keeps versioned Linux deb artifact names', () => {
-    expect(option('deb', 'artifactName')).toBe('Kudu-${version}-${arch}.${ext}')
+    expect(option('deb', 'artifactName')).toBe('TokkipHealthyPC-${version}-${arch}.${ext}')
   })
 
   it('publishes Linux AppImage for x64 and arm64', () => {
@@ -108,29 +88,5 @@ describe('electron-builder.yml', () => {
     const appImageBlock = linux.slice(appImageStart, nextTarget === -1 ? undefined : nextTarget)
     expect(appImageBlock.some((l) => l.trim() === '- x64')).toBe(true)
     expect(appImageBlock.some((l) => l.trim() === '- arm64')).toBe(true)
-  })
-
-  it('stages native ARM64 builds without publishing over x64 update metadata', () => {
-    // Both architectures must reach verification separately, with no runner
-    // able to publish or overwrite the other's manifest during packaging.
-    const release = load(
-      readFileSync(
-        path.resolve(__dirname, '..', '..', '.github', 'workflows', 'release.yml'),
-        'utf-8'
-      )
-    ) as any
-    expect(release.jobs.build.strategy.matrix.include).toContainEqual({
-      os: 'ubuntu-24.04-arm',
-      'build-args': '--linux AppImage deb --arm64'
-    })
-    const buildSteps = release.jobs.build.steps as { run?: string }[]
-    const packaging = buildSteps.map((step) => step.run || '').join('\n')
-    expect(packaging).toContain('--publish never')
-    expect(packaging).not.toContain('--publish always')
-    expect(packaging).not.toContain('gh release upload')
-    const download = release.jobs['publish-release'].steps.find((step: any) =>
-      step.uses?.startsWith('actions/download-artifact@')
-    )
-    expect(download.with['merge-multiple']).toBe(false)
   })
 })

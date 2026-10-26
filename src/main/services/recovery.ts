@@ -193,7 +193,8 @@ export async function restoreRecoveryEntry(id: unknown) {
     )
     if (decision === 'conflict') {
       entry.status = 'conflict'
-      entry.error = 'The value changed after Kudu modified it. The newer value was preserved.'
+      entry.error =
+        'The value changed after Tokkip Healthy PC modified it. The newer value was preserved.'
     } else {
       if (decision === 'restore') await writeRecoveryTarget(entry.target, entry.before)
       if (

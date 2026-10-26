@@ -435,7 +435,7 @@ export function StartupPage() {
   const safetyLoading = useStartupStore((s) => s.safetyLoading)
   const expandedItemId = useStartupStore((s) => s.expandedItemId)
 
-  const isCloudLinked = !!useSettingsStore((s) => s.settings.cloud.apiKey)
+  const isCloudLinked = false // Safety ratings needed Kudu Cloud
 
   const store = useStartupStore
 
@@ -730,74 +730,6 @@ export function StartupPage() {
                     {item.command}
                   </div>
                 </div>
-
-                {/* Safety Score */}
-                {isCloudLinked ? (
-                  rating ? (
-                    (() => {
-                      const colors = safetyScoreColor(rating.safetyScore)
-                      const Icon = safetyIcon(rating.safetyScore)
-                      const tooltipKey =
-                        rating.safetyScore >= 8
-                          ? 'safetyTooltipSafe'
-                          : rating.safetyScore >= 5
-                            ? 'safetyTooltipCaution'
-                            : rating.safetyScore >= 3
-                              ? 'safetyTooltipWarning'
-                              : 'safetyTooltipDanger'
-                      return (
-                        <SafetyTooltip text={t(tooltipKey)}>
-                          <button
-                            onClick={() =>
-                              store.getState().setExpandedItemId(isExpanded ? null : item.id)
-                            }
-                            className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl cursor-pointer transition-all hover:scale-110"
-                            style={{ background: colors.bg }}
-                          >
-                            <Icon
-                              className="h-[18px] w-[18px]"
-                              style={{ color: colors.text }}
-                              strokeWidth={1.8}
-                            />
-                          </button>
-                        </SafetyTooltip>
-                      )
-                    })()
-                  ) : (
-                    <SafetyTooltip
-                      text={t(safetyLoading ? 'safetyTooltipPending' : 'safetyPending')}
-                    >
-                      <div
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl"
-                        style={{ background: 'var(--bg-subtle-2)' }}
-                      >
-                        {safetyLoading ? (
-                          <div className="h-4 w-4 animate-spin rounded-full border-2 border-zinc-700 border-t-zinc-400" />
-                        ) : (
-                          <Shield
-                            className="h-[18px] w-[18px]"
-                            style={{ color: 'var(--text-faint)' }}
-                            strokeWidth={1.8}
-                          />
-                        )}
-                      </div>
-                    </SafetyTooltip>
-                  )
-                ) : (
-                  <SafetyTooltip text={t('safetyTooltipLocked')}>
-                    <button
-                      onClick={() => toast.info(t('safetyLinkCloud'))}
-                      className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl opacity-30 cursor-pointer transition-opacity hover:opacity-50"
-                      style={{ background: 'var(--bg-subtle-2)' }}
-                    >
-                      <ShieldOff
-                        className="h-[18px] w-[18px]"
-                        style={{ color: 'var(--text-faint)' }}
-                        strokeWidth={1.8}
-                      />
-                    </button>
-                  </SafetyTooltip>
-                )}
 
                 {/* Impact */}
                 <span

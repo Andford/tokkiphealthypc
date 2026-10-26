@@ -45,7 +45,6 @@ import type { DriveInfo, ScanResult, CleanResult } from '@shared/types'
 import { CleanerType } from '@shared/enums'
 import { usePlatform } from '@/hooks/usePlatform'
 import { SimpleDashboard } from '@/components/dashboard/SimpleDashboard'
-import { DashboardCloud } from '@/components/dashboard/DashboardCloud'
 
 type OneClickPhase = 'idle' | 'scanning' | 'cleaning' | 'done'
 
@@ -936,19 +935,17 @@ function AdvancedDashboard({ onBusyChange }: { onBusyChange: (busy: boolean) => 
           </section>
         </div>
         <aside className="pulse-home-rail">
-          <DashboardCloud variant="rail">
-            <article className="pulse-action-card is-primary pulse-cleanup-hero">
-              <span className="pulse-icon-tile">
-                <Sparkles size={21} />
-              </span>
-              <h3>{tx('home.cleanTitle')}</h3>
-              <p>{tx('home.cleanDescription')}</p>
-              <button className="pulse-button pulse-primary" onClick={() => navigate('/cleaner')}>
-                {tx('home.cleanAction')}
-                <ArrowRight size={16} />
-              </button>
-            </article>
-          </DashboardCloud>
+          <article className="pulse-action-card is-primary pulse-cleanup-hero">
+            <span className="pulse-icon-tile">
+              <Sparkles size={21} />
+            </span>
+            <h3>{tx('home.cleanTitle')}</h3>
+            <p>{tx('home.cleanDescription')}</p>
+            <button className="pulse-button pulse-primary" onClick={() => navigate('/cleaner')}>
+              {tx('home.cleanAction')}
+              <ArrowRight size={16} />
+            </button>
+          </article>
           <section className="pulse-card pulse-attention">
             <div className="pulse-card-heading">
               <h2>{tx('home.attention')}</h2>

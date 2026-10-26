@@ -10,9 +10,7 @@ const GB = 1024 ** 3
 const now = Date.now()
 const empty = new URLSearchParams(location.search).get('state') === 'empty'
 // Explicit sample access states for checking conversion and recovery flows.
-const cloudPreview = new URLSearchParams(location.search).get('cloud') ?? 'unlinked'
 const settings = structuredClone(defaultSettings)
-if (cloudPreview !== 'unlinked') settings.cloud.apiKey = 'preview-only'
 settings.dashboardView =
   localStorage.getItem('kudu-preview-dashboard-view') === 'advanced' ? 'advanced' : 'simple'
 settings.theme = new URLSearchParams(location.search).get('theme') === 'light' ? 'light' : 'dark'
@@ -418,25 +416,7 @@ const reads: Record<string, (...args: any[]) => unknown> = {
     }))
   }),
   ...featureReads(empty),
-  diagnosticsCapabilities: () => {
-    if (cloudPreview === 'offline') throw new Error('Preview connection unavailable')
-    return {
-      available: cloudPreview === 'pro',
-      requiredPlan: 'Pro',
-      provider: 'OpenAI',
-      retentionDays: 7,
-      ...(cloudPreview === 'pro'
-        ? {}
-        : {
-            accessReason:
-              cloudPreview === 'unlinked'
-                ? 'unlinked'
-                : cloudPreview === 'authorization'
-                  ? 'authorization'
-                  : 'subscription'
-          })
-    }
-  },
+
   settingsGet: () => settings,
   settingsSet: (partial) => {
     Object.assign(settings, partial)
@@ -452,11 +432,7 @@ const reads: Record<string, (...args: any[]) => unknown> = {
     history.unshift(entry)
     emit('onHistoryChanged', undefined)
   },
-  cloudHistoryGet: () => [],
-  cloudGetStatus: () => ({
-    status: cloudPreview === 'pro' || cloudPreview === 'basic' ? 'connected' : 'disconnected'
-  }),
-  threatMonitorGetSnapshot: () => null,
+
   startupList: () => startup,
   startupBootTrace: () => null,
   startupSafetyFetch: () => ({}),
@@ -596,9 +572,7 @@ const reads: Record<string, (...args: any[]) => unknown> = {
   largeFilesSelectDir: () => 'C:\\Users\\Preview\\Downloads',
   emptyFoldersSelectDir: () => 'C:\\Users\\Preview\\Downloads',
   shredderSelectFiles: () => [],
-  shredderSelectFolders: () => [],
-  cveFetch: () => ({ vulnerabilities: [], total: 0 }),
-  breachMonitorFetch: () => ({ emails: [], breaches: [] })
+  shredderSelectFolders: () => []
 }
 
 window.kudu = new Proxy(

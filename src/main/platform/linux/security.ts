@@ -2,7 +2,7 @@ import { execFile } from 'child_process'
 import { promisify } from 'util'
 import { readFile, stat, readdir } from 'fs/promises'
 import type { PlatformSecurity } from '../types'
-import type { HealthReport } from '../../services/cloud-agent-types'
+import type { HealthReport } from '../../services/health-types'
 
 const execFileAsync = promisify(execFile)
 

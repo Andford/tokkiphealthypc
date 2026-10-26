@@ -66,7 +66,7 @@ function shellEscape(arg: string): string {
 // macOS falls back to "osascript wants to make changes", which looks
 // suspicious to non-technical users who don't recognize the binary name.
 const ELEVATION_PROMPT =
-  'Kudu needs your administrator password to apply system hardening settings.'
+  'Tokkip Healthy PC needs your administrator password to apply system hardening settings.'
 
 async function elevatedExec(cmd: string, args: string[]): Promise<string> {
   if (isRoot()) {
@@ -104,7 +104,7 @@ async function assertNotSymlink(filePath: string): Promise<void> {
   try {
     if ((await lstat(filePath)).isSymbolicLink())
       throw new Error(
-        `${filePath} is a symbolic link, probably managed by configuration management. Kudu won't modify it; change the setting there instead.`
+        `${filePath} is a symbolic link, probably managed by configuration management. Tokkip Healthy PC won't modify it; change the setting there instead.`
       )
   } catch (error: any) {
     if (error?.code !== 'ENOENT') throw error
@@ -404,7 +404,7 @@ interface DarwinPrivacySetting extends PrivacySettingDef {
 }
 
 const NOT_CAPTURED =
-  "Kudu has no record of this setting's previous state and macOS's default isn't certain, so it can't be reverted safely. Change it in System Settings instead."
+  "Tokkip Healthy PC has no record of this setting's previous state and macOS's default isn't certain, so it can't be reverted safely. Change it in System Settings instead."
 
 const same = (a: unknown, b: unknown) => JSON.stringify(a) === JSON.stringify(b)
 const partEqual = (part: StatePart<any>, a: unknown, b: unknown) =>
@@ -429,7 +429,7 @@ async function captureState(
       current = await part.read()
     } catch (error) {
       throw new Error(
-        `Kudu couldn't record the current state, so nothing was changed: ${error instanceof Error ? error.message : error}`,
+        `Tokkip Healthy PC couldn't record the current state, so nothing was changed: ${error instanceof Error ? error.message : error}`,
         { cause: error }
       )
     }
@@ -691,7 +691,7 @@ async function revertSettings(
     if (!restored) {
       fail(
         setting,
-        "macOS didn't report the previous state after reverting. Kudu kept its record so you can try again."
+        "macOS didn't report the previous state after reverting. Tokkip Healthy PC kept its record so you can try again."
       )
       continue
     }
@@ -1073,7 +1073,7 @@ function sshdPart(directive: string, value: string): StatePart<string[]> {
             )
           )
             throw new Error(
-              `${SSHD_CONFIG} was edited after Kudu changed it, so Kudu won't overwrite it. Restore ${directive} by hand.`
+              `${SSHD_CONFIG} was edited after Tokkip Healthy PC changed it, so Tokkip Healthy PC won't overwrite it. Restore ${directive} by hand.`
             )
           prior.forEach((line, n) => (lines[at[n]] = line))
           if (expected.length > prior.length) lines.splice(at[at.length - 1], 1)

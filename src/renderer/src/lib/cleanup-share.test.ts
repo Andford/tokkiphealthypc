@@ -13,10 +13,12 @@ describe('cleanup share privacy projection', () => {
       expect(url.protocol).toBe('https:')
       if (platform.name === 'Reddit') {
         expect(url.searchParams.get('title')).toBe(title)
-        expect(url.searchParams.get('url')).toBe('https://usekudu.com')
+        expect(url.searchParams.get('url')).toBe('https://github.com/Andford/tokkiphealthypc')
       } else if (platform.name === 'Telegram') {
-        expect(url.searchParams.get('text')).toBe(caption.replace('https://usekudu.com', '').trim())
-        expect(url.searchParams.get('url')).toBe('https://usekudu.com')
+        expect(url.searchParams.get('text')).toBe(
+          caption.replace('https://github.com/Andford/tokkiphealthypc', '').trim()
+        )
+        expect(url.searchParams.get('url')).toBe('https://github.com/Andford/tokkiphealthypc')
       } else {
         expect(url.searchParams.get('text')).toBe(caption)
         expect([...url.searchParams.keys()]).toEqual(['text'])

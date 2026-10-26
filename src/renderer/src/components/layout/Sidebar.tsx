@@ -13,14 +13,12 @@ import {
   Info,
   ShieldAlert,
   Shield,
-  Radar,
   Activity,
   Trash2,
   Download,
   CalendarClock,
   Gamepad2,
   RotateCcw,
-  Bug,
   ChevronRight,
   CopyCheck,
   FileUp,
@@ -34,20 +32,15 @@ import {
   Server,
   Flame,
   PackageMinus,
-  Cloud,
-  Mail,
   MousePointerClick,
   X
 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { LucideIcon } from 'lucide-react'
-import { useThreatMonitorStore } from '@/stores/threat-monitor-store'
 import { useAppUpdateStore } from '@/stores/app-update-store'
 import { useUpdaterStore } from '@/stores/updater-store'
 import { useDriverStore } from '@/stores/driver-store'
 import { useGameModeStore } from '@/stores/game-mode-store'
-import { useCveStore } from '@/stores/cve-store'
-import { useBreachStore } from '@/stores/breach-store'
 import { usePlatform } from '@/hooks/usePlatform'
 import { useSettingsStore } from '@/stores/settings-store'
 
@@ -120,28 +113,7 @@ const navGroups: NavGroup[] = [
             label: 'Privacy',
             path: '/privacy'
           },
-          {
-            icon: Radar,
-            labelKey: 'threatMonitor:pageTitle',
-            label: 'Threat Monitor',
-            path: '/threat-monitor',
-            cloudTier: 'pro'
-          },
-          { icon: Flame, labelKey: 'firewallAudit', label: 'Firewall Audit', path: '/firewall' },
-          {
-            icon: Bug,
-            labelKey: 'cveScanner:pageTitle',
-            label: 'Vulnerability Scanner',
-            path: '/cve',
-            cloudTier: 'pro'
-          },
-          {
-            icon: Mail,
-            labelKey: 'breachMonitor:pageTitle',
-            label: 'Breach Monitor',
-            path: '/breach-monitor',
-            cloudTier: 'basic'
-          }
+          { icon: Flame, labelKey: 'firewallAudit', label: 'Firewall Audit', path: '/firewall' }
         ]
       },
       {
@@ -155,13 +127,6 @@ const navGroups: NavGroup[] = [
             labelKey: 'performance:pageTitle',
             label: 'Live Performance',
             path: '/performance'
-          },
-          {
-            icon: Activity,
-            labelKey: 'diagnostics:title',
-            label: 'Diagnostics',
-            path: '/performance-diagnostics',
-            cloudTier: 'pro'
           },
           {
             icon: Server,
@@ -312,7 +277,6 @@ function useBottomNavItems(): NavItemDef[] {
       path: '/settings',
       children: [
         { icon: Settings, labelKey: 'settings:pageTitle', label: 'Preferences', path: '/settings' },
-        { icon: Cloud, labelKey: 'cloud:pageTitle', label: 'Cloud', path: '/cloud' },
         {
           icon: Info,
           labelKey: 'settings:sectionAbout',
@@ -332,16 +296,7 @@ function useBadgeCounts(): Record<string, number> {
   )
   const updaterApps = useUpdaterStore((s) => s.apps)
   const driverUpdates = useDriverStore((s) => s.updates)
-  const threatSnapshot = useThreatMonitorStore((s) => s.snapshot)
-  const threatCount =
-    (threatSnapshot?.flaggedConnections.length ?? 0) + (threatSnapshot?.flaggedDns.length ?? 0)
   const gameModeActive = useGameModeStore((s) => s.active)
-  const cveTotal = useCveStore((s) => s.total)
-  const breachEmails = useBreachStore((s) => s.emails)
-  const breachTotal = breachEmails.reduce(
-    (sum, e) => sum + e.breaches.filter((b) => !b.acknowledgedAt).length,
-    0
-  )
 
   const softwareUpdateCount = softwareUpdaterNotifications ? updaterApps.length : 0
   const updatesCount = softwareUpdateCount + driverUpdates.length
@@ -350,10 +305,7 @@ function useBadgeCounts(): Record<string, number> {
     '/updates': softwareUpdateCount,
     '/software': updatesCount,
     '/drivers': driverUpdates.length,
-    '/threat-monitor': threatCount,
-    '/game-mode': gameModeActive ? 1 : 0,
-    '/cve': cveTotal,
-    '/breach-monitor': breachTotal
+    '/game-mode': gameModeActive ? 1 : 0
   }
 }
 
@@ -411,8 +363,7 @@ export function Sidebar() {
       .flatMap((group) => group.items)
       .find((item) => item.children?.some((child) => child.path === location.pathname))
     if (activeParent) setOpenSubmenu(activeParent.path)
-    else if (['/settings', '/cloud', '/about'].includes(location.pathname))
-      setOpenSubmenu('/settings')
+    else if (['/settings', '/about'].includes(location.pathname)) setOpenSubmenu('/settings')
   }, [location.pathname])
 
   // Keep group totals separate: a parent can share its path with a child.

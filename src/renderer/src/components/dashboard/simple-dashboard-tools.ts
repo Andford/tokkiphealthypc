@@ -24,7 +24,6 @@ const tools: Record<DashboardGoal, GoalTool[]> = {
   speed: [
     { path: '/performance', titleKey: 'performance:pageTitle' },
     { path: '/startup', titleKey: 'startup:pageTitle' },
-    { path: '/performance-diagnostics', titleKey: 'diagnostics:title', tier: 'pro' },
     { path: '/services', titleKey: 'hardening:serviceManager.pageTitle' },
     { path: '/network', titleKey: 'network:pageTitle' },
     { path: '/disk-repair', titleKey: 'disk:repairTitle', windowsOnly: true },
@@ -34,10 +33,7 @@ const tools: Record<DashboardGoal, GoalTool[]> = {
   protection: [
     { path: '/malware', titleKey: 'malware:pageTitle' },
     { path: '/privacy', titleKey: 'hardening:privacy.pageTitle' },
-    { path: '/cve', titleKey: 'cveScanner:pageTitle', tier: 'pro' },
-    { path: '/threat-monitor', titleKey: 'threatMonitor:pageTitle', tier: 'pro' },
-    { path: '/firewall', titleKey: 'sidebar:firewallAudit', feature: 'firewallAudit' },
-    { path: '/breach-monitor', titleKey: 'breachMonitor:pageTitle', tier: 'basic' }
+    { path: '/firewall', titleKey: 'sidebar:firewallAudit', feature: 'firewallAudit' }
   ]
 }
 

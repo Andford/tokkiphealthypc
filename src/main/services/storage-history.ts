@@ -192,7 +192,7 @@ async function alertForSnapshot(scope: StorageScope, snapshot: StorageSnapshot) 
     if (Notification.isSupported()) {
       await updateStorageScope(scope.id, { lastAlertAt: new Date().toISOString() })
       new Notification({
-        title: 'Kudu Storage History',
+        title: 'Tokkip Healthy PC Storage History',
         body: lowSpace
           ? 'A tracked volume is low on free space. Open Storage History to review.'
           : 'A tracked folder grew beyond your alert threshold. Open Storage History to review.'

@@ -28,7 +28,7 @@ export function AboutPage() {
 
       <div className="glass-card rounded-2xl p-6">
         <div className="flex items-center gap-4">
-          <img src={logoSrc} alt="Kudu" className="h-14 w-14 rounded-xl" />
+          <img src={logoSrc} alt="Tokkip Healthy PC" className="h-14 w-14 rounded-xl" />
           <div>
             <p className="text-[16px] font-semibold text-white">
               {t('appVersion', { version: __APP_VERSION__ })}
@@ -44,13 +44,13 @@ export function AboutPage() {
             <p className="text-[12px] text-zinc-400">
               {t('portableUpdatesDesc', {
                 defaultValue:
-                  'Portable builds use manual updates. Close Kudu and replace the app files with the latest portable download. Your settings are retained.'
+                  'Portable builds use manual updates. Close Tokkip Healthy PC and replace the app files with the latest portable download. Your settings are retained.'
               })}
             </p>
             <LinkButton
               icon={Download}
               label={t('portableDownload', { defaultValue: 'Download latest portable build' })}
-              href="https://github.com/AdventDevInc/kudu/releases/latest"
+              href="https://github.com/Andford/tokkiphealthypc/releases/latest"
             />
           </div>
         ) : (
@@ -159,12 +159,12 @@ export function AboutPage() {
           <LinkButton
             icon={Github}
             label={t('github')}
-            href="https://github.com/adventdevinc/kudu"
+            href="https://github.com/Andford/tokkiphealthypc"
           />
           <LinkButton
             icon={Bug}
             label={t('reportBug')}
-            href="https://github.com/adventdevinc/kudu/issues"
+            href="https://github.com/Andford/tokkiphealthypc/issues"
           />
         </div>
 
@@ -182,18 +182,18 @@ export function AboutPage() {
             <Heart className="h-5 w-5" strokeWidth={2} aria-hidden="true" />
           </div>
           <div className="min-w-0 flex-1">
-            <p className="text-[13px] font-semibold text-zinc-200">{t('supportKudu')}</p>
+            <p className="text-[13px] font-semibold text-zinc-200">{t('supportTokkip')}</p>
             <p
               className="mt-0.5 text-[12px] leading-relaxed"
               style={{ color: 'var(--text-muted)' }}
             >
-              {t('supportKuduDescription')}
+              {t('supportTokkipDescription')}
             </p>
           </div>
           <LinkButton
             icon={Heart}
-            label={t('supportKuduAction')}
-            href="https://usekudu.com/sponsors"
+            label={t('supportTokkipAction')}
+            href="https://github.com/adventdevinc/kudu"
           />
         </div>
       </div>

@@ -653,15 +653,11 @@ async function cleanDatabasesCli(itemIds: string[]): Promise<CleanResult> {
 function printHelp(): void {
   log(
     `
-Kudu CLI — Full-featured command line interface
+Tokkip Healthy PC CLI — Full-featured command line interface
 
 Usage:
-  kudu --cli <command> [subcommand] [options]
-  kudu --daemon [--api-key <key>]
+  tokkip --cli <command> [subcommand] [options]
 
-Daemon Mode (headless cloud agent):
-  --daemon                     Start as headless cloud agent daemon
-  --daemon --api-key <key>     Set API key and start daemon
 
 File Cleaners (legacy flags also supported):
   scan [--system] [--browser] [--app] [--gaming] [--recycle-bin] [--all]
@@ -733,7 +729,6 @@ Uninstall Leftovers:
                              Clean only explicitly reviewed leftover paths
 
 CVE Scanner:
-  cve list                   List known CVE vulnerabilities (requires cloud agent)
 
 Scan History:
   history list               Show scan history
@@ -748,12 +743,9 @@ Repair (Windows):
 
 Config Management:
   config get [key]             Show settings (e.g. config get cleaner); API key is masked
-  config set <key> <value>     Update a setting (e.g. config set cloud.apiKey my-key)
+  config set <key> <value>     Update a setting (e.g. config set language es)
 
 Service Management (Linux):
-  service install              Install as a systemd service
-  service uninstall            Remove the systemd service
-  service status               Show service status
 
 Prometheus Metrics:
   metrics                    Print current metrics (Prometheus text format)
@@ -786,17 +778,14 @@ Optional native cleanup:
                          with --clean; savings are not estimated.
 
 Examples:
-  kudu --cli scan --all --clean        Scan & clean all file categories
-  kudu --cli registry scan --json      Scan registry, JSON output
-  kudu --cli debloat scan              List removable bloatware
-  kudu --cli startup list              Show startup items
-  kudu --cli malware scan              Run malware scan
-  kudu --cli perf info                 Show system specs
-  kudu --cli config set cloud.apiKey my-key   Set cloud API key
-  kudu --cli metrics                   Print Prometheus metrics
-  kudu --cli metrics-server --port 9200  Start metrics endpoint
-  kudu --daemon                        Run headless cloud agent
-  sudo kudu --cli service install      Install as Linux service
+  tokkip --cli scan --all --clean        Scan & clean all file categories
+  tokkip --cli registry scan --json      Scan registry, JSON output
+  tokkip --cli debloat scan              List removable bloatware
+  tokkip --cli startup list              Show startup items
+  tokkip --cli malware scan              Run malware scan
+  tokkip --cli perf info                 Show system specs
+  tokkip --cli metrics                   Print Prometheus metrics
+  tokkip --cli metrics-server --port 9200  Start metrics endpoint
 `.trim()
   )
 }
@@ -834,7 +823,7 @@ async function handleRegistry(args: string[], ctx: CliContext): Promise<number |
     cliOut(ctx, result)
     return exitCodeForRegistryFix(result)
   } else {
-    cliUsage(ctx, 'kudu --cli registry <scan|fix> [--all] [--json]')
+    cliUsage(ctx, 'tokkip --cli registry <scan|fix> [--all] [--json]')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -864,7 +853,7 @@ async function handleStartup(args: string[], ctx: CliContext): Promise<number | 
   } else if (sub === 'disable' || sub === 'enable') {
     const name = args.slice(1).join(' ')
     if (!name) {
-      cliUsage(ctx, `kudu --cli startup ${sub} <name>`)
+      cliUsage(ctx, `tokkip --cli startup ${sub} <name>`)
       return ExitCode.INVALID_ARGS
     }
     const items = await listStartupItems()
@@ -885,7 +874,7 @@ async function handleStartup(args: string[], ctx: CliContext): Promise<number | 
   } else if (sub === 'delete') {
     const name = args.slice(1).join(' ')
     if (!name) {
-      cliUsage(ctx, 'kudu --cli startup delete <name>')
+      cliUsage(ctx, 'tokkip --cli startup delete <name>')
       return ExitCode.INVALID_ARGS
     }
     const items = await listStartupItems()
@@ -897,7 +886,7 @@ async function handleStartup(args: string[], ctx: CliContext): Promise<number | 
     const result = await deleteStartupItem(item.name, item.location, item.source)
     cliOut(ctx, result)
   } else {
-    cliUsage(ctx, 'kudu --cli startup <list|boot-trace|disable|enable|delete> [name]')
+    cliUsage(ctx, 'tokkip --cli startup <list|boot-trace|disable|enable|delete> [name]')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -934,7 +923,7 @@ async function handleDebloat(args: string[], ctx: CliContext): Promise<number | 
     } else {
       const pkgArg = args.find((a) => a !== 'remove' && !a.startsWith('--'))
       if (!pkgArg) {
-        cliUsage(ctx, 'kudu --cli debloat remove <pkg1,pkg2,...> or --all')
+        cliUsage(ctx, 'tokkip --cli debloat remove <pkg1,pkg2,...> or --all')
         return ExitCode.INVALID_ARGS
       }
       const packageNames = pkgArg
@@ -948,7 +937,7 @@ async function handleDebloat(args: string[], ctx: CliContext): Promise<number | 
       cliOut(ctx, result)
     }
   } else {
-    cliUsage(ctx, 'kudu --cli debloat <scan|remove> [packages|--all]')
+    cliUsage(ctx, 'tokkip --cli debloat <scan|remove> [packages|--all]')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -971,7 +960,7 @@ async function handleDisk(args: string[], ctx: CliContext): Promise<number | voi
   } else if (sub === 'analyze') {
     const drive = args[1]?.replace(':', '')
     if (!drive) {
-      cliUsage(ctx, 'kudu --cli disk analyze <drive-letter>')
+      cliUsage(ctx, 'tokkip --cli disk analyze <drive-letter>')
       return ExitCode.INVALID_ARGS
     }
     cliLog(ctx, `Analyzing drive ${drive}:...`)
@@ -990,7 +979,7 @@ async function handleDisk(args: string[], ctx: CliContext): Promise<number | voi
   } else if (sub === 'file-types') {
     const drive = args[1]?.replace(':', '')
     if (!drive) {
-      cliUsage(ctx, 'kudu --cli disk file-types <drive-letter>')
+      cliUsage(ctx, 'tokkip --cli disk file-types <drive-letter>')
       return ExitCode.INVALID_ARGS
     }
     cliLog(ctx, `Analyzing file types on ${drive}:...`)
@@ -1002,7 +991,7 @@ async function handleDisk(args: string[], ctx: CliContext): Promise<number | voi
         cliLog(ctx, `  ${t.extension}: ${t.fileCount} files, ${formatBytes(t.totalSize)}`)
     }
   } else {
-    cliUsage(ctx, 'kudu --cli disk <drives|analyze|file-types> [drive-letter]')
+    cliUsage(ctx, 'tokkip --cli disk <drives|analyze|file-types> [drive-letter]')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -1032,7 +1021,7 @@ async function handleNetwork(args: string[], ctx: CliContext): Promise<number | 
     const result = await cleanNetworkItems(toClean)
     cliOut(ctx, result)
   } else {
-    cliUsage(ctx, 'kudu --cli network <scan|clean> [--all]')
+    cliUsage(ctx, 'tokkip --cli network <scan|clean> [--all]')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -1063,7 +1052,7 @@ async function handleMalware(args: string[], ctx: CliContext): Promise<number | 
       .filter((a) => !a.startsWith('--'))
       .join(' ')
     if (!path) {
-      cliUsage(ctx, 'kudu --cli malware quarantine <path>')
+      cliUsage(ctx, 'tokkip --cli malware quarantine <path>')
       return ExitCode.INVALID_ARGS
     }
     const result = await quarantineMalware([path])
@@ -1074,13 +1063,13 @@ async function handleMalware(args: string[], ctx: CliContext): Promise<number | 
       .filter((a) => !a.startsWith('--'))
       .join(' ')
     if (!path) {
-      cliUsage(ctx, 'kudu --cli malware delete <path>')
+      cliUsage(ctx, 'tokkip --cli malware delete <path>')
       return ExitCode.INVALID_ARGS
     }
     const result = await deleteMalware([path])
     cliOut(ctx, result)
   } else {
-    cliUsage(ctx, 'kudu --cli malware <scan|quarantine|delete> [path]')
+    cliUsage(ctx, 'tokkip --cli malware <scan|quarantine|delete> [path]')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -1118,7 +1107,7 @@ async function handlePrivacy(args: string[], ctx: CliContext): Promise<number | 
     const applyResult = await applyPrivacySettings(toApply)
     cliOut(ctx, applyResult)
   } else {
-    cliUsage(ctx, 'kudu --cli privacy <scan|apply> [--all]')
+    cliUsage(ctx, 'tokkip --cli privacy <scan|apply> [--all]')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -1149,7 +1138,7 @@ export async function handleDrivers(args: string[], ctx: CliContext): Promise<nu
   } else if (sub === 'clean') {
     const nameArg = args.find((a) => a !== 'clean' && !a.startsWith('--'))
     if (!nameArg) {
-      cliUsage(ctx, 'kudu --cli drivers clean <name1,name2,...>')
+      cliUsage(ctx, 'tokkip --cli drivers clean <name1,name2,...>')
       return ExitCode.INVALID_ARGS
     }
     const names = nameArg
@@ -1205,7 +1194,7 @@ export async function handleDrivers(args: string[], ctx: CliContext): Promise<nu
             : []
         })()
     if (toInstall.length === 0) {
-      cliUsage(ctx, 'kudu --cli drivers update <id,...> or --all')
+      cliUsage(ctx, 'tokkip --cli drivers update <id,...> or --all')
       return ExitCode.INVALID_ARGS
     }
     // Only install updates that are actually offered. Ignored IDs are refused
@@ -1237,7 +1226,7 @@ export async function handleDrivers(args: string[], ctx: CliContext): Promise<nu
   } else if (sub === 'ignore' || sub === 'unignore') {
     const idArg = args.find((a) => a !== sub && !a.startsWith('--'))
     if (!idArg) {
-      cliUsage(ctx, `kudu --cli drivers ${sub} <update-id,...>`)
+      cliUsage(ctx, `tokkip --cli drivers ${sub} <update-id,...>`)
       return ExitCode.INVALID_ARGS
     }
     const ids = idArg
@@ -1260,7 +1249,7 @@ export async function handleDrivers(args: string[], ctx: CliContext): Promise<nu
   } else {
     cliUsage(
       ctx,
-      'kudu --cli drivers <scan|clean|check-updates|update|ignore|unignore> [names|ids|--all]'
+      'tokkip --cli drivers <scan|clean|check-updates|update|ignore|unignore> [names|ids|--all]'
     )
     return ExitCode.INVALID_ARGS
   }
@@ -1286,7 +1275,7 @@ async function handleServices(args: string[], ctx: CliContext): Promise<number |
       .filter((a) => !a.startsWith('--'))
       .join(' ')
     if (!name) {
-      cliUsage(ctx, `kudu --cli services ${sub} <service-name>`)
+      cliUsage(ctx, `tokkip --cli services ${sub} <service-name>`)
       return ExitCode.INVALID_ARGS
     }
     const targetType = sub === 'disable' ? 'Disabled' : sub === 'auto' ? 'Automatic' : 'Manual'
@@ -1294,7 +1283,7 @@ async function handleServices(args: string[], ctx: CliContext): Promise<number |
     const result = await applyServiceChanges([{ name, targetStartType: targetType }])
     cliOut(ctx, result)
   } else {
-    cliUsage(ctx, 'kudu --cli services <scan|disable|enable|manual|auto> [service-name]')
+    cliUsage(ctx, 'tokkip --cli services <scan|disable|enable|manual|auto> [service-name]')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -1317,7 +1306,7 @@ async function handlePrograms(args: string[], ctx: CliContext): Promise<number |
         )
     }
   } else {
-    cliUsage(ctx, 'kudu --cli programs list')
+    cliUsage(ctx, 'tokkip --cli programs list')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -1377,7 +1366,7 @@ async function handleUpdates(args: string[], ctx: CliContext): Promise<number | 
       }))
     }
     if (items.length === 0) {
-      cliUsage(ctx, 'kudu --cli updates run <id,...> or --all')
+      cliUsage(ctx, 'tokkip --cli updates run <id,...> or --all')
       return ExitCode.INVALID_ARGS
     }
     cliLog(ctx, `Updating ${items.length} apps...`)
@@ -1389,7 +1378,7 @@ async function handleUpdates(args: string[], ctx: CliContext): Promise<number | 
     })
     cliOut(ctx, result)
   } else {
-    cliUsage(ctx, 'kudu --cli updates <check|run> [ids|--all]')
+    cliUsage(ctx, 'tokkip --cli updates <check|run> [ids|--all]')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -1425,13 +1414,13 @@ async function handlePerf(args: string[], ctx: CliContext): Promise<number | voi
   } else if (sub === 'kill') {
     const pid = parseInt(args[1])
     if (isNaN(pid)) {
-      cliUsage(ctx, 'kudu --cli perf kill <pid>')
+      cliUsage(ctx, 'tokkip --cli perf kill <pid>')
       return ExitCode.INVALID_ARGS
     }
     const result = await perf.killProcess(pid)
     cliOut(ctx, result)
   } else {
-    cliUsage(ctx, 'kudu --cli perf <info|disk-health|kill> [pid]')
+    cliUsage(ctx, 'tokkip --cli perf <info|disk-health|kill> [pid]')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -1439,7 +1428,7 @@ async function handlePerf(args: string[], ctx: CliContext): Promise<number | voi
 export async function handleLeftovers(args: string[], ctx: CliContext): Promise<number | void> {
   const sub = args[0]
   const selectedPaths = new Set<string>()
-  const usage = 'kudu --cli leftovers scan | leftovers clean --path <path> [--path <path> ...]'
+  const usage = 'tokkip --cli leftovers scan | leftovers clean --path <path> [--path <path> ...]'
   if (sub === 'clean') {
     for (let i = 1; i < args.length; i += 2) {
       if (args[i] !== '--path' || !args[i + 1] || !win32.isAbsolute(args[i + 1])) {
@@ -1503,105 +1492,7 @@ export async function handleLeftovers(args: string[], ctx: CliContext): Promise<
       return exitCodeForCleanResult(cleanResult)
     }
   } else {
-    cliUsage(ctx, 'kudu --cli leftovers <scan|clean>')
-    return ExitCode.INVALID_ARGS
-  }
-}
-
-async function handleCve(args: string[], ctx: CliContext): Promise<number | void> {
-  const sub = args[0]
-
-  if (sub === 'list') {
-    const { cloudAgent } = await import('./services/cloud-agent')
-    const { getSettings } = await import('./services/settings-store')
-    if (!getSettings().cloud.apiKey) {
-      cliOut(
-        ctx,
-        ctx.json
-          ? { error: 'No cloud API key configured' }
-          : 'No cloud API key configured. Link via Settings → Cloud.'
-      )
-      return ExitCode.GENERAL_ERROR
-    }
-    // Start cloud agent (CLI mode doesn't auto-start it) and wait for subscription
-    if (cloudAgent.getStatus().status !== 'connected') {
-      if (!ctx.json) cliLog(ctx, 'Connecting to cloud...')
-      await cloudAgent.start()
-      // start() returns before the Pusher subscription completes — poll for connected
-      const deadline = Date.now() + 15_000
-      while (cloudAgent.getStatus().status !== 'connected' && Date.now() < deadline) {
-        if (
-          cloudAgent.getStatus().status === 'error' ||
-          cloudAgent.getStatus().status === 'dormant'
-        )
-          break
-        await new Promise((r) => setTimeout(r, 250))
-      }
-    }
-    if (cloudAgent.getStatus().status !== 'connected') {
-      cliOut(
-        ctx,
-        ctx.json
-          ? { error: 'Cloud agent failed to connect' }
-          : 'Cloud agent failed to connect. Check your API key and network.'
-      )
-      return ExitCode.GENERAL_ERROR
-    }
-    if (!ctx.json) cliLog(ctx, 'Fetching vulnerabilities...')
-    try {
-      const firstPage = await cloudAgent.getVulnerabilities()
-      let threatSummary = firstPage.summary
-      if (ctx.json) {
-        // Fetch all pages so --json output is complete
-        const allVulns = [...firstPage.vulnerabilities]
-        let page = 2
-        let hasMore = firstPage.nextPageUrl !== null
-        while (hasMore) {
-          const next = await cloudAgent.getVulnerabilities(page)
-          allVulns.push(...next.vulnerabilities)
-          hasMore = next.nextPageUrl !== null
-          page++
-        }
-        // Summary/total must come from the returned rows, not page 1 alone (#445)
-        const { deduplicateCves, summarizeCveSeverities } = await import('./services/cve-filter')
-        const vulnerabilities = deduplicateCves(allVulns)
-        threatSummary = summarizeCveSeverities(vulnerabilities)
-        cliOut(ctx, {
-          vulnerabilities,
-          summary: threatSummary,
-          total: vulnerabilities.length,
-          librarySize: firstPage.librarySize
-        })
-      } else {
-        const s = firstPage.summary
-        cliLog(
-          ctx,
-          `  Total: ${s.critical + s.high + s.medium + s.low}  Critical: ${s.critical}  High: ${s.high}  Medium: ${s.medium}  Low: ${s.low}`
-        )
-        if (firstPage.vulnerabilities.length === 0) {
-          cliLog(ctx, '  No vulnerabilities found.')
-        } else {
-          for (const v of firstPage.vulnerabilities) {
-            const fix = v.fixedIn ? ` → fix: ${v.fixedIn}` : ''
-            const cvss = v.cvssScore != null ? ` (CVSS ${v.cvssScore})` : ''
-            cliLog(
-              ctx,
-              `  [${v.severity.toUpperCase().padEnd(8)}] ${v.appName} ${v.installedVersion} — ${v.cveId}${cvss}${fix}`
-            )
-          }
-          if (firstPage.nextPageUrl) {
-            cliLog(ctx, `  ... and more (${firstPage.total} total). Use --json for full data.`)
-          }
-        }
-      }
-      if (threatSummary.critical > 0 || threatSummary.high > 0) return ExitCode.SCAN_THREATS
-    } catch (err) {
-      const msg = err instanceof Error ? err.message : 'Unknown error'
-      cliOut(ctx, ctx.json ? { error: msg } : `Failed: ${msg}`)
-      return ExitCode.GENERAL_ERROR
-    }
-  } else {
-    cliUsage(ctx, 'kudu --cli cve <list>')
+    cliUsage(ctx, 'tokkip --cli leftovers <scan|clean>')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -1630,7 +1521,7 @@ async function handleHistory(args: string[], ctx: CliContext): Promise<number | 
     clearHistory()
     cliOut(ctx, ctx.json ? { message: 'History cleared' } : 'Scan history cleared.')
   } else {
-    cliUsage(ctx, 'kudu --cli history <list|clear>')
+    cliUsage(ctx, 'tokkip --cli history <list|clear>')
     return ExitCode.INVALID_ARGS
   }
 }
@@ -1641,7 +1532,7 @@ async function handleRestorePoint(args: string[], ctx: CliContext): Promise<numb
     args
       .slice(1)
       .filter((a) => !a.startsWith('--'))
-      .join(' ') || 'Kudu CLI restore point'
+      .join(' ') || 'Tokkip Healthy PC CLI restore point'
 
   if (args[0] === 'create') {
     cliLog(ctx, `Creating restore point: ${description}...`)
@@ -1649,12 +1540,12 @@ async function handleRestorePoint(args: string[], ctx: CliContext): Promise<numb
     cliOut(ctx, result)
     return exitCodeForRestorePoint(result)
   } else {
-    cliUsage(ctx, 'kudu --cli restore-point create [description]')
+    cliUsage(ctx, 'tokkip --cli restore-point create [description]')
     return ExitCode.INVALID_ARGS
   }
 }
 
-const REPAIR_USAGE = 'kudu --cli repair <gpu-restart|winre-status> [--verbose]'
+const REPAIR_USAGE = 'tokkip --cli repair <gpu-restart|winre-status> [--verbose]'
 
 async function handleRepair(args: string[], ctx: CliContext): Promise<number | void> {
   const sub = args[0]
@@ -1745,20 +1636,10 @@ async function repairWinReStatus(args: string[], ctx: CliContext): Promise<numbe
  * Show enough of the cloud API key to recognise it, never enough to reuse it:
  * only the last four characters, and only when at least twelve stay hidden.
  */
-function maskApiKey(key: string): string {
-  if (!key) return key
-  return key.length >= 16 ? `****${key.slice(-4)}` : '****'
-}
 
-/**
- * Settings as `config get` may print them. The cloud API key authenticates
- * this machine to Kudu Cloud, and CLI output ends up in terminals, logs and
- * support tickets — so it is masked in every form, JSON included.
- */
+/** Settings as `config get` prints them (nothing secret is stored). */
 export function redactSettingsForDisplay<T extends Record<string, any>>(settings: T): T {
-  const apiKey = settings.cloud?.apiKey
-  if (typeof apiKey !== 'string' || !apiKey) return settings
-  return { ...settings, cloud: { ...settings.cloud, apiKey: maskApiKey(apiKey) } }
+  return settings
 }
 
 async function handleConfig(args: string[], ctx: CliContext): Promise<number | void> {
@@ -1794,8 +1675,8 @@ async function handleConfig(args: string[], ctx: CliContext): Promise<number | v
       if (ctx.json) {
         cliOut(ctx, { error: 'invalid_usage', usage: 'config set <key> <value>' })
       } else {
-        cliLog(ctx, 'Usage: kudu --cli config set <key> <value>')
-        cliLog(ctx, 'Example: kudu --cli config set cloud.apiKey your-key-here')
+        cliLog(ctx, 'Usage: tokkip --cli config set <key> <value>')
+        cliLog(ctx, 'Example: tokkip --cli config set cloud.apiKey your-key-here')
       }
       return ExitCode.INVALID_ARGS
     }
@@ -1830,189 +1711,12 @@ async function handleConfig(args: string[], ctx: CliContext): Promise<number | v
     if (ctx.json) {
       cliOut(ctx, { error: 'invalid_usage', usage: 'config <get|set> [key] [value]' })
     } else {
-      cliLog(ctx, 'Usage: kudu --cli config <get|set> [key] [value]')
+      cliLog(ctx, 'Usage: tokkip --cli config <get|set> [key] [value]')
       cliLog(ctx, '')
       cliLog(ctx, 'Examples:')
-      cliLog(ctx, '  kudu --cli config get                        Show all settings')
-      cliLog(ctx, '  kudu --cli config get cloud.apiKey            Show API key (masked)')
-      cliLog(ctx, '  kudu --cli config set cloud.apiKey my-key     Set API key')
-    }
-    return ExitCode.INVALID_ARGS
-  }
-}
-
-// ─── Service management (systemd) ────────────────────────────
-
-async function handleService(args: string[], ctx: CliContext): Promise<number | void> {
-  const sub = args[0]
-
-  if (process.platform !== 'linux') {
-    if (ctx.json) {
-      cliOut(ctx, {
-        error: 'unsupported_platform',
-        message: 'Service management is only supported on Linux (systemd)',
-        platform: process.platform
-      })
-    } else {
-      log('Error: Service management is only supported on Linux (systemd).')
-      if (process.platform === 'win32') {
-        log('On Windows, use Task Scheduler or NSSM to run as a service.')
-      } else if (process.platform === 'darwin') {
-        log('On macOS, use launchd with a plist file.')
-      }
-    }
-    return ExitCode.INVALID_ARGS
-  }
-
-  const { writeFileSync, existsSync: fsExistsSync, unlinkSync } = await import('fs')
-  const { execFileSync } = await import('child_process')
-
-  const serviceName = 'kudu'
-  const servicePath = `/etc/systemd/system/${serviceName}.service`
-  const exePath = app.getPath('exe')
-
-  // Determine the user to run as (prefer the user who invoked sudo)
-  const runUser = process.env['SUDO_USER'] || process.env['USER'] || 'root'
-
-  const unitContent = `[Unit]
-Description=Kudu System Cleaner Daemon
-Documentation=https://usekudu.com
-After=network-online.target
-Wants=network-online.target
-
-[Service]
-Type=simple
-User=${runUser}
-ExecStart=${exePath} --daemon
-Restart=on-failure
-RestartSec=10
-StandardOutput=journal
-StandardError=journal
-SyslogIdentifier=kudu
-Environment=ELECTRON_NO_ATTACH_CONSOLE=1
-Environment=DISPLAY=
-
-[Install]
-WantedBy=multi-user.target
-`
-
-  if (sub === 'install') {
-    try {
-      writeFileSync(servicePath, unitContent, 'utf-8')
-      execFileSync('systemctl', ['daemon-reload'])
-      if (ctx.json) {
-        cliOut(ctx, { success: true, path: servicePath })
-      } else {
-        cliLog(ctx, `Service installed: ${servicePath}`)
-        cliLog(ctx, '')
-        cliLog(ctx, 'To start now:          sudo systemctl start kudu')
-        cliLog(ctx, 'To enable on boot:     sudo systemctl enable kudu')
-        cliLog(ctx, 'To do both:            sudo systemctl enable --now kudu')
-        cliLog(ctx, 'To view logs:          journalctl -u kudu -f')
-      }
-    } catch (err: any) {
-      if (err.message?.includes('EACCES') || err.message?.includes('Permission denied')) {
-        if (ctx.json) cliOut(ctx, { error: 'permission_denied', message: 'Run with sudo' })
-        else {
-          log('Error: Permission denied. Run with sudo:')
-          log('  sudo kudu --cli service install')
-        }
-        return ExitCode.PERMISSION_DENIED
-      } else {
-        if (ctx.json) cliOut(ctx, { error: 'install_failed', message: err.message })
-        else log(`Error installing service: ${err.message}`)
-        return ExitCode.GENERAL_ERROR
-      }
-    }
-  } else if (sub === 'uninstall') {
-    try {
-      // Stop and disable first, ignore errors if not running
-      try {
-        execFileSync('systemctl', ['stop', serviceName])
-      } catch {
-        /* ok */
-      }
-      try {
-        execFileSync('systemctl', ['disable', serviceName])
-      } catch {
-        /* ok */
-      }
-      if (fsExistsSync(servicePath)) {
-        unlinkSync(servicePath)
-        execFileSync('systemctl', ['daemon-reload'])
-      }
-      if (ctx.json) cliOut(ctx, { success: true })
-      else cliLog(ctx, 'Service uninstalled.')
-    } catch (err: any) {
-      if (err.message?.includes('EACCES') || err.message?.includes('Permission denied')) {
-        if (ctx.json) cliOut(ctx, { error: 'permission_denied', message: 'Run with sudo' })
-        else {
-          log('Error: Permission denied. Run with sudo:')
-          log('  sudo kudu --cli service uninstall')
-        }
-        return ExitCode.PERMISSION_DENIED
-      } else {
-        if (ctx.json) cliOut(ctx, { error: 'uninstall_failed', message: err.message })
-        else log(`Error uninstalling service: ${err.message}`)
-        return ExitCode.GENERAL_ERROR
-      }
-    }
-  } else if (sub === 'status') {
-    try {
-      if (ctx.json) {
-        const output = execFileSync(
-          'systemctl',
-          ['show', serviceName, '--property=ActiveState,SubState,LoadState,MainPID'],
-          { encoding: 'utf-8' }
-        )
-        const parsed = Object.fromEntries(
-          output
-            .trim()
-            .split('\n')
-            .map((l) => l.split('='))
-        )
-        cliOut(ctx, parsed)
-      } else {
-        const output = execFileSync('systemctl', ['status', serviceName], { encoding: 'utf-8' })
-        log(output)
-      }
-    } catch (err: any) {
-      // systemctl status returns exit code 3 if service is not running
-      if (ctx.json) {
-        try {
-          const output = execFileSync(
-            'systemctl',
-            ['show', serviceName, '--property=ActiveState,SubState,LoadState,MainPID'],
-            { encoding: 'utf-8' }
-          )
-          const parsed = Object.fromEntries(
-            output
-              .trim()
-              .split('\n')
-              .map((l) => l.split('='))
-          )
-          cliOut(ctx, parsed)
-        } catch {
-          cliOut(ctx, {
-            error: 'not_installed',
-            message: 'Service is not installed or not running'
-          })
-        }
-      } else {
-        if (err.stdout) log(err.stdout)
-        else if (err.stderr) log(err.stderr)
-        else cliLog(ctx, 'Service is not installed or not running.')
-      }
-    }
-  } else {
-    if (ctx.json) {
-      cliOut(ctx, { error: 'invalid_usage', usage: 'service <install|uninstall|status>' })
-    } else {
-      cliLog(ctx, 'Usage: kudu --cli service <install|uninstall|status>')
-      cliLog(ctx, '')
-      cliLog(ctx, '  install     Install Kudu as a systemd service')
-      cliLog(ctx, '  uninstall   Stop, disable, and remove the systemd service')
-      cliLog(ctx, '  status      Show current service status')
+      cliLog(ctx, '  tokkip --cli config get                        Show all settings')
+      cliLog(ctx, '  tokkip --cli config get cloud.apiKey            Show API key (masked)')
+      cliLog(ctx, '  tokkip --cli config set cloud.apiKey my-key     Set API key')
     }
     return ExitCode.INVALID_ARGS
   }
@@ -2106,7 +1810,7 @@ async function runLegacyScanClean(
   const allResults: ScanResult[] = []
   const scanErrors: Array<{ category: string; error: string }> = []
 
-  cliLog(ctx, `Kudu CLI v${app.getVersion()}`)
+  cliLog(ctx, `Tokkip Healthy PC CLI v${app.getVersion()}`)
   cliLog(ctx, `Scanning: ${categories.join(', ')}`)
   cliLog(ctx, '')
 
@@ -2281,7 +1985,7 @@ export async function runCli(): Promise<void> {
     return
   }
   if (parsed.version) {
-    log(`Kudu v${app.getVersion()}`)
+    log(`Tokkip Healthy PC v${app.getVersion()}`)
     await exitCli(ExitCode.SUCCESS)
     return
   }
@@ -2374,12 +2078,6 @@ export async function runCli(): Promise<void> {
       case 'config':
         exitCode = await handleConfig(parsed.commandArgs, ctx)
         break
-      case 'service':
-        exitCode = await handleService(parsed.commandArgs, ctx)
-        break
-      case 'cve':
-        exitCode = await handleCve(parsed.commandArgs, ctx)
-        break
       case 'metrics':
         exitCode = await handleMetrics(parsed.commandArgs, ctx)
         break
@@ -2390,7 +2088,7 @@ export async function runCli(): Promise<void> {
         if (ctx.json) log(JSON.stringify({ error: 'unknown_command', command: parsed.command }))
         else {
           log(`Unknown command: ${parsed.command}`)
-          log('Run kudu --cli --help for usage information.')
+          log('Run tokkip --cli --help for usage information.')
         }
         await exitCli(ExitCode.UNKNOWN_COMMAND)
         return

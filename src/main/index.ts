@@ -31,14 +31,12 @@ import {
 } from './services/scheduler'
 import { initAutoUpdater } from './services/auto-updater'
 import { attachRendererDiagnostics } from './services/renderer-diagnostics'
-import { cloudAgent } from './services/cloud-agent'
 import {
   shouldDisableGpu,
   applyGpuFallbackSwitches,
   registerGpuCrashRecovery
 } from './services/gpu-fallback'
 import { runCli } from './cli'
-import { runDaemon } from './daemon'
 import { createWindowsTrayIcon } from './tray-icon'
 import { isAdmin } from './services/elevation'
 import { skipPortableStartup } from './services/portable'
@@ -57,7 +55,7 @@ app.disableHardwareAcceleration()
 // IMPORTANT: Clear DISPLAY before Chromium initializes — otherwise the
 // native layer picks the X11 ozone backend before app.commandLine
 // switches are processed, and crashes if no X server is running.
-if (process.argv.includes('--daemon') || process.argv.includes('--cli')) {
+if (process.argv.includes('--cli')) {
   delete process.env.DISPLAY
   delete process.env.WAYLAND_DISPLAY
   app.commandLine.appendSwitch('no-sandbox')
@@ -109,13 +107,10 @@ if (isRoot) {
   }
 }
 
-// ─── CLI / Daemon mode ───────────────────────────────────────
+// ─── CLI mode ────────────────────────────────────────────────
 // If --cli is passed, run headless and exit — no GUI, no tray.
-// If --daemon is passed, run headless cloud agent and stay alive.
 if (process.argv.includes('--cli')) {
   app.whenReady().then(() => runCli())
-} else if (process.argv.includes('--daemon')) {
-  app.whenReady().then(() => runDaemon())
 } else {
   initGui()
 }
@@ -384,7 +379,7 @@ function initGui(): void {
 
     const contextMenu = Menu.buildFromTemplate([
       {
-        label: t('openKudu'),
+        label: t('openTokkip'),
         click: () => {
           if (mainWindow && !mainWindow.isDestroyed()) {
             mainWindow.show()
@@ -420,7 +415,7 @@ function initGui(): void {
     tray.setToolTip(t('trayTooltip'))
     const contextMenu = Menu.buildFromTemplate([
       {
-        label: t('openKudu'),
+        label: t('openTokkip'),
         click: () => {
           if (mainWindow && !mainWindow.isDestroyed()) {
             mainWindow.show()
@@ -642,11 +637,6 @@ function initGui(): void {
     startScheduler(() => mainWindow)
     startStorageHistory()
 
-    // Start cloud agent if linked
-    if (settings.cloud.apiKey) {
-      cloudAgent.start()
-    }
-
     // Listen for settings changes to update auto-launch and tray
     ipcMain.handle(IPC.SETTINGS_APPLY_STARTUP, async (_event, enabled: boolean) => {
       await applyAutoLaunch(enabled)
@@ -747,7 +737,6 @@ function initGui(): void {
     isQuitting = true
     stopScheduler()
     stopStorageHistory()
-    cloudAgent.stop()
     // Kill any active child processes (reg.exe, cmd.exe, etc.) to prevent orphans
     killAllChildren()
   })

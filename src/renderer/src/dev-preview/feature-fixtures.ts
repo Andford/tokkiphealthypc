@@ -4,8 +4,6 @@ import {
   type StorageSnapshotSummary
 } from '@shared/storage-history'
 import type { RecoveryEntry, RegistryBackup } from '@shared/recovery'
-import type { DiagnosticSession } from '@shared/performance-diagnostics'
-import { diagnosticsFixture } from './diagnostics-fixture'
 
 const now = Date.now()
 const GB = 1024 ** 3
@@ -54,44 +52,7 @@ const entries: RecoveryEntry[] = ['Diagnostic data preference', 'Background serv
     status: i === 0 ? 'ready' : 'restored'
   })
 )
-const recording: DiagnosticSession = {
-  title: 'Morning startup',
-  notes: 'Browser and everyday apps opening.',
-  pinned: false,
-  state: 'saved',
-  cloud: null,
-  upload: null,
-  recording: {
-    version: 1,
-    recordId: '00000000-0000-4000-8000-000000000002',
-    startedAt: new Date(now - 600000).toISOString(),
-    durationMs: 120000,
-    system: {
-      platform: 'win32',
-      cpuModel: 'Intel Core i7-12700K',
-      logicalCores: 20,
-      totalMemoryBytes: 32 * GB,
-      osVersion: 'Windows 11'
-    },
-    samples: Array.from({ length: 61 }, (_, i) => ({
-      t: i * 2000,
-      memoryPercent: ((8.4 + i * 0.01) / 32) * 100,
-      cpuPercent: 18 + Math.round(Math.abs(Math.sin(i * 0.3)) * 42),
-      memoryUsedBytes: (8.4 + i * 0.01) * GB,
-      diskReadBytesPerSec: 2 * 1024 ** 2,
-      diskWriteBytesPerSec: 1024 ** 2,
-      processes: []
-    }))
-  }
-}
 export const featureReads = (empty: boolean) => ({
-  ...diagnosticsFixture(recording, empty),
-  diagnosticsCapabilities: () => ({
-    available: true,
-    requiredPlan: 'pro',
-    retentionDays: 30,
-    provider: 'Preview'
-  }),
   recoveryList: () => ({
     entries: empty ? [] : entries,
     unreadable: [],

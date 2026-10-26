@@ -22,8 +22,8 @@
   "statusCloudNotConnected": "Not connected",
   "cloudUpsellEyebrow": "Optional Cloud upgrade",
   "cloudUpsellTitle": "Unlock four powerful Cloud features",
-  "cloudUpsellDescription": "Get threat monitoring, vulnerability scanning, breach alerts, and remote management. Your subscription also supports Kudu's continued open-source development.",
-  "cloudUpsellAction": "Explore Kudu Cloud",
+  "cloudUpsellDescription": "Get threat monitoring, vulnerability scanning, breach alerts, and remote management. Your subscription also supports Tokkip's continued open-source development.",
+  "cloudUpsellAction": "Explore the cloud",
   "toolLabelCleaner": "Cleaner",
   "toolLabelRegistry": "Registry",
   "toolLabelDrivers": "Drivers",
@@ -98,7 +98,7 @@
   "greetingEvening": "Good evening",
   "greetingDeviceNeedsAttention": "Your device needs attention. {{count}} active threat remains.",
   "greetingDeviceNeedsAttentionPlural": "Your device needs attention. {{count}} active threats remain.",
-  "greetingEstablishingStatus": "Kudu is still establishing this device’s status. Complete the remaining checks for a reliable health summary.",
+  "greetingEstablishingStatus": "Tokkip is still establishing this device’s status. Complete the remaining checks for a reliable health summary.",
   "greetingHealthyAllUpToDate": "Your PC is healthy and everything important is up to date.",
   "greetingChecksCompleteItems": "Your checks are complete. {{count}} item is ready for review.",
   "greetingChecksCompleteItemsPlural": "Your checks are complete. {{count}} items are ready for review.",
@@ -114,7 +114,7 @@
   "briefingDescThreats": "{{count}} active threat needs attention.",
   "briefingDescThreatsPlural": "{{count}} active threats need attention.",
   "briefingDescThreatsLastScan": " Your last malware scan ran {{date}}.",
-  "briefingDescClean": "No active threats were found in your last malware scan {{date}}. Kudu has reclaimed {{size}} over its lifetime.",
+  "briefingDescClean": "No active threats were found in your last malware scan {{date}}. Tokkip has reclaimed {{size}} over its lifetime.",
   "briefingDescBaseline": "Run a complete scan to establish a protection baseline and uncover safe cleanup opportunities.",
 
   "recommendedHeading": "Recommended for you",
@@ -192,7 +192,7 @@
   "gameModeReadyLabel": "Game Mode is ready",
   "gameModeFocusResources": "Focus resources before you play",
 
-  "cloudStatusConnected": "Kudu Cloud connected",
-  "cloudStatusNeedsAttention": "Kudu Cloud needs attention",
-  "cloudStatusConnect": "Connect Kudu Cloud"
+  "cloudStatusConnected": "the cloud connected",
+  "cloudStatusNeedsAttention": "the cloud needs attention",
+  "cloudStatusConnect": "Connect the cloud"
 }

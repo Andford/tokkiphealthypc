@@ -42,17 +42,7 @@ export const defaultSettings: KuduSettings = {
     hour: 9
   },
   schedules: [],
-  cloud: {
-    apiKey: '',
-    telemetryIntervalSec: 60,
-    shareDiskHealth: true,
-    shareProcessList: true,
-    shareThreatMonitor: true,
-    allowRemotePower: false,
-    allowRemoteCleanup: false,
-    allowRemoteInstalls: false,
-    allowRemoteConfig: false
-  },
+
   windowsPackageManager: 'winget',
   windowsPackageManagers: ['winget', 'choco', 'scoop', 'npm'],
   gameMode: {
@@ -90,7 +80,6 @@ export const useSettingsStore = create<SettingsState>((set) => ({
         schedule: { ...s.settings.schedule, ...(partial.schedule ?? {}) },
         // schedules is an array — replace entirely when provided
         schedules: partial.schedules ?? s.settings.schedules,
-        cloud: { ...s.settings.cloud, ...(partial.cloud ?? {}) },
         gameMode: { ...s.settings.gameMode, ...(partial.gameMode ?? {}) }
       }
     }))

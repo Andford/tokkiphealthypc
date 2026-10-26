@@ -920,7 +920,7 @@ describe('restoreRegistryBackup', () => {
     simulate({})
     for (const name of [TARGETED, hkcuOnly])
       await expect(restoreRegistryBackup(name)).rejects.toThrow(
-        'Restoring a registry backup requires administrator privileges. Relaunch Kudu as administrator.'
+        'Restoring a registry backup requires administrator privileges. Relaunch Tokkip Healthy PC as administrator.'
       )
     expect(mocks.tracked).not.toHaveBeenCalled()
     expect(mocks.native).not.toHaveBeenCalled()

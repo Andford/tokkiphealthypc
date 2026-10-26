@@ -868,17 +868,6 @@ export interface KuduSettings {
     hour: number
   }
   schedules: ScheduleEntry[]
-  cloud: {
-    apiKey: string
-    telemetryIntervalSec: number
-    shareDiskHealth: boolean
-    shareProcessList: boolean
-    shareThreatMonitor: boolean
-    allowRemotePower: boolean
-    allowRemoteCleanup: boolean
-    allowRemoteInstalls: boolean
-    allowRemoteConfig: boolean
-  }
   /**
    * Preferred Windows package manager for Software Updater.
    * @deprecated Superseded by `windowsPackageManagers` (multi-manager aggregation).

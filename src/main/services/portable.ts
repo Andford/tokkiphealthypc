@@ -15,6 +15,6 @@ export function isPortable(): boolean {
 /** Portable runs must not change the installed copy's shared startup task. */
 export function skipPortableStartup(enabled: boolean): boolean {
   if (!isPortable()) return false
-  if (enabled) throw new Error('Run at startup requires the installed version of Kudu')
+  if (enabled) throw new Error('Run at startup requires the installed version of Tokkip Healthy PC')
   return true
 }

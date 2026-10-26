@@ -1,7 +1,7 @@
 {
   "recovery": {
     "title": "Recovery Centre",
-    "description": "Review and restore supported changes made by Kudu",
+    "description": "Review and restore supported changes made by Tokkip",
     "limits": "Recovery covers recorded Windows DWORD privacy/registry values, scheduled tasks and service configuration. Permanent file deletion cannot be undone. Older or unsupported changes may have only a manual backup. Some restored settings require a restart.",
     "refresh": "Refresh",
     "export": "Export recovery history",
@@ -12,7 +12,7 @@
     "gameModeDescription": "Game Mode has an active or pending recovery snapshot.",
     "openGameMode": "Open Game Mode recovery",
     "before": "Original state",
-    "after": "State after Kudu",
+    "after": "State after Tokkip",
     "absent": "Value did not exist",
     "restore": "Restore original state",
     "previous": "Previous",
@@ -21,7 +21,7 @@
     "backupDescription": "These backup files do not contain verified after-state information. Inspect them in the backup folder before restoring manually; importing them can overwrite newer settings. A backup file is not an OS restore point.",
     "openBackups": "Open backup folder",
     "confirmTitle": "Restore this change?",
-    "confirmDescription": "Kudu will check the current state before restoring the recorded original value. Newer conflicting changes will be preserved. Administrator privileges may be required.",
+    "confirmDescription": "Tokkip will check the current state before restoring the recorded original value. Newer conflicting changes will be preserved. Administrator privileges may be required.",
     "status": {
       "pending": "Interrupted / pending",
       "ready": "Available",
@@ -30,7 +30,7 @@
       "conflict": "Newer change detected"
     },
     "remove": "Remove entry",
-    "removeDescription": "Remove this recovery record from local history? This does not change your settings or delete registry backups. Kudu will no longer be able to restore this change for you.",
+    "removeDescription": "Remove this recovery record from local history? This does not change your settings or delete registry backups. Tokkip will no longer be able to restore this change for you.",
     "unreadable": "This recovery record could not be read. It may have been written by another user account or damaged on disk.",
     "loading": "Loading recovery history…",
     "emptyTitle": "Your recovery history starts here",
@@ -41,14 +41,14 @@
     },
     "registryBackups": {
       "title": "Registry backups",
-      "description": "Kudu saves the registry keys it is about to change. Targeted backups can be restored here. Full-branch exports can only be inspected in the backup folder, because importing them would roll back unrelated changes made since.",
+      "description": "Tokkip saves the registry keys it is about to change. Targeted backups can be restored here. Full-branch exports can only be inspected in the backup folder, because importing them would roll back unrelated changes made since.",
       "empty": "No registry backups yet.",
       "restore": "Restore",
       "showInFolder": "Show in folder",
       "moreKeys": "+{{count}} more",
       "requiresAdmin": "Requires administrator",
       "confirmTitle": "Restore this registry backup?",
-      "confirmDescription": "Kudu will import the keys below. Values from the backup replace the current ones and missing keys and values are added back. Nothing else is deleted, except that restoring a pre-restore backup also removes the keys and values that the restore it undoes had added. Before importing, Kudu saves the current state of these keys as a pre-restore backup. Some changes take effect only after signing out or restarting.",
+      "confirmDescription": "Tokkip will import the keys below. Values from the backup replace the current ones and missing keys and values are added back. Nothing else is deleted, except that restoring a pre-restore backup also removes the keys and values that the restore it undoes had added. Before importing, Tokkip saves the current state of these keys as a pre-restore backup. Some changes take effect only after signing out or restarting.",
       "restored": "Restored. The previous state was saved to {{file}}.",
       "restoredNoBackup": "Restored. None of these keys existed before, so there was nothing to back up first.",
       "failed": "Restore failed: {{error}}",
@@ -61,13 +61,13 @@
       "blocked": {
         "full-export": "Full-branch export. Restoring it would roll back unrelated changes, so it can only be inspected.",
         "too-large": "Too large to be a targeted backup.",
-        "format": "Not in the registry export format Kudu writes.",
-        "deletion": "Contains deletion entries, which Kudu backups never do.",
-        "forbidden-key": "Contains keys outside the areas Kudu changes.",
+        "format": "Not in the registry export format Tokkip writes.",
+        "deletion": "Contains deletion entries, which Tokkip backups never do.",
+        "forbidden-key": "Contains keys outside the areas Tokkip changes.",
         "empty": "Contains no registry keys.",
         "unreadable": "Could not be read.",
-        "classes-root": "Contains HKEY_CLASSES_ROOT keys, which merge the machine and per-user classes, so Kudu can't tell which one to restore them to. It can only be inspected.",
-        "unverified": "This backup can't be verified — it may have been changed since Kudu wrote it, so it can only be inspected."
+        "classes-root": "Contains HKEY_CLASSES_ROOT keys, which merge the machine and per-user classes, so Tokkip can't tell which one to restore them to. It can only be inspected.",
+        "unverified": "This backup can't be verified — it may have been changed since Tokkip wrote it, so it can only be inspected."
       }
     }
   },

@@ -228,7 +228,8 @@ export function SchedulesPage() {
         toast.error(t('failedEnableStartup'), {
           action: {
             label: t('failedEnableStartupAction'),
-            onClick: () => window.open('https://usekudu.com/help/startup-failed', '_blank')
+            onClick: () =>
+              window.open('https://github.com/Andford/tokkiphealthypc#problemas', '_blank')
           }
         })
       })

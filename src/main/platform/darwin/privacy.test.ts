@@ -1151,7 +1151,9 @@ describe('darwin privacy revert', () => {
       files.set(SSHD, edited)
       execFileMock.mockClear()
 
-      await expect(find('macos-ssh-root-login').revert!()).rejects.toThrow(/edited after Kudu/)
+      await expect(find('macos-ssh-root-login').revert!()).rejects.toThrow(
+        /edited after Tokkip Healthy PC/
+      )
 
       expect(files.get(SSHD)).toBe(edited)
       expect(osascriptCalls()).toHaveLength(0)

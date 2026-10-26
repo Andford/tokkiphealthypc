@@ -8,7 +8,7 @@
 
 // ─── Sysctl config editing ─────────────────────────────────
 
-export const SYSCTL_HEADER = ['# Kudu system hardening — managed automatically']
+export const SYSCTL_HEADER = ['# Tokkip Healthy PC system hardening — managed automatically']
 
 const escapeRegExp = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 

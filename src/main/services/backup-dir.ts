@@ -4,7 +4,7 @@ import { getSettings } from './settings-store'
 
 /** Default location for Kudu backups (registry, shell extensions, etc.) */
 export function getDefaultBackupDir(): string {
-  return join(homedir(), 'Documents', 'Kudu Backups')
+  return join(homedir(), 'Documents', 'Tokkip Healthy PC Backups')
 }
 
 /**

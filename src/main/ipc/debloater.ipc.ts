@@ -365,7 +365,7 @@ export const KNOWN_BLOATWARE: Omit<BloatwareApp, 'id' | 'size' | 'selected'>[] =
     packageName: 'Microsoft.MicrosoftPCManager',
     publisher: 'Microsoft',
     category: 'microsoft',
-    description: 'PC optimization tool — redundant with Kudu'
+    description: 'PC optimization tool — redundant with Tokkip Healthy PC'
   },
   {
     name: 'Copilot+ AI Hub',

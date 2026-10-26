@@ -1,7 +1,7 @@
 {
   "recovery": {
     "title": "Centro de recuperación",
-    "description": "Revise y restaure los cambios compatibles realizados por Kudu",
+    "description": "Revise y restaure los cambios compatibles realizados por Tokkip",
     "limits": "La recuperación cubre los valores DWORD de privacidad/registro de Windows registrados, las tareas programadas y la configuración de los servicios. La eliminación permanente de archivos no se puede deshacer. Es posible que los cambios antiguos o no compatibles solo tengan una copia de seguridad manual. Algunos ajustes restaurados requieren reiniciar.",
     "refresh": "Actualizar",
     "export": "Exportar historial de recuperación",
@@ -12,7 +12,7 @@
     "gameModeDescription": "El Modo de juego tiene una instantánea de recuperación activa o pendiente.",
     "openGameMode": "Abrir recuperación del Modo de juego",
     "before": "Estado original",
-    "after": "Estado después de Kudu",
+    "after": "Estado después de Tokkip",
     "absent": "El valor no existía",
     "restore": "Restaurar estado original",
     "previous": "Anterior",
@@ -21,7 +21,7 @@
     "backupDescription": "Estos archivos de copia de seguridad no contienen información verificada del estado posterior. Inspecciónelos en la carpeta de copias de seguridad antes de restaurarlos manualmente; al importarlos, pueden sobrescribir ajustes más recientes. Un archivo de copia de seguridad no es un punto de restauración del sistema operativo.",
     "openBackups": "Abrir carpeta de copias de seguridad",
     "confirmTitle": "¿Restaurar este cambio?",
-    "confirmDescription": "Kudu comprobará el estado actual antes de restaurar el valor original registrado. Se conservarán los cambios posteriores que entren en conflicto. Es posible que se requieran privilegios de administrador.",
+    "confirmDescription": "Tokkip comprobará el estado actual antes de restaurar el valor original registrado. Se conservarán los cambios posteriores que entren en conflicto. Es posible que se requieran privilegios de administrador.",
     "status": {
       "pending": "Interrumpido / pendiente",
       "ready": "Disponible",
@@ -30,7 +30,7 @@
       "conflict": "Se detectó un cambio más reciente"
     },
     "remove": "Eliminar entrada",
-    "removeDescription": "¿Eliminar este registro de recuperación del historial local? Esto no cambia sus ajustes ni elimina las copias de seguridad del registro. Kudu ya no podrá restaurar este cambio por usted.",
+    "removeDescription": "¿Eliminar este registro de recuperación del historial local? Esto no cambia sus ajustes ni elimina las copias de seguridad del registro. Tokkip ya no podrá restaurar este cambio por usted.",
     "unreadable": "No se pudo leer este registro de recuperación. Es posible que haya sido escrito por otra cuenta de usuario o que esté dañado en el disco.",
     "loading": "¿Cargando historial de recuperación?",
     "emptyTitle": "Su historial de recuperación comienza aquí",
@@ -41,14 +41,14 @@
     },
     "registryBackups": {
       "title": "Copias de seguridad del registro",
-      "description": "Kudu guarda las claves del registro que está a punto de cambiar. Las copias de seguridad específicas pueden restaurarse aquí. Las exportaciones de ramas completas solo pueden inspeccionarse en la carpeta de copias de seguridad, porque importarlas revertiría cambios no relacionados realizados desde entonces.",
+      "description": "Tokkip guarda las claves del registro que está a punto de cambiar. Las copias de seguridad específicas pueden restaurarse aquí. Las exportaciones de ramas completas solo pueden inspeccionarse en la carpeta de copias de seguridad, porque importarlas revertiría cambios no relacionados realizados desde entonces.",
       "empty": "Aún no hay copias de seguridad del registro.",
       "restore": "Restaurar",
       "showInFolder": "Mostrar en la carpeta",
       "moreKeys": "+{{count}} más",
       "requiresAdmin": "Requiere administrador",
       "confirmTitle": "¿Restaurar esta copia de seguridad del registro?",
-      "confirmDescription": "Kudu importará las claves que se indican a continuación. Los valores de la copia de seguridad reemplazarán a los actuales y se volverán a agregar las claves y los valores que falten. No se eliminará nada más, salvo que al restaurar una copia de seguridad previa a la restauración también se eliminan las claves y los valores que había agregado la restauración que se deshace. Antes de importar, Kudu guarda el estado actual de estas claves como una copia de seguridad previa a la restauración. Algunos cambios solo surten efecto después de cerrar sesión o reiniciar.",
+      "confirmDescription": "Tokkip importará las claves que se indican a continuación. Los valores de la copia de seguridad reemplazarán a los actuales y se volverán a agregar las claves y los valores que falten. No se eliminará nada más, salvo que al restaurar una copia de seguridad previa a la restauración también se eliminan las claves y los valores que había agregado la restauración que se deshace. Antes de importar, Tokkip guarda el estado actual de estas claves como una copia de seguridad previa a la restauración. Algunos cambios solo surten efecto después de cerrar sesión o reiniciar.",
       "restored": "Restaurado. El estado anterior se guardó en {{file}}.",
       "restoredNoBackup": "Restaurado. Ninguna de estas claves existía antes, por lo que no había nada que respaldar primero.",
       "failed": "Error al restaurar: {{error}}",
@@ -61,13 +61,13 @@
       "blocked": {
         "full-export": "Exportación de rama completa. Restaurarla revertiría cambios no relacionados, por lo que solo puede inspeccionarse.",
         "too-large": "Demasiado grande para ser una copia de seguridad específica.",
-        "format": "No está en el formato de exportación del registro que escribe Kudu.",
-        "deletion": "Contiene entradas de eliminación, que las copias de seguridad de Kudu nunca incluyen.",
-        "forbidden-key": "Contiene claves fuera de las áreas que Kudu modifica.",
+        "format": "No está en el formato de exportación del registro que escribe Tokkip.",
+        "deletion": "Contiene entradas de eliminación, que las copias de seguridad de Tokkip nunca incluyen.",
+        "forbidden-key": "Contiene claves fuera de las áreas que Tokkip modifica.",
         "empty": "No contiene claves del registro.",
         "unreadable": "No se pudo leer.",
-        "classes-root": "Contiene claves HKEY_CLASSES_ROOT, que combinan las clases del equipo y las de cada usuario, por lo que Kudu no puede determinar en cuál de ellas restaurarlas. Solo se puede inspeccionar.",
-        "unverified": "No se puede verificar esta copia de seguridad; es posible que se haya modificado desde que Kudu la creó, por lo que solo puede inspeccionarse."
+        "classes-root": "Contiene claves HKEY_CLASSES_ROOT, que combinan las clases del equipo y las de cada usuario, por lo que Tokkip no puede determinar en cuál de ellas restaurarlas. Solo se puede inspeccionar.",
+        "unverified": "No se puede verificar esta copia de seguridad; es posible que se haya modificado desde que Tokkip la creó, por lo que solo puede inspeccionarse."
       }
     }
   },

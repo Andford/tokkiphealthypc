@@ -1,7 +1,7 @@
 {
-  "name": "kudu",
-  "version": "3.10.0",
-  "description": "A modern, open-source system cleaner for Windows, macOS, and Linux",
+  "name": "tokkip-healthy-pc",
+  "version": "0.1.0",
+  "description": "Tokkip Healthy PC — keep your PC healthy with Tokkip. Based on Kudu.",
   "main": "./out/main/index.js",
   "scripts": {
     "dev": "electron-vite dev",
@@ -27,7 +27,6 @@
     "preview-rule": "node scripts/preview-rule.js",
     "parity-check": "node scripts/parity-check.js",
     "catalog": "node scripts/generate-catalog.js",
-    "translate": "node scripts/translate.js",
     "changelog": "conventional-changelog -p angular -i CHANGELOG.md -s",
     "release": "node scripts/release.js",
     "postinstall": "patch-package --error-on-fail && install-electron && electron-rebuild -w better-sqlite3",
@@ -42,8 +41,8 @@
     "optimization"
   ],
   "author": {
-    "name": "Kudu Contributors",
-    "email": "kudu@users.noreply.github.com"
+    "name": "Andy (LoperStack)",
+    "email": "soportemacrobit001@gmail.com"
   },
   "license": "MIT",
   "engines": {
@@ -51,11 +50,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/adventdevinc/kudu.git"
+    "url": "https://github.com/Andford/tokkiphealthypc.git"
   },
-  "homepage": "https://usekudu.com",
+  "homepage": "https://github.com/Andford/tokkiphealthypc",
   "bugs": {
-    "url": "https://github.com/adventdevinc/kudu/issues"
+    "url": "https://github.com/Andford/tokkiphealthypc/issues"
   },
   "devDependencies": {
     "@axe-core/react": "^4.14.0",

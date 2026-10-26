@@ -26,21 +26,16 @@ import { DiskMaintenancePage } from './pages/DiskMaintenancePage'
 import { SettingsPage } from './pages/SettingsPage'
 import { NetworkCleanupPage } from './pages/NetworkCleanupPage'
 import { MalwareScannerPage } from './pages/MalwareScannerPage'
-import { ThreatMonitorPage } from './pages/ThreatMonitorPage'
 import { PrivacyShieldPage } from './pages/PrivacyShieldPage'
 import { HistoryPage } from './pages/HistoryPage'
 import { RecoveryPage } from './pages/RecoveryPage'
-import { PerformanceDiagnosticsPage } from './pages/PerformanceDiagnosticsPage'
 import { PerformanceMonitorPage } from './pages/PerformanceMonitorPage'
 import { UninstallerPage } from './pages/UninstallerPage'
 import { ServiceManagerPage } from './pages/ServiceManagerPage'
 import { FirewallAuditPage } from './pages/FirewallAuditPage'
 import { SchedulesPage } from './pages/SchedulesPage'
 import { GameModePage } from './pages/GameModePage'
-import { CveScannerPage } from './pages/CveScannerPage'
 import { AboutPage } from './pages/AboutPage'
-import { CloudPage } from './pages/CloudPage'
-import { BreachMonitorPage } from './pages/BreachMonitorPage'
 import { Onboarding } from './components/Onboarding'
 import { useStatsStore } from './stores/stats-store'
 import { useHistoryStore } from './stores/history-store'
@@ -177,18 +172,13 @@ export function App() {
             <Route path="/disk-maintenance" element={<DiskMaintenancePage />} />
             <Route path="/network" element={<NetworkCleanupPage />} />
             <Route path="/malware" element={<MalwareScannerPage />} />
-            <Route path="/threat-monitor" element={<ThreatMonitorPage />} />
-            <Route path="/cve" element={<CveScannerPage />} />
             <Route path="/game-mode" element={<GameModePage />} />
-            <Route path="/performance-diagnostics" element={<PerformanceDiagnosticsPage />} />
             <Route path="/performance" element={<PerformanceMonitorPage />} />
             <Route path="/uninstaller" element={<UninstallerPage />} />
             <Route path="/history" element={<HistoryPage />} />
             <Route path="/recovery" element={<RecoveryPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route path="/cloud" element={<CloudPage />} />
-            <Route path="/breach-monitor" element={<BreachMonitorPage />} />
             {/* Standalone pages */}
             <Route path="/privacy" element={<PrivacyShieldPage />} />
             <Route path="/services" element={<ServiceManagerPage />} />
@@ -242,8 +232,6 @@ const ROUTE_TITLES: Record<string, { key: string }> = {
   '/disk-maintenance': { key: 'disk:maintenanceTitle' },
   '/network': { key: 'network:pageTitle' },
   '/malware': { key: 'malware:pageTitle' },
-  '/threat-monitor': { key: 'threatMonitor:pageTitle' },
-  '/cve': { key: 'cveScanner:pageTitle' },
   '/game-mode': { key: 'gameMode:pageTitle' },
   '/performance': { key: 'performance:pageTitle' },
   '/uninstaller': { key: 'uninstaller:pageTitle' },
@@ -257,9 +245,7 @@ const ROUTE_TITLES: Record<string, { key: string }> = {
   '/debloater': { key: 'hardening:debloater.pageTitle' },
   '/updates': { key: 'updates:softwareUpdater.pageTitle' },
   '/schedules': { key: 'schedules:pageTitle' },
-  '/drivers': { key: 'updates:driverManager.pageTitle' },
-  '/cloud': { key: 'cloud:pageTitle' },
-  '/breach-monitor': { key: 'breachMonitor:pageTitle' }
+  '/drivers': { key: 'updates:driverManager.pageTitle' }
 }
 
 function PageTitleUpdater() {

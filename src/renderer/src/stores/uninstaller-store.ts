@@ -120,19 +120,9 @@ export const useUninstallerStore = create<UninstallerState>((set) => ({
     }),
   setSafetyLoading: (safetyLoading) => set({ safetyLoading }),
   setExpandedItemId: (expandedItemId) => set({ expandedItemId }),
-  fetchSafetyRatings: async () => {
-    set({ safetyLoading: true })
-    try {
-      const result = await window.kudu.programSafetyFetch()
-      const ratings = Array.isArray(result?.ratings) ? result.ratings : []
-      set({
-        safetyRatings: Object.fromEntries(ratings.map((r) => [r.name, r])),
-        safetyLoading: false
-      })
-    } catch {
-      set({ safetyLoading: false })
-    }
-  },
+  // Safety ratings came from Kudu Cloud; Tokkip Healthy PC has no cloud, so none.
+  fetchSafetyRatings: async () => set({ safetyLoading: false }),
+
   reset: () =>
     set({
       programs: [],
@@ -152,20 +142,3 @@ export const useUninstallerStore = create<UninstallerState>((set) => ({
       expandedItemId: null
     })
 }))
-
-// Listen for cloud-pushed safety rating updates (HMR-safe via guard flag)
-let _programSafetyListenerRegistered = false
-if (
-  typeof window !== 'undefined' &&
-  window.kudu?.onProgramSafetyUpdated &&
-  !_programSafetyListenerRegistered
-) {
-  _programSafetyListenerRegistered = true
-  window.kudu.onProgramSafetyUpdated((result) => {
-    const ratings = Array.isArray(result?.ratings) ? result.ratings : []
-    useUninstallerStore.setState({
-      safetyRatings: Object.fromEntries(ratings.map((r) => [r.name, r])),
-      safetyLoading: false
-    })
-  })
-}

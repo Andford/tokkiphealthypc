@@ -164,9 +164,3 @@ it('files history under the task that actually ran when a workflow stops early',
   expect(mocks.history).toHaveBeenCalledWith(expect.objectContaining({ type: 'registry' }))
   expect(api.scheduleRunComplete).toHaveBeenCalledWith('one', 'partial', 'run-token')
 })
-it('files a vulnerability-only workflow under the CVE scan type', async () => {
-  api.cveFetch.mockResolvedValue({ total: 3 })
-  await runSchedule({ ...payload, tasks: ['cve-scan'], autoApply: false })
-  expect(api.cveFetch).toHaveBeenCalledTimes(1)
-  expect(mocks.history).toHaveBeenCalledWith(expect.objectContaining({ type: 'cve-scan' }))
-})
