@@ -1,4 +1,4 @@
-// Tokkip's sounds (synthesised for Tokkip, see coucousaltymod/android/tools/
+// Tokkip's sounds (synthesised for Tokkip, see Andford/tokkip android/tools/
 // make_sounds.py): a pop, a check, a hello and the level-up jingle. Off in
 // Preferences → Tokkip.
 

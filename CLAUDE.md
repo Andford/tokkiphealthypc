@@ -3,7 +3,7 @@
 Andy's fork of Kudu (MIT, Advent Development): a system cleaner and optimizer
 for Windows (and Linux/macOS) built with Electron, with Tokkip's look and Tokkip
 himself showing how the PC feels. Part of the Tokkip family (Tokkip on Android
-and Wear OS, Tokkip Notas, Tokkip PC — all in Andford/coucousaltymod).
+and Wear OS, Tokkip Notas, Tokkip PC — all in Andford/tokkip).
 
 ## Rules for this fork
 
