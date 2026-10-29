@@ -50,7 +50,14 @@ jobs:
 
       - name: Rust tests
         working-directory: src-tauri
-        run: cargo test --locked
+        shell: pwsh
+        run: |
+          cargo test --locked 2>&1 | Tee-Object -FilePath test.log
+          if ($LASTEXITCODE -ne 0) {
+            # Shown as annotations, so the failure reads without opening the log.
+            Select-String -Path test.log -Pattern '^error|panicked|FAILED|left:|right:|-->' | Select-Object -First 40 | ForEach-Object { "::error::$($_.Line)" }
+            exit 1
+          }
 
       - name: Build the installer
         id: build

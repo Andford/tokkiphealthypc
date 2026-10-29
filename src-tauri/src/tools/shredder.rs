@@ -176,7 +176,7 @@ mod tests {
 
     #[test]
     fn shreds_files_and_the_emptied_folders() {
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         let r = dir.path().join("secret");
         fs::create_dir_all(r.join("inner")).unwrap();
         fs::write(r.join("a.txt"), vec![b'a'; 3 * CHUNK + 5]).unwrap();
@@ -193,7 +193,7 @@ mod tests {
 
     #[test]
     fn overwrites_before_deleting() {
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         let f = dir.path().join("x.bin");
         fs::write(&f, vec![b'S'; 5000]).unwrap();
         let id = fsx::identity(&f).unwrap();
@@ -206,7 +206,7 @@ mod tests {
         let home = Path::new("/home/ana");
         assert!(describe(Path::new("/home/ana/Documents"), home).protected);
         assert!(describe(Path::new("/"), home).protected);
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         let f = dir.path().join("y.bin");
         fs::write(&f, "one").unwrap();
         let id = fsx::identity(&f).unwrap();

@@ -271,7 +271,7 @@ mod tests {
 
     #[test]
     fn finds_same_content_not_same_size() {
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         let r = dir.path();
         let a = vec![7u8; 40_000];
         let mut b = a.clone();
@@ -290,7 +290,7 @@ mod tests {
 
     #[test]
     fn deletes_a_copy_but_never_the_last() {
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         let r = dir.path();
         for p in ["a.bin", "b/a.bin", "c/d/a.bin"] {
             write(&r.join(p), b"same content here");
@@ -307,7 +307,7 @@ mod tests {
 
     #[test]
     fn a_changed_file_is_not_deleted() {
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         let r = dir.path();
         write(&r.join("a.txt"), b"twins!");
         write(&r.join("bb/a.txt"), b"twins!");
@@ -328,7 +328,7 @@ mod tests {
     #[cfg(unix)]
     #[test]
     fn hard_links_are_one_file() {
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         write(&dir.path().join("a.dat"), b"linked");
         fs::hard_link(dir.path().join("a.dat"), dir.path().join("b.dat")).unwrap();
         let (found, _) = scan(dir.path());

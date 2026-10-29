@@ -100,7 +100,7 @@ mod tests {
 
     #[test]
     fn finds_only_truly_empty_folders() {
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         let r = dir.path();
         for d in ["a/b/c", "a/d", "keep/sub", ".hidden/x", "proj/node_modules/x"] {
             fs::create_dir_all(r.join(d)).unwrap();
@@ -121,7 +121,7 @@ mod tests {
 
     #[test]
     fn removes_only_what_is_still_empty() {
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         let r = dir.path();
         fs::create_dir_all(r.join("p/q/a")).unwrap();
         fs::create_dir_all(r.join("p/q/b")).unwrap();

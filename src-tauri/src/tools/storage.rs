@@ -213,7 +213,7 @@ mod tests {
 
     #[test]
     fn maps_folders_kinds_and_big_files() {
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         let r = dir.path();
         write(&r.join("Videos/trip/day1.mp4"), 3000);
         write(&r.join("Videos/trip/day2.mkv"), 2000);
@@ -241,7 +241,7 @@ mod tests {
 
     #[test]
     fn keeps_the_biggest_files() {
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         write(&dir.path().join("big.iso"), (BIG_MIN + 1) as usize);
         write(&dir.path().join("small.iso"), 10);
         let a = analyze(dir.path(), &Progress::quiet(), &mut |_, id| id.len);
@@ -254,8 +254,8 @@ mod tests {
     #[cfg(unix)]
     #[test]
     fn never_through_a_link() {
-        let dir = tempfile::tempdir().unwrap();
-        let outside = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
+        let outside = crate::fsx::scratch();
         write(&outside.path().join("huge.bin"), 999);
         std::os::unix::fs::symlink(outside.path(), dir.path().join("link")).unwrap();
         let a = analyze(dir.path(), &Progress::quiet(), &mut |_, _| 0);

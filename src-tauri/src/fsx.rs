@@ -122,6 +122,15 @@ pub fn reveal(path: &Path) {
     let _ = std::process::Command::new("xdg-open").arg(dir).spawn();
 }
 
+/// A scratch folder for tests, under target/ rather than the system's temp
+/// folder: on Windows that one is inside AppData, which the tools protect.
+#[cfg(test)]
+pub fn scratch() -> tempfile::TempDir {
+    let base = Path::new(env!("CARGO_MANIFEST_DIR")).join("target").join("scratch");
+    let _ = std::fs::create_dir_all(&base);
+    tempfile::Builder::new().prefix("t").tempdir_in(base).unwrap()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -156,7 +165,7 @@ mod tests {
 
     #[test]
     fn identity_tells_a_changed_file() {
-        let dir = tempfile::tempdir().unwrap();
+        let dir = crate::fsx::scratch();
         let f = dir.path().join("a.bin");
         std::fs::write(&f, b"hello").unwrap();
         let before = identity(&f).unwrap();
