@@ -243,7 +243,7 @@ mod win {
     /// Opens the program's own uninstaller (Windows asks for permission if it
     /// needs it) and waits for it to finish, up to 30 minutes.
     pub fn run_uninstaller(u: &Uninstall) -> Result<(), String> {
-        use windows::core::{w, HSTRING};
+        use windows::core::{w, HSTRING, PCWSTR};
         use windows::Win32::Foundation::CloseHandle;
         use windows::Win32::System::Threading::WaitForSingleObject;
         use windows::Win32::UI::Shell::{ShellExecuteExW, SEE_MASK_NOCLOSEPROCESS, SHELLEXECUTEINFOW};
@@ -256,8 +256,8 @@ mod win {
             cbSize: std::mem::size_of::<SHELLEXECUTEINFOW>() as u32,
             fMask: SEE_MASK_NOCLOSEPROCESS,
             lpVerb: w!("open"),
-            lpFile: (&file).into(),
-            lpParameters: (&params).into(),
+            lpFile: PCWSTR(file.as_ptr()),
+            lpParameters: PCWSTR(params.as_ptr()),
             nShow: SW_SHOWNORMAL.0,
             ..Default::default()
         };
