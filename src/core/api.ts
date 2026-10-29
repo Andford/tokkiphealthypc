@@ -455,3 +455,78 @@ export async function shred(paths: string[]): Promise<Shredded> {
   }
   return invoke<Shredded>("shred", { paths });
 }
+
+// ── Software ─────────────────────────────────────────────────────────────
+
+export interface StartupItem {
+  id: number;
+  name: string;
+  command: string;
+  source: "user" | "machine" | "machine32" | "userFolder" | "machineFolder";
+  enabled: boolean;
+  admin: boolean;
+}
+
+export interface Program {
+  id: number;
+  name: string;
+  publisher: string;
+  version: string;
+  /** YYYYMMDD, or empty. */
+  installed: string;
+  bytes: number;
+  location: string;
+  user: boolean;
+}
+
+const demoSoftware = {
+  startup: [
+    ["Discord", "C:\\Users\\Andy\\AppData\\Local\\Discord\\Update.exe --processStart Discord.exe", "user", true],
+    ["Spotify", "C:\\Users\\Andy\\AppData\\Roaming\\Spotify\\Spotify.exe /minimized", "user", true],
+    ["Steam", "\"C:\\Program Files (x86)\\Steam\\steam.exe\" -silent", "user", false],
+    ["SecurityHealth", "%windir%\\system32\\SecurityHealthSystray.exe", "machine", true],
+    ["Tokkip", "C:\\Users\\Andy\\AppData\\Local\\Tokkip\\tokkip.exe", "user", true],
+  ].map(([name, command, source, enabled], i) => ({ id: 400 + i, name, command, source, enabled, admin: source !== "user" }) as StartupItem),
+  programs: [
+    ["Adobe Photoshop 2025", "Adobe", "26.1", "20250310", 4.6 * GB],
+    ["Discord", "Discord Inc.", "1.0.9170", "20240812", 410 * MB],
+    ["Google Chrome", "Google LLC", "130.0", "20230101", 520 * MB],
+    ["McAfee LiveSafe", "McAfee, LLC", "16.0", "20230101", 890 * MB],
+    ["Steam", "Valve Corporation", "2.10", "20220405", 610 * MB],
+    ["Visual Studio Code", "Microsoft Corporation", "1.94", "20241001", 380 * MB],
+    ["WinRAR 6.24", "win.rar GmbH", "6.24", "20210915", 9 * MB],
+  ].map(([name, publisher, version, installed, bytes], i) => ({ id: 500 + i, name, publisher, version, installed, bytes, location: "", user: false }) as Program),
+};
+
+export async function startupList(): Promise<StartupItem[]> {
+  return inApp ? invoke<StartupItem[]>("startup_list") : demoSoftware.startup;
+}
+
+/** Throws "admin" when it needs administrator rights. */
+export async function startupSet(id: number, on: boolean): Promise<void> {
+  if (!inApp) {
+    const it = demoSoftware.startup.find((s) => s.id === id);
+    if (it?.admin) throw "admin";
+    if (it) it.enabled = on;
+    return;
+  }
+  await invoke("startup_set", { id, on });
+}
+
+export async function programsList(): Promise<Program[]> {
+  if (!inApp) {
+    await wait(400);
+    return demoSoftware.programs;
+  }
+  return invoke<Program[]>("programs_list");
+}
+
+/** Opens the program's own uninstaller; true if it's gone afterwards. */
+export async function uninstall(id: number): Promise<boolean> {
+  if (!inApp) {
+    await wait(1500);
+    demoSoftware.programs = demoSoftware.programs.filter((p) => p.id !== id);
+    return true;
+  }
+  return invoke<boolean>("program_uninstall", { id });
+}

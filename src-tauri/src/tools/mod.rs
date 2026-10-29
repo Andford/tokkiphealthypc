@@ -6,6 +6,7 @@ pub mod downloads;
 pub mod duplicates;
 pub mod empty;
 pub mod shredder;
+pub mod software;
 pub mod storage;
 
 use serde::Serialize;

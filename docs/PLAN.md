@@ -70,8 +70,9 @@ Cada fase termina con una versión instalable.
 - [x] Destructor de archivos (sobrescritura; avisa que no se recupera).
 
 ### Fase 3 — Software (0.7)
-- [ ] Programas de inicio (registro, carpeta Inicio, tareas programadas).
-- [ ] Desinstalador con búsqueda de restos (carpetas y claves que quedan).
+- [x] Programas de inicio (registro, carpeta Inicio, tareas programadas).
+- [x] Desinstalador (con el desinstalador de cada programa).
+- [ ] Búsqueda de restos después de desinstalar (carpetas y claves que quedan).
 - [ ] Quitar bloatware (apps preinstaladas de Windows, con lista curada).
 - [ ] Actualizaciones de programas (winget) y de controladores.
 - [ ] Menú contextual: entradas viejas o rotas.

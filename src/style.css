@@ -379,6 +379,12 @@ button { font: inherit; color: inherit; }
 .sure { display: flex; align-items: center; gap: 12px; flex: 1; cursor: pointer; font-weight: 600; }
 .sure .check { border-color: currentColor; }
 
+.search-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 14px; }
+.search { flex: 1; min-width: 220px; height: 44px; padding: 0 18px; border-radius: 22px; border: 0; background: var(--c-surface-container-highest); color: var(--c-on-surface); font: inherit; }
+.search::placeholder { color: var(--c-on-surface-variant); }
+.confirm { display: inline-flex; gap: 4px; }
+.file .switch { flex: none; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
 }

@@ -29,6 +29,8 @@ struct Found {
     dups: HashMap<u64, duplicates::Kept>,
     empty: HashMap<u64, PathBuf>,
     downloads: HashMap<u64, (PathBuf, fsx::Identity)>,
+    startup: HashMap<u64, tools::software::StartupKey>,
+    programs: HashMap<u64, tools::software::Uninstall>,
 }
 
 struct App {
@@ -322,6 +324,57 @@ async fn shred(app: tauri::AppHandle, paths: Vec<String>) -> Result<tools::shred
     blocking(move || tools::shredder::shred(&paths, &fsx::home(), &p)).await
 }
 
+// ── Software ──────────────────────────────────────────────────────────────
+
+#[tauri::command]
+fn startup_list(state: tauri::State<App>) -> Vec<tools::software::StartupItem> {
+    let mut kept = HashMap::new();
+    let list = tools::software::startup(&mut |k| {
+        let id = state.id();
+        kept.insert(id, k);
+        id
+    });
+    state.found().startup = kept;
+    list
+}
+
+/// Turns a startup program on or off. Err("admin") when it needs administrator rights.
+#[tauri::command]
+fn startup_set(state: tauri::State<App>, id: u64, on: bool) -> Result<(), String> {
+    let key = state.found().startup.get(&id).cloned().ok_or("gone")?;
+    if key.source != "user" && key.source != "userFolder" && !platform::is_elevated() {
+        return Err("admin".into());
+    }
+    tools::software::set_startup(&key, on)
+}
+
+#[tauri::command]
+async fn programs_list(app: tauri::AppHandle) -> Result<Vec<tools::software::Program>, String> {
+    blocking(move || {
+        let state = app.state::<App>();
+        let mut kept = HashMap::new();
+        let list = tools::software::programs(&mut |u| {
+            let id = state.id();
+            kept.insert(id, u);
+            id
+        });
+        state.found().programs = kept;
+        list
+    })
+    .await
+}
+
+/// Opens the program's own uninstaller and waits. True if it's gone afterwards.
+#[tauri::command]
+async fn program_uninstall(app: tauri::AppHandle, id: u64) -> Result<bool, String> {
+    let u = app.state::<App>().found().programs.get(&id).cloned().ok_or("gone")?;
+    blocking(move || {
+        tools::software::run_uninstaller(&u)?;
+        Ok(!tools::software::still_installed(&u))
+    })
+    .await?
+}
+
 // ── General ───────────────────────────────────────────────────────────────
 
 /// Opens the app again as administrator and closes this one. False if Windows said no.
@@ -375,6 +428,10 @@ pub fn run() {
             reveal,
             shred_describe,
             shred,
+            startup_list,
+            startup_set,
+            programs_list,
+            program_uninstall,
             relaunch_admin,
             tokkip_notice
         ])

@@ -5,10 +5,6 @@ import { Tokkip } from "../ui/Tokkip";
 import type { Page } from "../App";
 
 const COMING: Partial<Record<Page, { title: string; items: string[] }>> = {
-  software: {
-    title: N_("Software"),
-    items: [N_("Startup programs"), N_("Uninstaller that finds leftovers"), N_("Preinstalled apps you don't use"), N_("Program and driver updates")],
-  },
   speed: {
     title: N_("Performance"),
     items: [N_("Live monitor: CPU, memory, disk and network"), N_("Windows services, explained"), N_("Game mode"), N_("Network fixes")],
