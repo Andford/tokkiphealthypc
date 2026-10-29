@@ -79,10 +79,10 @@ Cada fase termina con una versión instalable.
 - [ ] Menú contextual: entradas viejas o rotas.
 
 ### Fase 4 — Rendimiento (0.8)
-- [ ] Monitor: CPU, memoria, disco, red, temperaturas, procesos.
-- [ ] Servicios de Windows con recomendaciones seguras.
-- [ ] Modo juego (pausa lo que estorba mientras juegas).
-- [ ] Red: caché DNS, reinicio de la pila de red.
+- [x] Monitor: CPU, memoria, disco, red, temperaturas, procesos.
+- [x] Servicios de Windows con recomendaciones seguras.
+- [x] Modo juego (pausa lo que estorba mientras juegas).
+- [x] Red: caché DNS, reinicio de la pila de red.
 
 ### Fase 5 — Protección (0.9)
 - [ ] Escáner de malware: Windows Defender, heurísticas y tus reglas YARA.

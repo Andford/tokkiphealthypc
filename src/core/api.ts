@@ -617,3 +617,118 @@ export async function updateRun(id: string): Promise<boolean> {
   }
   return invoke<boolean>("update_run", { id });
 }
+
+// ── Rendimiento ──────────────────────────────────────────────────────────
+
+export interface Proc {
+  name: string;
+  count: number;
+  /** Share of the whole CPU, 0–100. */
+  cpu: number;
+  memory: number;
+  critical: boolean;
+}
+
+export interface Sample {
+  cpu: number;
+  cores: number;
+  cpuName: string;
+  memoryUsed: number;
+  memoryTotal: number;
+  diskRead: number;
+  diskWrite: number;
+  netDown: number;
+  netUp: number;
+  temperature: number | null;
+  uptime: number;
+  procs: Proc[];
+}
+
+let demoTick = 0;
+export async function perfSample(): Promise<Sample> {
+  if (!inApp) {
+    demoTick++;
+    const w = (a: number, b: number) => a + (Math.sin(demoTick / b) + 1) * 0.5 * (a * 0.8);
+    return {
+      cpu: w(18, 3), cores: 12, cpuName: "AMD Ryzen 7 7840HS", memoryUsed: 9.4 * GB + Math.sin(demoTick / 5) * 0.3 * GB, memoryTotal: 16 * GB,
+      diskRead: w(2 * MB, 2), diskWrite: w(0.6 * MB, 4), netDown: w(1.2 * MB, 3), netUp: w(90_000, 2), temperature: 52 + Math.sin(demoTick / 6) * 4, uptime: 3 * 86400 + 4000,
+      procs: [
+        ["chrome.exe", 23, 6.2, 2.1 * GB], ["Discord.exe", 7, 1.4, 640 * MB], ["Code.exe", 11, 2.8, 1.2 * GB], ["Spotify.exe", 5, 0.8, 420 * MB],
+        ["explorer.exe", 1, 0.4, 180 * MB], ["MsMpEng.exe", 1, 1.1, 260 * MB], ["steamwebhelper.exe", 6, 0.3, 380 * MB],
+      ].map(([name, count, cpu, memory]) => ({ name, count, cpu: (cpu as number) + Math.random(), memory, critical: name === "explorer.exe" || name === "MsMpEng.exe" }) as Proc),
+    };
+  }
+  return invoke<Sample>("perf_sample");
+}
+
+export async function endProcess(name: string): Promise<number> {
+  if (!inApp) return 1;
+  return invoke<number>("perf_end", { name });
+}
+
+export interface Service {
+  name: string;
+  display: string;
+  running: boolean;
+  start: string;
+  safety: "safe" | "caution" | "unsafe";
+  group: string;
+  noteEn: string;
+  was: string | null;
+}
+
+const demoServices: Service[] = [
+  ["DiagTrack", "Connected User Experiences and Telemetry", true, "auto", "safe", "telemetry", "Connected User Experiences and Telemetry"],
+  ["Fax", "Fax", false, "manual", "safe", "fax", "Fax service"],
+  ["XblGameSave", "Xbox Live Game Save", false, "manual", "caution", "xbox", "Xbox cloud saves"],
+  ["Spooler", "Print Spooler", true, "auto", "caution", "print", "Needed to print"],
+  ["WSearch", "Windows Search", true, "auto", "caution", "core", "Indexes files for search"],
+  ["Winmgmt", "Windows Management Instrumentation", true, "auto", "unsafe", "core", "Core Windows management"],
+].map(([name, display, running, start, safety, group, noteEn]) => ({ name, display, running, start, safety, group, noteEn, was: null }) as Service);
+
+export async function servicesList(): Promise<Service[]> {
+  if (!inApp) {
+    await wait(700);
+    return demoServices;
+  }
+  return invoke<Service[]>("services_list");
+}
+
+/** Throws "admin" without administrator rights. */
+export async function serviceSet(s: Service, start: string): Promise<void> {
+  if (!inApp) throw "admin";
+  await invoke("service_set", { name: s.name, start, was: s.start });
+}
+
+export interface GameSnapshot {
+  on: boolean;
+  since: number;
+  scheme: string;
+  stopped: string[];
+}
+
+let demoGame: GameSnapshot = { on: false, since: 0, scheme: "", stopped: [] };
+export async function gameStatus(): Promise<GameSnapshot> {
+  return inApp ? invoke<GameSnapshot>("game_status") : demoGame;
+}
+export async function gameOn(): Promise<GameSnapshot> {
+  if (!inApp) return (demoGame = { on: true, since: Date.now(), scheme: "381b4222-f694-41f0-9685-ff5bb260df2e", stopped: [] });
+  return invoke<GameSnapshot>("game_on");
+}
+export async function gameOff(): Promise<void> {
+  if (!inApp) {
+    demoGame = { on: false, since: 0, scheme: "", stopped: [] };
+    return;
+  }
+  await invoke("game_off");
+}
+
+/** "dns", "arp" or "reset". Throws "admin" when it needs administrator rights. */
+export async function networkFix(what: "dns" | "arp" | "reset"): Promise<boolean> {
+  if (!inApp) {
+    await wait(600);
+    if (what !== "dns") throw "admin";
+    return true;
+  }
+  return invoke<boolean>("network_fix", { what });
+}

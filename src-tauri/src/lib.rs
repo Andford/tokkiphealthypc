@@ -35,6 +35,7 @@ struct Found {
 }
 
 struct App {
+    monitor: Mutex<Option<tools::perf::Monitor>>,
     found: Mutex<Found>,
     next: AtomicU64,
     cancel: Arc<AtomicBool>,
@@ -504,6 +505,163 @@ async fn update_run(id: String) -> Result<bool, String> {
     .await
 }
 
+// ── Rendimiento ───────────────────────────────────────────────────────────
+
+#[tauri::command]
+async fn perf_sample(app: tauri::AppHandle) -> Result<tools::perf::Sample, String> {
+    blocking(move || {
+        let state = app.state::<App>();
+        let mut m = state.monitor.lock().unwrap_or_else(|e| e.into_inner());
+        m.get_or_insert_with(tools::perf::Monitor::new).sample()
+    })
+    .await
+}
+
+/// Closes every process with this name (never one Windows needs).
+#[tauri::command]
+fn perf_end(state: tauri::State<App>, name: String) -> Result<u32, String> {
+    let mut m = state.monitor.lock().unwrap_or_else(|e| e.into_inner());
+    m.get_or_insert_with(tools::perf::Monitor::new).end(&name)
+}
+
+const SERVICES_FILE: &str = "servicios.json";
+
+#[tauri::command]
+async fn services_list(dirs: tauri::State<'_, Dirs>) -> Result<Vec<tools::perf::Service>, String> {
+    let data = dirs.data.clone();
+    blocking(move || {
+        let json = platform::powershell("Get-CimInstance Win32_Service | Select-Object Name, DisplayName, State, StartMode | ConvertTo-Json -Compress").unwrap_or_default();
+        let changed: HashMap<String, String> = store::load_json(&data, SERVICES_FILE);
+        tools::perf::join_services(&json, &tools::perf::known_services(), &changed)
+    })
+    .await
+}
+
+fn sc(args: &[&str]) -> bool {
+    platform::run_hidden("sc.exe", args).map(|(ok, _)| ok).unwrap_or(false)
+}
+
+/// Sets a known service's start type (stopping it when switched off), remembering
+/// the first start type it had so it can be put back. Err("admin") without rights.
+#[tauri::command]
+async fn service_set(dirs: tauri::State<'_, Dirs>, name: String, start: String, was: String) -> Result<(), String> {
+    let known = tools::perf::known_services();
+    let k = known.get(&tools::perf::service_key(&name)).ok_or("unknown")?;
+    if !tools::perf::safe_service_name(&name) || (start == "disabled" && k.safety == "unsafe") {
+        return Err("refused".into());
+    }
+    let value = tools::perf::sc_start(&start).ok_or("start")?;
+    if !platform::is_elevated() {
+        return Err("admin".into());
+    }
+    let data = dirs.data.clone();
+    blocking(move || {
+        if !sc(&["config", &name, "start=", value]) {
+            return Err("sc".to_string());
+        }
+        if start == "disabled" {
+            sc(&["stop", &name]);
+        } else if start == "auto" {
+            sc(&["start", &name]);
+        }
+        let mut changed: HashMap<String, String> = store::load_json(&data, SERVICES_FILE);
+        let key = name.to_lowercase();
+        match changed.get(&key) {
+            // Back to where it was: nothing left to put back.
+            Some(orig) if *orig == start => {
+                changed.remove(&key);
+            }
+            Some(_) => {}
+            None => {
+                changed.insert(key, was);
+            }
+        }
+        store::save_json(&data, SERVICES_FILE, &changed);
+        Ok(())
+    })
+    .await?
+}
+
+const GAME_FILE: &str = "modojuego.json";
+
+#[tauri::command]
+fn game_status(dirs: tauri::State<Dirs>) -> tools::perf::GameSnapshot {
+    store::load_json(&dirs.data, GAME_FILE)
+}
+
+/// Game mode on: high performance power plan, no sleep, and (as administrator)
+/// Windows Search and Windows Update paused.
+#[tauri::command]
+async fn game_on(dirs: tauri::State<'_, Dirs>) -> Result<tools::perf::GameSnapshot, String> {
+    let data = dirs.data.clone();
+    blocking(move || {
+        let mut snap: tools::perf::GameSnapshot = store::load_json(&data, GAME_FILE);
+        if snap.on {
+            return snap;
+        }
+        snap = tools::perf::GameSnapshot { on: true, since: store::now_ms(), ..Default::default() };
+        if let Some((_, out)) = platform::run_hidden("powercfg.exe", &["/getactivescheme"]) {
+            if let Some(g) = tools::perf::scheme_guid(&out) {
+                if platform::run_hidden("powercfg.exe", &["/setactive", "SCHEME_MIN"]).is_some_and(|(ok, _)| ok) {
+                    snap.scheme = g;
+                }
+            }
+        }
+        if platform::is_elevated() {
+            for svc in tools::perf::GAME_PAUSES {
+                let running = platform::run_hidden("sc.exe", &["query", svc]).is_some_and(|(_, out)| out.contains("RUNNING"));
+                if running && sc(&["stop", svc]) {
+                    snap.stopped.push(svc.to_string());
+                }
+            }
+        }
+        platform::keep_awake(true);
+        store::save_json(&data, GAME_FILE, &snap);
+        snap
+    })
+    .await
+}
+
+fn game_off_in(data: &std::path::Path) {
+    let snap: tools::perf::GameSnapshot = store::load_json(data, GAME_FILE);
+    platform::keep_awake(false);
+    if !snap.on {
+        return;
+    }
+    if !snap.scheme.is_empty() {
+        platform::run_hidden("powercfg.exe", &["/setactive", &snap.scheme]);
+    }
+    for svc in &snap.stopped {
+        sc(&["start", svc]);
+    }
+    store::save_json(data, GAME_FILE, &tools::perf::GameSnapshot::default());
+}
+
+#[tauri::command]
+async fn game_off(dirs: tauri::State<'_, Dirs>) -> Result<(), String> {
+    let data = dirs.data.clone();
+    blocking(move || game_off_in(&data)).await
+}
+
+/// Network fixes: "dns" (no rights needed), "arp" and "reset" (administrator; reset asks for a restart).
+#[tauri::command]
+async fn network_fix(what: String) -> Result<bool, String> {
+    if what != "dns" && !platform::is_elevated() {
+        return Err("admin".into());
+    }
+    blocking(move || match what.as_str() {
+        "dns" => platform::run_hidden("ipconfig.exe", &["/flushdns"]).is_some_and(|(ok, _)| ok),
+        "arp" => platform::run_hidden("netsh.exe", &["interface", "ip", "delete", "arpcache"]).is_some_and(|(ok, _)| ok),
+        "reset" => {
+            let a = platform::run_hidden("netsh.exe", &["winsock", "reset"]).is_some_and(|(ok, _)| ok);
+            let b = platform::run_hidden("netsh.exe", &["int", "ip", "reset"]).is_some_and(|(ok, _)| ok);
+            a && b
+        }
+        _ => false,
+    })
+    .await
+}
+
 // ── General ───────────────────────────────────────────────────────────────
 
 /// Opens the app again as administrator and closes this one. False if Windows said no.
@@ -533,9 +691,11 @@ pub fn run() {
             }
         }))
         .plugin(tauri_plugin_dialog::init())
-        .manage(App { found: Mutex::new(Found::default()), next: AtomicU64::new(0), cancel: Arc::new(AtomicBool::new(false)) })
+        .manage(App { monitor: Mutex::new(None), found: Mutex::new(Found::default()), next: AtomicU64::new(0), cancel: Arc::new(AtomicBool::new(false)) })
         .setup(|app| {
             let data = app.path().app_data_dir().unwrap_or_else(|_| std::env::temp_dir().join("tokkip-healthy"));
+            // Game mode left on by a closed app: put things back.
+            game_off_in(&data);
             app.manage(Dirs { data });
             Ok(())
         })
@@ -566,9 +726,23 @@ pub fn run() {
             preinstalled_remove,
             updates_list,
             update_run,
+            perf_sample,
+            perf_end,
+            services_list,
+            service_set,
+            game_status,
+            game_on,
+            game_off,
+            network_fix,
             relaunch_admin,
             tokkip_notice
         ])
-        .run(tauri::generate_context!())
-        .expect("Tokkip Healthy PC no pudo arrancar");
+        .build(tauri::generate_context!())
+        .expect("Tokkip Healthy PC no pudo arrancar")
+        .run(|app, event| {
+            // Game mode lasts while the app is open: closing it puts things back.
+            if let tauri::RunEvent::Exit = event {
+                game_off_in(&app.state::<Dirs>().data);
+            }
+        });
 }

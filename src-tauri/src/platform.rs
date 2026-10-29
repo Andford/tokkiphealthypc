@@ -147,3 +147,32 @@ pub fn run_hidden(program: &str, args: &[&str]) -> Option<(bool, String)> {
     let out = std::process::Command::new(program).args(args).output().ok()?;
     Some((out.status.success(), String::from_utf8_lossy(&out.stdout).to_string()))
 }
+
+static AWAKE: std::sync::atomic::AtomicBool = std::sync::atomic::AtomicBool::new(false);
+
+/// Keeps the PC (and its screen) from going to sleep while `on`, like a video player does.
+#[cfg(windows)]
+pub fn keep_awake(on: bool) {
+    use std::sync::atomic::Ordering;
+    use windows::Win32::System::Power::{SetThreadExecutionState, ES_CONTINUOUS, ES_DISPLAY_REQUIRED, ES_SYSTEM_REQUIRED};
+    if !on {
+        AWAKE.store(false, Ordering::SeqCst);
+        return;
+    }
+    if AWAKE.swap(true, Ordering::SeqCst) {
+        return;
+    }
+    // The request belongs to the thread that makes it: one thread holds it.
+    std::thread::spawn(|| {
+        unsafe { SetThreadExecutionState(ES_CONTINUOUS | ES_SYSTEM_REQUIRED | ES_DISPLAY_REQUIRED) };
+        while AWAKE.load(Ordering::SeqCst) {
+            std::thread::sleep(std::time::Duration::from_secs(2));
+        }
+        unsafe { SetThreadExecutionState(ES_CONTINUOUS) };
+    });
+}
+
+#[cfg(not(windows))]
+pub fn keep_awake(on: bool) {
+    AWAKE.store(on, std::sync::atomic::Ordering::SeqCst);
+}

@@ -1,0 +1,345 @@
+{
+ "_about": "Windows services and whether switching them off is safe, caution or unsafe. From Kudu (MIT, Advent Development), src/shared/service-safety-kb.ts.",
+ "services": {
+  "bfe": {
+   "safety": "unsafe",
+   "group": "security",
+   "noteEn": "Base Filtering Engine \u2014 required by firewall"
+  },
+  "bits": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "Background Intelligent Transfer \u2014 used by Windows Update"
+  },
+  "bthavctpsvc": {
+   "safety": "caution",
+   "group": "bluetooth",
+   "noteEn": "AVCTP service for Bluetooth audio"
+  },
+  "bthserv": {
+   "safety": "caution",
+   "group": "bluetooth",
+   "noteEn": "Bluetooth Support Service \u2014 needed for Bluetooth devices"
+  },
+  "cdpsvc": {
+   "safety": "caution",
+   "group": "telemetry",
+   "noteEn": "Connected Devices Platform \u2014 used by Timeline and device sync"
+  },
+  "cdpusersvc": {
+   "safety": "caution",
+   "group": "telemetry",
+   "noteEn": "Connected Devices Platform per-user service"
+  },
+  "cryptsvc": {
+   "safety": "unsafe",
+   "group": "security",
+   "noteEn": "Cryptographic Services \u2014 required for signatures and certificates"
+  },
+  "dcomlaunch": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "DCOM Server Process Launcher \u2014 critical for COM+"
+  },
+  "dhcp": {
+   "safety": "unsafe",
+   "group": "network",
+   "noteEn": "DHCP Client \u2014 required for automatic IP addressing"
+  },
+  "diagsvc": {
+   "safety": "safe",
+   "group": "telemetry",
+   "noteEn": "Diagnostic Execution Service"
+  },
+  "diagsystemhost": {
+   "safety": "safe",
+   "group": "telemetry",
+   "noteEn": "Diagnostic System Host"
+  },
+  "diagtrack": {
+   "safety": "safe",
+   "group": "telemetry",
+   "noteEn": "Connected User Experiences and Telemetry"
+  },
+  "dmwappushservice": {
+   "safety": "safe",
+   "group": "telemetry",
+   "noteEn": "WAP Push Message Routing for telemetry"
+  },
+  "dmwappushsvc": {
+   "safety": "safe",
+   "group": "telemetry",
+   "noteEn": "WAP Push Message Routing (alternate name)"
+  },
+  "dnscache": {
+   "safety": "unsafe",
+   "group": "network",
+   "noteEn": "DNS Client \u2014 required for name resolution"
+  },
+  "eventlog": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "Windows Event Log \u2014 needed for diagnostics and auditing"
+  },
+  "fax": {
+   "safety": "safe",
+   "group": "fax",
+   "noteEn": "Fax service"
+  },
+  "icssvc": {
+   "safety": "safe",
+   "group": "network",
+   "noteEn": "Windows Mobile Hotspot Service"
+  },
+  "lanmanserver": {
+   "safety": "unsafe",
+   "group": "network",
+   "noteEn": "Server service \u2014 required for file sharing"
+  },
+  "lanmanworkstation": {
+   "safety": "unsafe",
+   "group": "network",
+   "noteEn": "Workstation service \u2014 required for network resource access"
+  },
+  "lfsvc": {
+   "safety": "safe",
+   "group": "telemetry",
+   "noteEn": "Geolocation Service"
+  },
+  "lsm": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "Local Session Manager \u2014 required for session management"
+  },
+  "mapsbroker": {
+   "safety": "safe",
+   "group": "misc",
+   "noteEn": "Downloaded Maps Manager"
+  },
+  "mpssvc": {
+   "safety": "unsafe",
+   "group": "security",
+   "noteEn": "Windows Defender Firewall \u2014 network protection"
+  },
+  "netprofm": {
+   "safety": "unsafe",
+   "group": "network",
+   "noteEn": "Network List Service \u2014 required for network management"
+  },
+  "nlasvc": {
+   "safety": "unsafe",
+   "group": "network",
+   "noteEn": "Network Location Awareness \u2014 required for network detection"
+  },
+  "nsi": {
+   "safety": "unsafe",
+   "group": "network",
+   "noteEn": "Network Store Interface \u2014 required for network connectivity"
+  },
+  "onesyncsvc": {
+   "safety": "caution",
+   "group": "misc",
+   "noteEn": "Sync Host \u2014 used by Mail, Calendar, Contacts"
+  },
+  "pcasvc": {
+   "safety": "safe",
+   "group": "misc",
+   "noteEn": "Program Compatibility Assistant"
+  },
+  "phonesvc": {
+   "safety": "caution",
+   "group": "misc",
+   "noteEn": "Phone Service \u2014 required by some wireless headset dongles, including Audeze Maxwell"
+  },
+  "plugplay": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "Plug and Play \u2014 required for device detection"
+  },
+  "power": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "Power service \u2014 required for power management"
+  },
+  "printnotify": {
+   "safety": "caution",
+   "group": "print",
+   "noteEn": "Printer Extensions and Notifications"
+  },
+  "profsvc": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "User Profile Service \u2014 required for login"
+  },
+  "remoteaccess": {
+   "safety": "safe",
+   "group": "remote",
+   "noteEn": "Routing and Remote Access"
+  },
+  "remoteregistry": {
+   "safety": "safe",
+   "group": "remote",
+   "noteEn": "Remote Registry"
+  },
+  "retaildemo": {
+   "safety": "safe",
+   "group": "misc",
+   "noteEn": "Retail Demo Service"
+  },
+  "rpcss": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "Remote Procedure Call \u2014 critical for Windows operation"
+  },
+  "samss": {
+   "safety": "unsafe",
+   "group": "security",
+   "noteEn": "Security Accounts Manager \u2014 required for authentication"
+  },
+  "schedule": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "Task Scheduler \u2014 used by many Windows components"
+  },
+  "seclogon": {
+   "safety": "safe",
+   "group": "misc",
+   "noteEn": "Secondary Logon (Run As)"
+  },
+  "securityhealthservice": {
+   "safety": "unsafe",
+   "group": "security",
+   "noteEn": "Windows Security Center"
+  },
+  "sessionenv": {
+   "safety": "caution",
+   "group": "remote",
+   "noteEn": "Remote Desktop Configuration"
+  },
+  "sharedaccess": {
+   "safety": "safe",
+   "group": "network",
+   "noteEn": "Internet Connection Sharing"
+  },
+  "spooler": {
+   "safety": "caution",
+   "group": "print",
+   "noteEn": "Print Spooler \u2014 needed if you use a printer"
+  },
+  "sppsvc": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "Software Protection Platform \u2014 Windows activation"
+  },
+  "ssh-agent": {
+   "safety": "caution",
+   "group": "developer",
+   "noteEn": "OpenSSH Authentication Agent"
+  },
+  "sshd": {
+   "safety": "caution",
+   "group": "developer",
+   "noteEn": "OpenSSH SSH Server"
+  },
+  "sysmain": {
+   "safety": "caution",
+   "group": "misc",
+   "noteEn": "Superfetch/SysMain \u2014 safe on SSDs, may slow HDDs"
+  },
+  "tabletinputservice": {
+   "safety": "safe",
+   "group": "misc",
+   "noteEn": "Touch Keyboard and Handwriting \u2014 safe if no touch screen"
+  },
+  "termservice": {
+   "safety": "caution",
+   "group": "remote",
+   "noteEn": "Remote Desktop Services \u2014 needed for RDP"
+  },
+  "themes": {
+   "safety": "caution",
+   "group": "misc",
+   "noteEn": "Disabling removes theme support and visual styles"
+  },
+  "trustedinstaller": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "Windows Modules Installer \u2014 required for updates"
+  },
+  "umrdpservice": {
+   "safety": "caution",
+   "group": "remote",
+   "noteEn": "Remote Desktop Services UserMode Port Redirector"
+  },
+  "wbiosrvc": {
+   "safety": "safe",
+   "group": "misc",
+   "noteEn": "Windows Biometric Service \u2014 safe if no fingerprint reader"
+  },
+  "wersvc": {
+   "safety": "safe",
+   "group": "telemetry",
+   "noteEn": "Windows Error Reporting"
+  },
+  "windefend": {
+   "safety": "unsafe",
+   "group": "security",
+   "noteEn": "Windows Defender Antivirus \u2014 primary system protection"
+  },
+  "winmgmt": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "Windows Management Instrumentation \u2014 widely depended on"
+  },
+  "wisvc": {
+   "safety": "safe",
+   "group": "misc",
+   "noteEn": "Windows Insider Service"
+  },
+  "wmpnetworksvc": {
+   "safety": "safe",
+   "group": "media",
+   "noteEn": "Windows Media Player Network Sharing"
+  },
+  "wpnservice": {
+   "safety": "caution",
+   "group": "misc",
+   "noteEn": "Windows Push Notifications \u2014 needed for app notifications"
+  },
+  "wpnuserservice": {
+   "safety": "caution",
+   "group": "misc",
+   "noteEn": "Windows Push Notifications per-user service"
+  },
+  "wsearch": {
+   "safety": "caution",
+   "group": "misc",
+   "noteEn": "Windows Search \u2014 disabling removes file indexing and search"
+  },
+  "wuauserv": {
+   "safety": "unsafe",
+   "group": "core",
+   "noteEn": "Windows Update \u2014 required to receive security patches"
+  },
+  "xblauthmanager": {
+   "safety": "caution",
+   "group": "xbox",
+   "noteEn": "Xbox Live Auth Manager \u2014 needed for Xbox/Game Pass"
+  },
+  "xblgamesave": {
+   "safety": "caution",
+   "group": "xbox",
+   "noteEn": "Xbox Live Game Save \u2014 needed for cloud saves"
+  },
+  "xboxgipsvc": {
+   "safety": "caution",
+   "group": "xbox",
+   "noteEn": "Xbox Accessory Management \u2014 needed for Xbox controllers"
+  },
+  "xboxnetapisvc": {
+   "safety": "caution",
+   "group": "xbox",
+   "noteEn": "Xbox Live Networking Service \u2014 needed for Xbox online features"
+  }
+ }
+}

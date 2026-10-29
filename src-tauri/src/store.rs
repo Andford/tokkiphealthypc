@@ -69,6 +69,19 @@ pub fn record_space(dir: &Path, now_ms: u64, free: u64, total: u64) {
     }
 }
 
+/// A small JSON file of the app's own (servicios.json, modojuego.json…).
+pub fn load_json<T: serde::de::DeserializeOwned + Default>(dir: &Path, name: &str) -> T {
+    std::fs::read_to_string(dir.join(name)).ok().and_then(|s| serde_json::from_str(&s).ok()).unwrap_or_default()
+}
+
+pub fn save_json<T: Serialize>(dir: &Path, name: &str, value: &T) {
+    let _ = std::fs::create_dir_all(dir);
+    let tmp = dir.join(format!("{name}.tmp"));
+    if std::fs::write(&tmp, serde_json::to_vec_pretty(value).unwrap_or_default()).is_ok() {
+        let _ = std::fs::rename(&tmp, dir.join(name));
+    }
+}
+
 pub fn now_ms() -> u64 {
     std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_millis() as u64).unwrap_or(0)
 }

@@ -6,6 +6,7 @@ pub mod cleaner;
 pub mod downloads;
 pub mod duplicates;
 pub mod empty;
+pub mod perf;
 pub mod shredder;
 pub mod software;
 pub mod storage;
