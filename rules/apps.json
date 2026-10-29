@@ -1,0 +1,152 @@
+[
+  {
+    "id": "discord",
+    "group": "apps",
+    "process": "Discord.exe",
+    "name": "Discord",
+    "nameEn": "Discord",
+    "about": "Imágenes, videos y código que Discord guarda para cargar más rápido.",
+    "aboutEn": "Images, videos and code Discord keeps to load faster.",
+    "targets": [
+      {
+        "path": "%APPDATA%\\discord\\Cache\\Cache_Data",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      },
+      {
+        "path": "%APPDATA%\\discord\\Code Cache",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      },
+      {
+        "path": "%APPDATA%\\discord\\GPUCache",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      }
+    ]
+  },
+  {
+    "id": "spotify",
+    "group": "apps",
+    "process": "Spotify.exe",
+    "name": "Spotify",
+    "nameEn": "Spotify",
+    "about": "La caché de la parte web de Spotify (portadas y páginas). Tu música guardada no se toca.",
+    "aboutEn": "The cache of Spotify's web side (covers and pages). Your saved music stays.",
+    "targets": [
+      {
+        "path": "%LOCALAPPDATA%\\Spotify\\Browser\\Cache",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      }
+    ]
+  },
+  {
+    "id": "steam",
+    "group": "apps",
+    "process": "steam.exe",
+    "name": "Steam",
+    "nameEn": "Steam",
+    "about": "La caché de la tienda y la comunidad de Steam. Tus juegos no se tocan.",
+    "aboutEn": "Steam's store and community cache. Your games stay.",
+    "targets": [
+      {
+        "path": "%LOCALAPPDATA%\\Steam\\htmlcache",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      }
+    ]
+  },
+  {
+    "id": "vscode",
+    "group": "apps",
+    "process": "Code.exe",
+    "name": "Visual Studio Code",
+    "nameEn": "Visual Studio Code",
+    "about": "Cachés de VS Code. Tus proyectos, extensiones y ajustes no se tocan.",
+    "aboutEn": "VS Code's caches. Your projects, extensions and settings stay.",
+    "targets": [
+      {
+        "path": "%APPDATA%\\Code\\Cache\\Cache_Data",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      },
+      {
+        "path": "%APPDATA%\\Code\\CachedData",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      },
+      {
+        "path": "%APPDATA%\\Code\\Code Cache",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      },
+      {
+        "path": "%APPDATA%\\Code\\GPUCache",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      }
+    ]
+  },
+  {
+    "id": "teams",
+    "group": "apps",
+    "process": "ms-teams.exe",
+    "name": "Microsoft Teams",
+    "nameEn": "Microsoft Teams",
+    "about": "La caché de Teams. Tus chats y archivos están en la nube y no se tocan.",
+    "aboutEn": "Teams' cache. Your chats and files live in the cloud and stay.",
+    "targets": [
+      {
+        "path": "%LOCALAPPDATA%\\Packages\\MSTeams_8wekyb3d8bbwe\\LocalCache\\Microsoft\\MSTeams\\EBWebView\\Default\\Cache\\Cache_Data",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      },
+      {
+        "path": "%LOCALAPPDATA%\\Packages\\MSTeams_8wekyb3d8bbwe\\LocalCache\\Microsoft\\MSTeams\\EBWebView\\Default\\Code Cache",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      }
+    ]
+  },
+  {
+    "id": "whatsapp",
+    "group": "apps",
+    "process": "WhatsApp.exe",
+    "name": "WhatsApp",
+    "nameEn": "WhatsApp",
+    "about": "La caché de WhatsApp para escritorio. Tus chats y fotos no se tocan.",
+    "aboutEn": "WhatsApp Desktop's cache. Your chats and photos stay.",
+    "targets": [
+      {
+        "path": "%LOCALAPPDATA%\\Packages\\5319275A.WhatsAppDesktop_cv1g1gvanyjgm\\LocalCache\\EBWebView\\Default\\Cache\\Cache_Data",
+        "files": [
+          "*"
+        ],
+        "recursive": true
+      }
+    ]
+  }
+]

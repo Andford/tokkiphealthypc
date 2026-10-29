@@ -1,0 +1,52 @@
+// What the app remembers between runs: when you last cleaned and how much,
+// in a small JSON file in its own folder (%APPDATA%\mx.loperstack.tokkiphealthypc).
+
+use serde::{Deserialize, Serialize};
+use std::path::{Path, PathBuf};
+
+#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq)]
+#[serde(rename_all = "camelCase", default)]
+pub struct Memory {
+    /// Milliseconds since 1970; 0 = never.
+    pub last_clean: u64,
+    pub last_freed: u64,
+    pub total_freed: u64,
+    pub cleans: u64,
+}
+
+pub fn file(dir: &Path) -> PathBuf {
+    dir.join("memoria.json")
+}
+
+pub fn load(dir: &Path) -> Memory {
+    std::fs::read_to_string(file(dir)).ok().and_then(|s| serde_json::from_str(&s).ok()).unwrap_or_default()
+}
+
+pub fn save(dir: &Path, m: &Memory) {
+    let _ = std::fs::create_dir_all(dir);
+    // Written beside and swapped in, so a crash never leaves half a file.
+    let tmp = dir.join("memoria.json.tmp");
+    if std::fs::write(&tmp, serde_json::to_vec_pretty(m).unwrap_or_default()).is_ok() {
+        let _ = std::fs::rename(&tmp, file(dir));
+    }
+}
+
+pub fn now_ms() -> u64 {
+    std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map(|d| d.as_millis() as u64).unwrap_or(0)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn remembers_and_survives_a_broken_file() {
+        let dir = tempfile::tempdir().unwrap();
+        assert_eq!(load(dir.path()), Memory::default());
+        let m = Memory { last_clean: 5, last_freed: 10, total_freed: 30, cleans: 2 };
+        save(dir.path(), &m);
+        assert_eq!(load(dir.path()), m);
+        std::fs::write(file(dir.path()), "{ broken").unwrap();
+        assert_eq!(load(dir.path()), Memory::default());
+    }
+}

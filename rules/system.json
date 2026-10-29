@@ -1,0 +1,81 @@
+[
+  {
+    "id": "user-temp", "group": "system",
+    "name": "Temporales de tus programas", "nameEn": "Your apps' temporary files",
+    "about": "Lo que los programas dejan en tu carpeta temporal. Solo lo que tiene más de un día.",
+    "aboutEn": "What apps leave in your temp folder. Only what is more than a day old.",
+    "targets": [{ "path": "%TEMP%", "files": ["*"], "recursive": true, "minAgeHours": 24 }]
+  },
+  {
+    "id": "windows-temp", "group": "system", "admin": true,
+    "name": "Temporales de Windows", "nameEn": "Windows temporary files",
+    "about": "La carpeta temporal del sistema. Necesita permisos de administrador.",
+    "aboutEn": "The system's temp folder. Needs administrator rights.",
+    "targets": [{ "path": "%WINDIR%\\Temp", "files": ["*"], "recursive": true, "minAgeHours": 24 }]
+  },
+  {
+    "id": "thumbnails", "group": "system",
+    "name": "Miniaturas", "nameEn": "Thumbnails",
+    "about": "Las vistas previas de fotos y videos del Explorador. Se vuelven a crear solas.",
+    "aboutEn": "File Explorer's photo and video previews. They are made again on their own.",
+    "targets": [{ "path": "%LOCALAPPDATA%\\Microsoft\\Windows\\Explorer", "files": ["thumbcache_*.db", "iconcache_*.db"] }]
+  },
+  {
+    "id": "shader-caches", "group": "system",
+    "name": "Cachés de gráficos", "nameEn": "Graphics caches",
+    "about": "Sombreadores guardados por DirectX y por los controladores de NVIDIA y AMD. Los juegos los vuelven a crear.",
+    "aboutEn": "Shaders saved by DirectX and the NVIDIA and AMD drivers. Games make them again.",
+    "targets": [
+      { "path": "%LOCALAPPDATA%\\D3DSCache", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\NVIDIA\\DXCache", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\NVIDIA\\GLCache", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\AMD\\DxCache", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\AMD\\DxcCache", "files": ["*"], "recursive": true }
+    ]
+  },
+  {
+    "id": "crash-dumps", "group": "system",
+    "name": "Volcados de errores", "nameEn": "Crash dumps",
+    "about": "Copias de la memoria que guardan los programas cuando se cierran solos.",
+    "aboutEn": "Memory copies apps save when they crash.",
+    "targets": [{ "path": "%LOCALAPPDATA%\\CrashDumps", "files": ["*.dmp"] }]
+  },
+  {
+    "id": "system-dumps", "group": "system", "admin": true,
+    "name": "Volcados de pantallazos azules", "nameEn": "Blue screen dumps",
+    "about": "Lo que Windows guarda cuando se traba. Necesita permisos de administrador.",
+    "aboutEn": "What Windows saves when it crashes. Needs administrator rights.",
+    "targets": [
+      { "path": "%WINDIR%\\Minidump", "files": ["*.dmp"] },
+      { "path": "%WINDIR%", "files": ["MEMORY.DMP"] }
+    ]
+  },
+  {
+    "id": "error-reports", "group": "system",
+    "name": "Informes de errores", "nameEn": "Error reports",
+    "about": "Los informes que Windows prepara para Microsoft cuando algo falla.",
+    "aboutEn": "Reports Windows prepares for Microsoft when something fails.",
+    "targets": [
+      { "path": "%LOCALAPPDATA%\\Microsoft\\Windows\\WER", "files": ["*"], "recursive": true },
+      { "path": "%PROGRAMDATA%\\Microsoft\\Windows\\WER\\ReportArchive", "files": ["*"], "recursive": true },
+      { "path": "%PROGRAMDATA%\\Microsoft\\Windows\\WER\\ReportQueue", "files": ["*"], "recursive": true }
+    ]
+  },
+  {
+    "id": "update-cache", "group": "system", "admin": true,
+    "name": "Descargas de Windows Update", "nameEn": "Windows Update downloads",
+    "about": "Actualizaciones ya instaladas que se quedaron guardadas. Solo lo que tiene más de tres días. Necesita permisos de administrador.",
+    "aboutEn": "Updates already installed that stayed behind. Only what is more than three days old. Needs administrator rights.",
+    "targets": [
+      { "path": "%WINDIR%\\SoftwareDistribution\\Download", "files": ["*"], "recursive": true, "minAgeHours": 72 },
+      { "path": "%WINDIR%\\ServiceProfiles\\NetworkService\\AppData\\Local\\Microsoft\\Windows\\DeliveryOptimization\\Cache", "files": ["*"], "recursive": true, "minAgeHours": 72 }
+    ]
+  },
+  {
+    "id": "recycle-bin", "group": "system", "kind": "recycleBin",
+    "name": "Papelera de reciclaje", "nameEn": "Recycle Bin",
+    "about": "Lo que ya mandaste a la papelera. Al vaciarla ya no se puede recuperar.",
+    "aboutEn": "What you already sent to the Recycle Bin. Once emptied it can't be recovered.",
+    "targets": []
+  }
+]

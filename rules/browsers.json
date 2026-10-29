@@ -1,0 +1,70 @@
+[
+  {
+    "id": "chrome", "group": "browsers", "process": "chrome.exe",
+    "name": "Google Chrome", "nameEn": "Google Chrome",
+    "about": "La caché de páginas, de código y de gráficos. Tus contraseñas, historial y sesiones no se tocan.",
+    "aboutEn": "The page, code and graphics cache. Your passwords, history and sign-ins stay.",
+    "targets": [
+      { "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\Cache\\Cache_Data", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\Code Cache", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\*\\GPUCache", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\Google\\Chrome\\User Data\\ShaderCache", "files": ["*"], "recursive": true }
+    ]
+  },
+  {
+    "id": "edge", "group": "browsers", "process": "msedge.exe",
+    "name": "Microsoft Edge", "nameEn": "Microsoft Edge",
+    "about": "La caché de páginas, de código y de gráficos. Tus contraseñas, historial y sesiones no se tocan.",
+    "aboutEn": "The page, code and graphics cache. Your passwords, history and sign-ins stay.",
+    "targets": [
+      { "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\Cache\\Cache_Data", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\Code Cache", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\*\\GPUCache", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\Microsoft\\Edge\\User Data\\ShaderCache", "files": ["*"], "recursive": true }
+    ]
+  },
+  {
+    "id": "brave", "group": "browsers", "process": "brave.exe",
+    "name": "Brave", "nameEn": "Brave",
+    "about": "La caché de páginas, de código y de gráficos. Tus contraseñas, historial y sesiones no se tocan.",
+    "aboutEn": "The page, code and graphics cache. Your passwords, history and sign-ins stay.",
+    "targets": [
+      { "path": "%LOCALAPPDATA%\\BraveSoftware\\Brave-Browser\\User Data\\*\\Cache\\Cache_Data", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\BraveSoftware\\Brave-Browser\\User Data\\*\\Code Cache", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\BraveSoftware\\Brave-Browser\\User Data\\*\\GPUCache", "files": ["*"], "recursive": true }
+    ]
+  },
+  {
+    "id": "opera", "group": "browsers", "process": "opera.exe",
+    "name": "Opera", "nameEn": "Opera",
+    "about": "La caché de páginas, de código y de gráficos. Tus contraseñas, historial y sesiones no se tocan.",
+    "aboutEn": "The page, code and graphics cache. Your passwords, history and sign-ins stay.",
+    "targets": [
+      { "path": "%LOCALAPPDATA%\\Opera Software\\Opera Stable\\Cache\\Cache_Data", "files": ["*"], "recursive": true },
+      { "path": "%APPDATA%\\Opera Software\\Opera Stable\\Code Cache", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\Opera Software\\Opera GX Stable\\Cache\\Cache_Data", "files": ["*"], "recursive": true },
+      { "path": "%APPDATA%\\Opera Software\\Opera GX Stable\\Code Cache", "files": ["*"], "recursive": true }
+    ]
+  },
+  {
+    "id": "vivaldi", "group": "browsers", "process": "vivaldi.exe",
+    "name": "Vivaldi", "nameEn": "Vivaldi",
+    "about": "La caché de páginas, de código y de gráficos. Tus contraseñas, historial y sesiones no se tocan.",
+    "aboutEn": "The page, code and graphics cache. Your passwords, history and sign-ins stay.",
+    "targets": [
+      { "path": "%LOCALAPPDATA%\\Vivaldi\\User Data\\*\\Cache\\Cache_Data", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\Vivaldi\\User Data\\*\\Code Cache", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\Vivaldi\\User Data\\*\\GPUCache", "files": ["*"], "recursive": true }
+    ]
+  },
+  {
+    "id": "firefox", "group": "browsers", "process": "firefox.exe",
+    "name": "Firefox", "nameEn": "Firefox",
+    "about": "La caché de páginas. Tus contraseñas, historial y sesiones no se tocan.",
+    "aboutEn": "The page cache. Your passwords, history and sign-ins stay.",
+    "targets": [
+      { "path": "%LOCALAPPDATA%\\Mozilla\\Firefox\\Profiles\\*\\cache2", "files": ["*"], "recursive": true },
+      { "path": "%LOCALAPPDATA%\\Mozilla\\Firefox\\Profiles\\*\\startupCache", "files": ["*"], "recursive": true }
+    ]
+  }
+]

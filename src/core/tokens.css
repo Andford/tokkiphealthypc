@@ -1,0 +1,97 @@
+/* Copied from Andford/tokkip (windows/src) by scripts/sync-tokkip.mjs — change it there. */
+/* Tokkip PC's design tokens, shared by every window: the Material 3 colour
+   roles (src/core/theme.ts rewrites the --c-* values from the seed, light or
+   dark; these are only the first paint), type, shape and motion. */
+
+@import "@fontsource-variable/roboto-flex/standard.css";
+@import "@fontsource/fredoka/500.css";
+@import "@fontsource/fredoka/600.css";
+
+:root {
+  color-scheme: dark;
+  --c-primary: #80d5d0;
+  --c-on-primary: #003735;
+  --c-primary-container: #00504d;
+  --c-on-primary-container: #9cf1ed;
+  --c-secondary: #b0ccca;
+  --c-on-secondary: #1b3533;
+  --c-secondary-container: #324b4a;
+  --c-on-secondary-container: #cce8e6;
+  --c-tertiary: #b1c9e8;
+  --c-on-tertiary: #1a324b;
+  --c-tertiary-container: #314862;
+  --c-on-tertiary-container: #d1e4ff;
+  --c-error: #ffb4ab;
+  --c-on-error: #690005;
+  --c-error-container: #93000a;
+  --c-on-error-container: #ffdad6;
+  --c-surface: #0e1514;
+  --c-surface-dim: #0e1514;
+  --c-surface-bright: #343a3a;
+  --c-on-surface: #dde4e2;
+  --c-on-surface-variant: #bec9c7;
+  --c-surface-container-lowest: #090f0f;
+  --c-surface-container-low: #161d1c;
+  --c-surface-container: #1a2120;
+  --c-surface-container-high: #252b2b;
+  --c-surface-container-highest: #2f3635;
+  --c-outline: #889392;
+  --c-outline-variant: #3f4948;
+  --c-inverse-surface: #dde4e2;
+  --c-inverse-on-surface: #2b3231;
+  --c-inverse-primary: #006a67;
+  --c-shadow: #000000;
+  --c-scrim: #000000;
+
+  /* Status colours the scheme has no role for, readable on either theme. */
+  --c-success: #7ddc9a;
+  --c-warn: #f2b453;
+  --c-link: #8ec5ff;
+
+  /* Text: Roboto Flex; titles: Fredoka. Then the scripts of the other
+     interface languages, in the fonts the system has for them. */
+  --font: "Roboto Flex Variable", "Segoe UI Variable Text", "Segoe UI", system-ui, "Segoe UI Emoji", "Nirmala UI",
+    "Microsoft YaHei UI", "Microsoft YaHei", "Noto Sans", "Noto Sans Devanagari", "Noto Sans Bengali",
+    "Noto Sans Arabic", "Noto Sans CJK SC", "Noto Sans SC", "Droid Sans Fallback", sans-serif;
+  --display: "Fredoka", var(--font);
+  --mono: "Cascadia Mono", "Consolas", ui-monospace, monospace;
+
+  /* The older names the views use, now roles of the scheme. */
+  --ink: var(--c-on-surface);
+  --ink-2: var(--c-on-surface);
+  --dim: var(--c-on-surface-variant);
+  --dim-2: var(--c-on-surface-variant);
+  --dim-3: color-mix(in srgb, var(--c-on-surface-variant) 78%, transparent);
+  --dim-4: var(--c-outline);
+  --dim-5: color-mix(in srgb, var(--c-outline) 80%, transparent);
+  --card: var(--c-surface-container-high);
+  --card-flat: var(--c-surface-container);
+  --tab-on: var(--c-secondary-container);
+  --hairline: transparent;
+  --red: var(--c-error);
+  --red-text: var(--c-error);
+  --green: var(--c-success);
+  --green-2: var(--c-success);
+  --amber: var(--c-warn);
+  --cyan: var(--c-primary);
+  --indigo: var(--c-tertiary);
+  --pink: #f48fb1;
+
+  /* Shape and motion: Material 3 Expressive. */
+  --r-xl: 28px;
+  --r-l: 22px;
+  --r-m: 16px;
+  --r-s: 10px;
+  --spring: cubic-bezier(0.34, 1.45, 0.5, 1);
+  --spring-soft: cubic-bezier(0.3, 1.2, 0.4, 1);
+  --ease: cubic-bezier(0.2, 0, 0, 1);
+  /* The island floats this far below the top of the screen. */
+  --gap: 8px;
+}
+
+:root[data-theme="light"] {
+  --c-success: #1e7a43;
+  --c-warn: #9a5b00;
+  --c-link: #2c62c6;
+  --pink: #b8336a;
+}

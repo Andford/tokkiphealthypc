@@ -1,0 +1,77 @@
+name: Tokkip Healthy PC
+
+# Checks and builds the app on every push: types, tests (page and Rust), then
+# the Windows installer and the portable .exe as artifacts for a few days.
+# Nothing is published from here yet.
+
+on:
+  push:
+    branches: [nueva]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Cache cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            src-tauri/target
+          key: healthy-cargo-${{ hashFiles('src-tauri/Cargo.lock') }}
+          restore-keys: healthy-cargo-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Page tests
+        run: npm test
+
+      - name: Build the page
+        run: npx vite build
+
+      - name: Rust tests
+        working-directory: src-tauri
+        run: cargo test --locked
+
+      - name: Build the installer
+        id: build
+        shell: pwsh
+        run: |
+          npx tauri build
+          $version = (Get-Content src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          "version=$version" >> $env:GITHUB_OUTPUT
+          New-Item -ItemType Directory -Force release | Out-Null
+          Copy-Item "src-tauri/target/release/bundle/nsis/*-setup.exe" "release/Tokkip-Healthy-PC-$version-setup.exe"
+          Copy-Item src-tauri/target/release/tokkip-healthy.exe "release/Tokkip Healthy PC.exe"
+          Get-ChildItem release | Format-Table Name, Length
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Tokkip-Healthy-PC-setup
+          path: release/Tokkip-Healthy-PC-${{ steps.build.outputs.version }}-setup.exe
+          retention-days: 5
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Tokkip-Healthy-PC-portable
+          path: release/Tokkip Healthy PC.exe
+          retention-days: 5
