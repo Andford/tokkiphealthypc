@@ -1,6 +1,7 @@
 // The tools, one module each. What long walks share: a cancel button and a
 // progress report a few times a second.
 
+pub mod apps;
 pub mod cleaner;
 pub mod downloads;
 pub mod duplicates;

@@ -72,9 +72,10 @@ Cada fase termina con una versión instalable.
 ### Fase 3 — Software (0.7)
 - [x] Programas de inicio (registro, carpeta Inicio, tareas programadas).
 - [x] Desinstalador (con el desinstalador de cada programa).
-- [ ] Búsqueda de restos después de desinstalar (carpetas y claves que quedan).
-- [ ] Quitar bloatware (apps preinstaladas de Windows, con lista curada).
-- [ ] Actualizaciones de programas (winget) y de controladores.
+- [x] Búsqueda de restos después de desinstalar (carpetas y claves que quedan).
+- [x] Quitar bloatware (apps preinstaladas de Windows, con lista curada).
+- [x] Actualizaciones de programas (winget).
+- [ ] Actualizaciones de controladores.
 - [ ] Menú contextual: entradas viejas o rotas.
 
 ### Fase 4 — Rendimiento (0.8)

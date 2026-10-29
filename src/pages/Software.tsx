@@ -2,13 +2,17 @@
 // Manager does), and your programs, removed with their own uninstallers.
 
 import { useEffect, useMemo, useState } from "preact/hooks";
-import { programsList, relaunchAdmin, startupList, startupSet, uninstall, type Program, type StartupItem } from "../core/api";
+import {
+  preinstalledList, programsList, relaunchAdmin, removeLeftovers, removePreinstalled, startupList, startupSet, uninstall, updateRun, updatesList,
+  type Leftover, type Preinstalled, type Program, type Removed, type StartupItem, type Update,
+} from "../core/api";
 import { bytes } from "../core/format";
-import { t, tn } from "../i18n/i18n";
+import { language, N_, t, tn } from "../i18n/i18n";
+import { Check, Dock, Outcome, useChoice } from "./storage/common";
 import { Icon } from "../ui/Icon";
 import { Sound } from "../core/sound";
 
-type Tab = "startup" | "programs";
+type Tab = "startup" | "programs" | "preinstalled" | "updates";
 let lastTab: Tab = "startup";
 
 export function Software() {
@@ -30,8 +34,19 @@ export function Software() {
           <Icon name="apps" size={20} />
           {t("Programs")}
         </button>
+        <button role="tab" aria-selected={tab === "preinstalled"} onClick={() => go("preinstalled")}>
+          <Icon name="installer" size={20} />
+          {t("Preinstalled apps")}
+        </button>
+        <button role="tab" aria-selected={tab === "updates"} onClick={() => go("updates")}>
+          <Icon name="refresh" size={20} />
+          {t("Updates")}
+        </button>
       </nav>
-      {tab === "startup" ? <Startup /> : <Programs />}
+      {tab === "startup" && <Startup />}
+      {tab === "programs" && <Programs />}
+      {tab === "preinstalled" && <PreinstalledApps />}
+      {tab === "updates" && <Updates />}
     </>
   );
 }
@@ -109,6 +124,9 @@ function Programs() {
   const [asking, setAsking] = useState<Program | null>(null);
   const [working, setWorking] = useState<number | null>(null);
   const [note, setNote] = useState("");
+  const [left, setLeft] = useState<{ name: string; items: Leftover[] } | null>(null);
+  const leftChoice = useChoice();
+  const [leftResult, setLeftResult] = useState<Removed | null>(null);
   useEffect(() => {
     void programsList().then(setList);
   }, []);
@@ -128,10 +146,13 @@ function Programs() {
     setWorking(p.id);
     setNote("");
     try {
-      const gone = await uninstall(p.id);
-      if (gone) {
+      const r = await uninstall(p.id);
+      if (r.gone) {
         setList(list.filter((x) => x.id !== p.id));
         setNote(t("{name} was uninstalled.", { name: p.name }));
+        setLeftResult(null);
+        setLeft(r.leftovers.length ? { name: p.name, items: r.leftovers } : null);
+        leftChoice.set([]);
         Sound.play("finish");
       } else {
         setNote(t("{name} is still installed: its uninstaller was closed or didn't finish.", { name: p.name }));
@@ -167,6 +188,47 @@ function Programs() {
           <p>{note}</p>
         </div>
       )}
+      {leftResult && <Outcome freed={leftResult.freed} files={leftResult.files} kept={leftResult.kept.length} verb="trash" />}
+      {left && (
+        <section class="card list-card">
+          <header class="list-head">
+            <h2 class="section-title">{tn("{name} left {n} folder behind", "{name} left {n} folders behind", left.items.length, { name: left.name })}</h2>
+            <p class="hint">{t("Settings and data its uninstaller didn't remove. Look before you choose: some programs keep your files here.")}</p>
+          </header>
+          <ul class="files">
+            {left.items.map((l) => (
+              <li key={l.id} class="file">
+                <Check on={leftChoice.has(l.id)} onChange={() => leftChoice.toggle(l.id)} label={l.path} />
+                <span class="file-icon">
+                  <Icon name="folder" size={20} />
+                </span>
+                <span class="file-text">
+                  <span class="file-where strong">{l.path}</span>
+                </span>
+                <span class="file-size">{bytes(l.bytes)}</span>
+              </li>
+            ))}
+          </ul>
+          <div class="actions">
+            <button
+              class="btn filled"
+              disabled={leftChoice.chosen.size === 0}
+              onClick={async () => {
+                const r = await removeLeftovers([...leftChoice.chosen]);
+                setLeftResult(r);
+                setLeft(null);
+                Sound.play(r.files > 0 ? "finish" : "error");
+              }}
+            >
+              <Icon name="trash" size={20} />
+              {t("Send to the Recycle Bin")}
+            </button>
+            <button class="btn text" onClick={() => setLeft(null)}>
+              {t("Leave them")}
+            </button>
+          </div>
+        </section>
+      )}
       <section class="card list-card">
         <ul class="files">
           {shown.map((p) => (
@@ -197,6 +259,181 @@ function Programs() {
           ))}
         </ul>
       </section>
+    </>
+  );
+}
+
+const GROUPS: Record<Preinstalled["group"], string> = {
+  microsoft: N_("Came with Windows"),
+  oem: N_("Came with your PC (its maker's)"),
+  communication: N_("Chat and social, preinstalled"),
+  gaming: N_("Games, preinstalled"),
+  media: N_("Music and video, preinstalled"),
+  utility: N_("Tools, preinstalled"),
+};
+
+function PreinstalledApps() {
+  const [list, setList] = useState<Preinstalled[] | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [done, setDone] = useState<{ removed: number; failed: number } | null>(null);
+  const [chosen, setChosen] = useState<Set<string>>(new Set());
+  useEffect(() => {
+    void preinstalledList().then(setList);
+  }, []);
+  if (!list) return <section class="card"><p class="hint">{t("Looking…")}</p></section>;
+
+  const toggle = (p: string) => {
+    const n = new Set(chosen);
+    n.has(p) ? n.delete(p) : n.add(p);
+    setChosen(n);
+    Sound.play("tick");
+  };
+  const size = list.filter((a) => chosen.has(a.package)).reduce((s, a) => s + a.bytes, 0);
+  const remove = async () => {
+    setBusy(true);
+    const asked = [...chosen];
+    const removed = await removePreinstalled(asked);
+    setList(list.filter((a) => !removed.includes(a.package)));
+    setChosen(new Set());
+    setDone({ removed: removed.length, failed: asked.length - removed.length });
+    setBusy(false);
+    Sound.play(removed.length ? "finish" : "error");
+  };
+
+  return (
+    <>
+      <section class="card tool-head">
+        <div>
+          <h2 class="section-title">{tn("{n} preinstalled app found", "{n} preinstalled apps found", list.length)}</h2>
+          <p class="hint">{t("Apps that came with Windows or your PC and most people never use. They're removed only for you, and you can install them again from the Microsoft Store.")}</p>
+        </div>
+      </section>
+      {done && (
+        <div class="outcome" role="status">
+          <Icon name={done.removed ? "check" : "info"} />
+          <p>
+            {tn("{n} app removed.", "{n} apps removed.", done.removed)} {done.failed > 0 && tn("{n} couldn't be removed (Windows keeps it).", "{n} couldn't be removed (Windows keeps them).", done.failed)}
+          </p>
+        </div>
+      )}
+      {list.length === 0 && (
+        <section class="card empty-state">
+          <Icon name="check" size={40} />
+          <h2>{t("None of the usual ones")}</h2>
+        </section>
+      )}
+      {list.length > 0 && (
+        <section class="card list-card">
+          <ul class="files">
+            {list.map((a) => (
+              <li key={a.package} class="file">
+                <Check on={chosen.has(a.package)} onChange={() => toggle(a.package)} label={a.name} />
+                <span class="file-icon">
+                  <Icon name="installer" size={20} />
+                </span>
+                <span class="file-text">
+                  <span class="file-name">{a.name}</span>
+                  <span class="file-where">{language() === "en" ? a.aboutEn : t(GROUPS[a.group])} · {a.publisher}</span>
+                </span>
+                <span class="file-size">{a.bytes > 0 ? bytes(a.bytes) : ""}</span>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      {list.length > 0 && (
+        <Dock
+          text={chosen.size ? tn("{n} app chosen · {size}", "{n} apps chosen · {size}", chosen.size, { size: bytes(size) }) : t("Choose the apps you don't use")}
+          action={busy ? t("Removing…") : t("Remove")}
+          icon="trash"
+          disabled={chosen.size === 0 || busy}
+          onClick={remove}
+        />
+      )}
+    </>
+  );
+}
+
+function Updates() {
+  const [list, setList] = useState<Update[] | null | undefined>(undefined);
+  const [state, setState] = useState<Record<string, "working" | "done" | "failed">>({});
+  const load = () => {
+    setList(undefined);
+    void updatesList().then(setList);
+  };
+  useEffect(load, []);
+  if (list === undefined) return <section class="card"><p class="hint">{t("Asking winget what has updates… this takes a moment.")}</p></section>;
+  if (list === null)
+    return (
+      <section class="card empty-state">
+        <Icon name="info" size={40} />
+        <h2>{t("This PC doesn't have winget")}</h2>
+        <p>{t("winget comes with Windows 10 and 11 as 'App Installer'. Install it from the Microsoft Store and come back.")}</p>
+      </section>
+    );
+
+  const run = async (ids: string[]) => {
+    for (const id of ids) {
+      setState((s) => ({ ...s, [id]: "working" }));
+      const ok = await updateRun(id);
+      setState((s) => ({ ...s, [id]: ok ? "done" : "failed" }));
+      Sound.play(ok ? "pop" : "error");
+    }
+  };
+  const pending = list.filter((u) => !state[u.id] || state[u.id] === "failed");
+  const working = Object.values(state).includes("working");
+
+  return (
+    <>
+      <section class="card tool-head">
+        <div>
+          <h2 class="section-title">{list.length ? tn("{n} program has an update", "{n} programs have an update", list.length) : t("Everything's up to date")}</h2>
+          <p class="hint">{t("Through winget, Windows' own installer: each program comes from its official source. Some may ask for permission while they update.")}</p>
+        </div>
+        <div class="actions tight">
+          <button class="btn tonal" onClick={load} disabled={working}>
+            <Icon name="refresh" size={20} />
+            {t("Look again")}
+          </button>
+          {pending.length > 0 && (
+            <button class="btn filled" onClick={() => void run(pending.map((u) => u.id))} disabled={working}>
+              <Icon name="download" size={20} />
+              {t("Update all")}
+            </button>
+          )}
+        </div>
+      </section>
+      {list.length > 0 && (
+        <section class="card list-card">
+          <ul class="files">
+            {list.map((u) => (
+              <li key={u.id} class="file">
+                <span class="file-icon">
+                  <Icon name="app" size={20} />
+                </span>
+                <span class="file-text">
+                  <span class="file-name">{u.name}</span>
+                  <span class="file-where">
+                    {u.version} → {u.available}
+                  </span>
+                </span>
+                {state[u.id] === "done" ? (
+                  <span class="chip ok">{t("Updated")}</span>
+                ) : state[u.id] === "working" ? (
+                  <span class="chip">{t("Updating…")}</span>
+                ) : (
+                  <>
+                    {state[u.id] === "failed" && <span class="chip warn">{t("Didn't work")}</span>}
+                    <button class="btn tonal small" disabled={working} onClick={() => void run([u.id])}>
+                      {t("Update")}
+                    </button>
+                  </>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </>
   );
 }

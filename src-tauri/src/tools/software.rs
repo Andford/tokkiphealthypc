@@ -49,6 +49,9 @@ pub struct StartupKey {
 /// What the app keeps to uninstall a program later.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Uninstall {
+    pub name: String,
+    pub publisher: String,
+    pub location: String,
     pub key: String,
     pub user: bool,
     pub command: String,
@@ -218,7 +221,16 @@ mod win {
                 if !seen.insert(format!("{}|{}", name.to_lowercase(), publisher.to_lowercase())) {
                     continue;
                 }
-                let id = keep(Uninstall { key: format!(r"{path}\{sub}"), user, command, msi: d("WindowsInstaller") == 1 });
+                let location = s("InstallLocation").trim_end_matches('\\').to_string();
+                let id = keep(Uninstall {
+                    name: name.trim().to_string(),
+                    publisher: publisher.clone(),
+                    location: location.clone(),
+                    key: format!(r"{path}\{sub}"),
+                    user,
+                    command,
+                    msi: d("WindowsInstaller") == 1,
+                });
                 out.push(Program {
                     id,
                     name: name.trim().to_string(),
@@ -226,7 +238,7 @@ mod win {
                     version: s("DisplayVersion"),
                     installed: s("InstallDate"),
                     bytes: d("EstimatedSize") as u64 * 1024,
-                    location: s("InstallLocation").trim_end_matches('\\').to_string(),
+                    location,
                     user,
                 });
             }

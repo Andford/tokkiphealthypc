@@ -521,12 +521,99 @@ export async function programsList(): Promise<Program[]> {
   return invoke<Program[]>("programs_list");
 }
 
-/** Opens the program's own uninstaller; true if it's gone afterwards. */
-export async function uninstall(id: number): Promise<boolean> {
+export interface Leftover {
+  id: number;
+  path: string;
+  bytes: number;
+}
+
+export interface Uninstalled {
+  gone: boolean;
+  leftovers: Leftover[];
+}
+
+/** Opens the program's own uninstaller; if it's gone, what it left behind. */
+export async function uninstall(id: number): Promise<Uninstalled> {
   if (!inApp) {
     await wait(1500);
-    demoSoftware.programs = demoSoftware.programs.filter((p) => p.id !== id);
-    return true;
+    const p = demoSoftware.programs.find((x) => x.id === id);
+    demoSoftware.programs = demoSoftware.programs.filter((x) => x.id !== id);
+    return {
+      gone: true,
+      leftovers: p ? [
+        { id: 600, path: `C:\\Users\\Andy\\AppData\\Roaming\\${p.name.split(" ")[0]}`, bytes: 84 * MB },
+        { id: 601, path: `C:\\ProgramData\\${p.name.split(" ")[0]}`, bytes: 12 * MB },
+      ] : [],
+    };
   }
-  return invoke<boolean>("program_uninstall", { id });
+  return invoke<Uninstalled>("program_uninstall", { id });
+}
+
+export async function removeLeftovers(ids: number[]): Promise<Removed> {
+  if (!inApp) {
+    await wait(500);
+    return { freed: ids.length * 48 * MB, files: ids.length, kept: [] };
+  }
+  return invoke<Removed>("leftovers_remove", { ids });
+}
+
+export interface Preinstalled {
+  package: string;
+  name: string;
+  publisher: string;
+  group: "microsoft" | "oem" | "communication" | "gaming" | "media" | "utility";
+  aboutEn: string;
+  bytes: number;
+}
+
+export async function preinstalledList(): Promise<Preinstalled[]> {
+  if (!inApp) {
+    await wait(900);
+    return [
+      ["Microsoft.BingNews", "Bing News", "Microsoft", "microsoft", "News aggregator with ads", 38 * MB],
+      ["Microsoft.BingWeather", "Bing Weather", "Microsoft", "microsoft", "Weather app with ads", 22 * MB],
+      ["Clipchamp.Clipchamp", "Clipchamp", "Microsoft", "media", "Video editor — promotes paid subscription", 140 * MB],
+      ["Microsoft.MicrosoftSolitaireCollection", "Solitaire Collection", "Microsoft", "gaming", "Solitaire with ads and Xbox integration", 180 * MB],
+      ["AD2F1837.HPJumpStarts", "HP JumpStart", "HP", "oem", "HP onboarding app", 60 * MB],
+      ["SpotifyAB.SpotifyMusic", "Spotify", "Spotify", "media", "Music streaming app", 210 * MB],
+    ].map(([pkg, name, publisher, group, aboutEn, bytes]) => ({ package: pkg, name, publisher, group, aboutEn, bytes }) as Preinstalled);
+  }
+  return invoke<Preinstalled[]>("preinstalled_list");
+}
+
+/** Removes them for you; returns the packages removed. */
+export async function removePreinstalled(packages: string[]): Promise<string[]> {
+  if (!inApp) {
+    await wait(1200);
+    return packages;
+  }
+  return invoke<string[]>("preinstalled_remove", { packages });
+}
+
+export interface Update {
+  id: string;
+  name: string;
+  version: string;
+  available: string;
+}
+
+/** What winget can update; null when this PC has no winget. */
+export async function updatesList(): Promise<Update[] | null> {
+  if (!inApp) {
+    await wait(1600);
+    return [
+      { id: "Google.Chrome", name: "Google Chrome", version: "129.0.6668.90", available: "130.0.6723.70" },
+      { id: "7zip.7zip", name: "7-Zip", version: "23.01", available: "24.08" },
+      { id: "VideoLAN.VLC", name: "VLC media player", version: "3.0.20", available: "3.0.21" },
+    ];
+  }
+  return invoke<Update[] | null>("updates_list");
+}
+
+export async function updateRun(id: string): Promise<boolean> {
+  if (!inApp) {
+    await wait(1800);
+    return id !== "VideoLAN.VLC";
+  }
+  return invoke<boolean>("update_run", { id });
 }

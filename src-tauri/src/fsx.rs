@@ -64,6 +64,12 @@ fn names(path: &Path) -> Vec<String> {
         .collect()
 }
 
+/// A folder name that is Windows', a program's shared one, or your profile's own.
+pub fn is_protected_name(name: &str) -> bool {
+    let n = name.to_lowercase();
+    PROTECTED_WINDOWS.contains(&n.as_str()) || PROTECTED_ANYWHERE.contains(&n.as_str()) || PROFILE_FOLDERS.contains(&n.as_str())
+}
+
 /// Inside a protected folder (anywhere along the path).
 pub fn in_protected_tree(path: &Path, home: &Path) -> bool {
     let inside_home = path.strip_prefix(home).ok();

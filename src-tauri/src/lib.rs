@@ -31,6 +31,7 @@ struct Found {
     downloads: HashMap<u64, (PathBuf, fsx::Identity)>,
     startup: HashMap<u64, tools::software::StartupKey>,
     programs: HashMap<u64, tools::software::Uninstall>,
+    leftovers: HashMap<u64, PathBuf>,
 }
 
 struct App {
@@ -364,15 +365,143 @@ async fn programs_list(app: tauri::AppHandle) -> Result<Vec<tools::software::Pro
     .await
 }
 
-/// Opens the program's own uninstaller and waits. True if it's gone afterwards.
+#[derive(serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+struct Uninstalled {
+    gone: bool,
+    /// Folders it left behind, to send to the Recycle Bin if you choose.
+    leftovers: Vec<tools::apps::Leftover>,
+}
+
+/// Where programs leave folders behind.
+fn leftover_bases() -> Vec<PathBuf> {
+    let mut v: Vec<PathBuf> = ["APPDATA", "LOCALAPPDATA", "ProgramData", "ProgramFiles", "ProgramFiles(x86)"]
+        .iter()
+        .filter_map(|n| std::env::var_os(n).map(PathBuf::from))
+        .collect();
+    if let Some(local) = std::env::var_os("LOCALAPPDATA") {
+        v.push(PathBuf::from(local).join("Programs"));
+    }
+    v
+}
+
+/// Opens the program's own uninstaller and waits; if it's gone, looks for what it left.
 #[tauri::command]
-async fn program_uninstall(app: tauri::AppHandle, id: u64) -> Result<bool, String> {
+async fn program_uninstall(app: tauri::AppHandle, id: u64) -> Result<Uninstalled, String> {
     let u = app.state::<App>().found().programs.get(&id).cloned().ok_or("gone")?;
+    let handle = app.clone();
     blocking(move || {
         tools::software::run_uninstaller(&u)?;
-        Ok(!tools::software::still_installed(&u))
+        if tools::software::still_installed(&u) {
+            return Ok(Uninstalled { gone: false, leftovers: Vec::new() });
+        }
+        let mut present = Vec::new();
+        tools::software::programs(&mut |p| {
+            present.push(tools::apps::Present { name: p.name, location: p.location });
+            0
+        });
+        let gone = tools::apps::Gone { name: u.name.clone(), publisher: u.publisher.clone(), location: u.location.clone() };
+        let state = handle.state::<App>();
+        let mut kept = HashMap::new();
+        let leftovers = tools::apps::find_leftovers(&gone, &leftover_bases(), &present, &fsx::home())
+            .into_iter()
+            .map(|(path, bytes)| {
+                let id = state.id();
+                let l = tools::apps::Leftover { id, path: path.display().to_string(), bytes };
+                kept.insert(id, path);
+                l
+            })
+            .collect();
+        state.found().leftovers = kept;
+        Ok(Uninstalled { gone: true, leftovers })
     })
     .await?
+}
+
+/// Sends chosen leftover folders to the Recycle Bin.
+#[tauri::command]
+async fn leftovers_remove(app: tauri::AppHandle, ids: Vec<u64>) -> Result<Removed, String> {
+    let chosen: Vec<(u64, PathBuf)> = {
+        let state = app.state::<App>();
+        let found = state.found();
+        ids.iter().filter_map(|id| found.leftovers.get(id).map(|p| (*id, p.clone()))).collect()
+    };
+    blocking(move || {
+        let home = fsx::home();
+        let mut r = Removed { freed: 0, files: 0, kept: Vec::new() };
+        for (id, p) in chosen {
+            let real = std::fs::symlink_metadata(&p).map(|m| m.is_dir() && !m.file_type().is_symlink()).unwrap_or(false);
+            let size = tools::apps::folder_size(&p);
+            if real && tools::apps::safe_leftover(&p, &home) && fsx::to_trash(&p).is_ok() {
+                r.freed += size;
+                r.files += 1;
+            } else {
+                r.kept.push(id);
+            }
+        }
+        r
+    })
+    .await
+}
+
+#[tauri::command]
+async fn preinstalled_list() -> Result<Vec<tools::apps::Preinstalled>, String> {
+    blocking(|| {
+        let out = platform::powershell("Get-AppxPackage | Select-Object Name, InstallLocation | ConvertTo-Json -Compress").unwrap_or_default();
+        let v: serde_json::Value = serde_json::from_str(out.trim()).unwrap_or(serde_json::Value::Null);
+        let items = match v {
+            serde_json::Value::Array(a) => a,
+            serde_json::Value::Null => Vec::new(),
+            one => vec![one],
+        };
+        let installed: Vec<(String, String)> = items
+            .iter()
+            .map(|i| (i["Name"].as_str().unwrap_or_default().to_string(), i["InstallLocation"].as_str().unwrap_or_default().to_string()))
+            .collect();
+        tools::apps::pick_preinstalled(&installed, &tools::apps::known_apps())
+    })
+    .await
+}
+
+/// Removes these apps for you. Returns the ones removed.
+#[tauri::command]
+async fn preinstalled_remove(packages: Vec<String>) -> Result<Vec<String>, String> {
+    blocking(move || {
+        let known = tools::apps::known_apps();
+        packages
+            .into_iter()
+            .filter(|p| tools::apps::safe_package(p) && known.iter().any(|k| tools::apps::matches_known(p, &k.package)))
+            .filter(|p| platform::powershell(&format!("Get-AppxPackage -Name '{p}' | Remove-AppxPackage -ErrorAction Stop")).is_some())
+            .collect()
+    })
+    .await
+}
+
+/// What winget can update. None when winget isn't on this PC.
+#[tauri::command]
+async fn updates_list() -> Result<Option<Vec<tools::apps::Update>>, String> {
+    blocking(|| {
+        let (_, out) = platform::run_hidden("winget", &["upgrade", "--accept-source-agreements", "--disable-interactivity"])?;
+        Some(tools::apps::parse_upgrades(&out))
+    })
+    .await
+}
+
+/// Updates one program with winget. True if it worked.
+#[tauri::command]
+async fn update_run(id: String) -> Result<bool, String> {
+    if !tools::apps::safe_id(&id) {
+        return Err("id".into());
+    }
+    blocking(move || {
+        platform::run_hidden(
+            "winget",
+            &["upgrade", "--id", &id, "--exact", "--silent", "--accept-source-agreements", "--accept-package-agreements", "--disable-interactivity"],
+        )
+        .map(|(ok, _)| ok)
+        .unwrap_or(false)
+    })
+    .await
 }
 
 // ── General ───────────────────────────────────────────────────────────────
@@ -432,6 +561,11 @@ pub fn run() {
             startup_set,
             programs_list,
             program_uninstall,
+            leftovers_remove,
+            preinstalled_list,
+            preinstalled_remove,
+            updates_list,
+            update_run,
             relaunch_admin,
             tokkip_notice
         ])

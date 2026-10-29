@@ -1,0 +1,789 @@
+{
+ "_about": "Apps that come with Windows or the PC and most people never use. From Kudu (MIT, Advent Development), src/main/ipc/debloater.ipc.ts.",
+ "apps": [
+  {
+   "name": "3D Viewer",
+   "package": "Microsoft.Microsoft3DViewer",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "3D model viewer — rarely used by most users"
+  },
+  {
+   "name": "Bing News",
+   "package": "Microsoft.BingNews",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "News aggregator with ads"
+  },
+  {
+   "name": "Bing Weather",
+   "package": "Microsoft.BingWeather",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Weather app with ads"
+  },
+  {
+   "name": "Clipchamp",
+   "package": "Clipchamp.Clipchamp",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Video editor — promotes paid subscription"
+  },
+  {
+   "name": "Cortana",
+   "package": "Microsoft.549981C3F5F10",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Voice assistant — uses background resources"
+  },
+  {
+   "name": "Feedback Hub",
+   "package": "Microsoft.WindowsFeedbackHub",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Feedback submission tool for Windows Insiders"
+  },
+  {
+   "name": "Get Help",
+   "package": "Microsoft.GetHelp",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Windows help app — links to online support"
+  },
+  {
+   "name": "Mail and Calendar",
+   "package": "microsoft.windowscommunicationsapps",
+   "publisher": "Microsoft",
+   "group": "communication",
+   "aboutEn": "Built-in mail/calendar — most users prefer Outlook or webmail"
+  },
+  {
+   "name": "Maps",
+   "package": "Microsoft.WindowsMaps",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Windows Maps — most users prefer Google Maps in browser"
+  },
+  {
+   "name": "Microsoft News",
+   "package": "Microsoft.News",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "News feed with ads and tracking"
+  },
+  {
+   "name": "Microsoft Solitaire",
+   "package": "Microsoft.MicrosoftSolitaireCollection",
+   "publisher": "Microsoft",
+   "group": "gaming",
+   "aboutEn": "Solitaire with ads and Xbox integration"
+  },
+  {
+   "name": "Microsoft Tips",
+   "package": "Microsoft.Getstarted",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Tips app — promotional content for Microsoft services"
+  },
+  {
+   "name": "Microsoft To Do",
+   "package": "Microsoft.Todos",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Task management — redundant if using other tools"
+  },
+  {
+   "name": "Mixed Reality Portal",
+   "package": "Microsoft.MixedReality.Portal",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "VR/AR portal — unnecessary without VR headset"
+  },
+  {
+   "name": "Movies & TV",
+   "package": "Microsoft.ZuneVideo",
+   "publisher": "Microsoft",
+   "group": "media",
+   "aboutEn": "Video player — most users prefer VLC or MPC"
+  },
+  {
+   "name": "Office Hub",
+   "package": "Microsoft.MicrosoftOfficeHub",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Office promotion hub — not the actual Office suite"
+  },
+  {
+   "name": "OneNote for Windows",
+   "package": "Microsoft.Office.OneNote",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "OneNote UWP app — desktop version is separate"
+  },
+  {
+   "name": "Outlook (new)",
+   "package": "Microsoft.OutlookForWindows",
+   "publisher": "Microsoft",
+   "group": "communication",
+   "aboutEn": "New Outlook app — replaces Mail, uses web version"
+  },
+  {
+   "name": "Paint",
+   "package": "Microsoft.MSPaint",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Windows Paint app — remove only if you use a different image editor"
+  },
+  {
+   "name": "People",
+   "package": "Microsoft.People",
+   "publisher": "Microsoft",
+   "group": "communication",
+   "aboutEn": "Contact aggregator — syncs with Microsoft account"
+  },
+  {
+   "name": "Phone Link",
+   "package": "Microsoft.YourPhone",
+   "publisher": "Microsoft",
+   "group": "communication",
+   "aboutEn": "Phone-to-PC app — runs background services"
+  },
+  {
+   "name": "Power Automate",
+   "package": "Microsoft.PowerAutomateDesktop",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Desktop automation tool — enterprise feature"
+  },
+  {
+   "name": "Quick Assist",
+   "package": "MicrosoftCorporationII.QuickAssist",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Remote assistance tool"
+  },
+  {
+   "name": "Skype",
+   "package": "Microsoft.SkypeApp",
+   "publisher": "Microsoft",
+   "group": "communication",
+   "aboutEn": "Skype UWP — most users prefer Teams or Discord"
+  },
+  {
+   "name": "Sticky Notes",
+   "package": "Microsoft.MicrosoftStickyNotes",
+   "publisher": "Microsoft",
+   "group": "utility",
+   "aboutEn": "Sticky notes — syncs with Microsoft account"
+  },
+  {
+   "name": "Teams (personal)",
+   "package": "MSTeams",
+   "publisher": "Microsoft",
+   "group": "communication",
+   "aboutEn": "Teams personal edition — auto-starts and runs in background"
+  },
+  {
+   "name": "Voice Recorder",
+   "package": "Microsoft.WindowsSoundRecorder",
+   "publisher": "Microsoft",
+   "group": "media",
+   "aboutEn": "Simple voice recorder"
+  },
+  {
+   "name": "Widgets",
+   "package": "MicrosoftWindows.Client.WebExperience",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Taskbar widgets — uses Edge WebView and background resources"
+  },
+  {
+   "name": "Xbox App",
+   "package": "Microsoft.XboxApp",
+   "publisher": "Microsoft",
+   "group": "gaming",
+   "aboutEn": "Xbox companion app"
+  },
+  {
+   "name": "Xbox Game Bar",
+   "package": "Microsoft.XboxGamingOverlay",
+   "publisher": "Microsoft",
+   "group": "gaming",
+   "aboutEn": "Game overlay — adds input latency"
+  },
+  {
+   "name": "Xbox Speech to Text",
+   "package": "Microsoft.XboxSpeechToTextOverlay",
+   "publisher": "Microsoft",
+   "group": "gaming",
+   "aboutEn": "Xbox accessibility overlay"
+  },
+  {
+   "name": "Groove Music",
+   "package": "Microsoft.ZuneMusic",
+   "publisher": "Microsoft",
+   "group": "media",
+   "aboutEn": "Music player — deprecated, replaced by Media Player"
+  },
+  {
+   "name": "Bing Search",
+   "package": "Microsoft.BingSearch",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Bing search integration — web searches from taskbar"
+  },
+  {
+   "name": "Xbox (Gaming App)",
+   "package": "Microsoft.GamingApp",
+   "publisher": "Microsoft",
+   "group": "gaming",
+   "aboutEn": "Xbox PC app for game library and social features"
+  },
+  {
+   "name": "Edge Game Assist",
+   "package": "Microsoft.Edge.GameAssist",
+   "publisher": "Microsoft",
+   "group": "gaming",
+   "aboutEn": "Edge game overlay assistant"
+  },
+  {
+   "name": "Copilot",
+   "package": "Microsoft.Copilot",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "AI assistant — runs background services and collects data"
+  },
+  {
+   "name": "Microsoft Journal",
+   "package": "Microsoft.MicrosoftJournal",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Digital journal app — rarely used"
+  },
+  {
+   "name": "Dev Home",
+   "package": "Microsoft.Windows.DevHome",
+   "publisher": "Microsoft",
+   "group": "utility",
+   "aboutEn": "Developer setup tool — unnecessary for most users"
+  },
+  {
+   "name": "Paint 3D",
+   "package": "Microsoft.MSPaint3D",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "3D painting app — deprecated by Microsoft"
+  },
+  {
+   "name": "Print 3D",
+   "package": "Microsoft.Print3D",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "3D printing app — rarely used"
+  },
+  {
+   "name": "Power BI",
+   "package": "Microsoft.MicrosoftPowerBIForWindows",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Business analytics — enterprise feature"
+  },
+  {
+   "name": "Sway",
+   "package": "Microsoft.Office.Sway",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Presentation creator — web-based alternative exists"
+  },
+  {
+   "name": "One Connect",
+   "package": "Microsoft.OneConnect",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Mobile plan management app"
+  },
+  {
+   "name": "Microsoft 365 Companions",
+   "package": "Microsoft.Microsoft365Companions",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Microsoft 365 promotional companion app"
+  },
+  {
+   "name": "Network Speed Test",
+   "package": "Microsoft.NetworkSpeedTest",
+   "publisher": "Microsoft",
+   "group": "utility",
+   "aboutEn": "Speed test — web alternatives available"
+  },
+  {
+   "name": "Remote Desktop",
+   "package": "Microsoft.RemoteDesktop",
+   "publisher": "Microsoft",
+   "group": "utility",
+   "aboutEn": "Remote desktop UWP client"
+  },
+  {
+   "name": "Xbox Identity Provider",
+   "package": "Microsoft.XboxIdentityProvider",
+   "publisher": "Microsoft",
+   "group": "gaming",
+   "aboutEn": "Xbox sign-in framework — only needed for Xbox games"
+  },
+  {
+   "name": "Xbox TCUI",
+   "package": "Microsoft.Xbox.TCUI",
+   "publisher": "Microsoft",
+   "group": "gaming",
+   "aboutEn": "Xbox UI framework — only needed for Xbox games"
+  },
+  {
+   "name": "Alarms & Clock",
+   "package": "Microsoft.WindowsAlarms",
+   "publisher": "Microsoft",
+   "group": "utility",
+   "aboutEn": "Alarms and timer app — remove if not needed"
+  },
+  {
+   "name": "PC Manager",
+   "package": "Microsoft.MicrosoftPCManager",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "PC optimization tool — redundant with Tokkip Healthy PC"
+  },
+  {
+   "name": "Copilot+ AI Hub",
+   "package": "Microsoft.Windows.Ai.Copilot.Provider",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "AI hub for Copilot+ PCs — background AI services"
+  },
+  {
+   "name": "Family Safety",
+   "package": "MicrosoftCorporationII.MicrosoftFamily",
+   "publisher": "Microsoft",
+   "group": "microsoft",
+   "aboutEn": "Family safety and parental controls"
+  },
+  {
+   "name": "Dell SupportAssist",
+   "package": "DellInc.DellSupportAssistforPCs",
+   "publisher": "Dell",
+   "group": "oem",
+   "aboutEn": "Dell support tool — heavy on resources and notifications"
+  },
+  {
+   "name": "Dell Digital Delivery",
+   "package": "DellInc.DellDigitalDelivery",
+   "publisher": "Dell",
+   "group": "oem",
+   "aboutEn": "Dell software delivery service"
+  },
+  {
+   "name": "Dell Command Update",
+   "package": "DellInc.DellCommandUpdate",
+   "publisher": "Dell",
+   "group": "oem",
+   "aboutEn": "Dell driver/BIOS updater"
+  },
+  {
+   "name": "HP Smart",
+   "package": "AD2F1837.HPPrinterControl",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP printer management — unnecessary without HP printer"
+  },
+  {
+   "name": "HP Wolf Security",
+   "package": "AD2F1837.HPWolfSecurity",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP security suite — redundant with Windows Defender"
+  },
+  {
+   "name": "Lenovo Vantage",
+   "package": "E046963F.LenovoCompanion",
+   "publisher": "Lenovo",
+   "group": "oem",
+   "aboutEn": "Lenovo system management — heavy background services"
+  },
+  {
+   "name": "Lenovo Now",
+   "package": "E0469640.LenovoUtility",
+   "publisher": "Lenovo",
+   "group": "oem",
+   "aboutEn": "Lenovo utility tool"
+  },
+  {
+   "name": "McAfee",
+   "package": "McAfee",
+   "publisher": "McAfee",
+   "group": "oem",
+   "aboutEn": "Pre-installed antivirus — redundant with Windows Defender"
+  },
+  {
+   "name": "Norton",
+   "package": "Norton",
+   "publisher": "NortonLifeLock",
+   "group": "oem",
+   "aboutEn": "Pre-installed antivirus — redundant with Windows Defender"
+  },
+  {
+   "name": "WildTangent Games",
+   "package": "WildTangentGames",
+   "publisher": "WildTangent",
+   "group": "oem",
+   "aboutEn": "Pre-installed game platform — adware-like behavior"
+  },
+  {
+   "name": "Disney+",
+   "package": "Disney.37853FC22B2CE",
+   "publisher": "Disney",
+   "group": "media",
+   "aboutEn": "Streaming app — pre-installed promotion"
+  },
+  {
+   "name": "Spotify",
+   "package": "SpotifyAB.SpotifyMusic",
+   "publisher": "Spotify",
+   "group": "media",
+   "aboutEn": "Music streaming — pre-installed promotion"
+  },
+  {
+   "name": "TikTok",
+   "package": "BytedancePte.Ltd.TikTok",
+   "publisher": "ByteDance",
+   "group": "media",
+   "aboutEn": "Social media — pre-installed promotion"
+  },
+  {
+   "name": "Instagram",
+   "package": "Facebook.InstagramBeta",
+   "publisher": "Meta",
+   "group": "communication",
+   "aboutEn": "Social media — pre-installed promotion"
+  },
+  {
+   "name": "Facebook",
+   "package": "Facebook.Facebook",
+   "publisher": "Meta",
+   "group": "communication",
+   "aboutEn": "Social media — pre-installed promotion"
+  },
+  {
+   "name": "Candy Crush Saga",
+   "package": "king.com.CandyCrushSaga",
+   "publisher": "King",
+   "group": "gaming",
+   "aboutEn": "Pre-installed game with microtransactions"
+  },
+  {
+   "name": "Candy Crush Friends",
+   "package": "king.com.CandyCrushFriends",
+   "publisher": "King",
+   "group": "gaming",
+   "aboutEn": "Pre-installed game with microtransactions"
+  },
+  {
+   "name": "Bubble Witch 3",
+   "package": "king.com.BubbleWitch3Saga",
+   "publisher": "King",
+   "group": "gaming",
+   "aboutEn": "Pre-installed game with microtransactions"
+  },
+  {
+   "name": "March of Empires",
+   "package": "Gameloft.MarchofEmpires",
+   "publisher": "Gameloft",
+   "group": "gaming",
+   "aboutEn": "Pre-installed game with microtransactions"
+  },
+  {
+   "name": "Asphalt 8",
+   "package": "Gameloft.Asphalt8Airborne",
+   "publisher": "Gameloft",
+   "group": "gaming",
+   "aboutEn": "Pre-installed game with microtransactions"
+  },
+  {
+   "name": "Caesars Slots",
+   "package": "PlaytikaSantaMonica.CaesarsSlotsFreeCasino",
+   "publisher": "Playtika",
+   "group": "gaming",
+   "aboutEn": "Pre-installed casino game"
+  },
+  {
+   "name": "Cooking Fever",
+   "package": "JEGOROVVLADIMIR.46390A297A2C4",
+   "publisher": "Nordcurrent",
+   "group": "gaming",
+   "aboutEn": "Pre-installed game with microtransactions"
+  },
+  {
+   "name": "Disney Magic Kingdoms",
+   "package": "GameloftSA.DisneyMagicKingdoms",
+   "publisher": "Gameloft",
+   "group": "gaming",
+   "aboutEn": "Pre-installed game with microtransactions"
+  },
+  {
+   "name": "FarmVille 2",
+   "package": "Zynga.FarmVille2CountryEscape",
+   "publisher": "Zynga",
+   "group": "gaming",
+   "aboutEn": "Pre-installed game with microtransactions"
+  },
+  {
+   "name": "Hidden City",
+   "package": "G5Entertainment.HiddenCity",
+   "publisher": "G5",
+   "group": "gaming",
+   "aboutEn": "Pre-installed game with microtransactions"
+  },
+  {
+   "name": "Royal Revolt",
+   "package": "flaaboronlineGmbH.RoyalRevolt2",
+   "publisher": "flaregames",
+   "group": "gaming",
+   "aboutEn": "Pre-installed game with microtransactions"
+  },
+  {
+   "name": "Netflix",
+   "package": "4DF9E0F8.Netflix",
+   "publisher": "Netflix",
+   "group": "media",
+   "aboutEn": "Streaming app — pre-installed promotion"
+  },
+  {
+   "name": "Amazon Prime Video",
+   "package": "AmazonVideo.PrimeVideo",
+   "publisher": "Amazon",
+   "group": "media",
+   "aboutEn": "Streaming app — pre-installed promotion"
+  },
+  {
+   "name": "Hulu",
+   "package": "HuluLLC.HuluPlus",
+   "publisher": "Hulu",
+   "group": "media",
+   "aboutEn": "Streaming app — pre-installed promotion"
+  },
+  {
+   "name": "LinkedIn",
+   "package": "7EE7776C.LinkedInforWindows",
+   "publisher": "LinkedIn",
+   "group": "communication",
+   "aboutEn": "Social media — pre-installed promotion"
+  },
+  {
+   "name": "Twitter",
+   "package": "9E2F88E3.Twitter",
+   "publisher": "X Corp",
+   "group": "communication",
+   "aboutEn": "Social media — pre-installed promotion"
+  },
+  {
+   "name": "Viber",
+   "package": "Viber.Viber",
+   "publisher": "Viber",
+   "group": "communication",
+   "aboutEn": "Messaging app — pre-installed promotion"
+  },
+  {
+   "name": "Pandora",
+   "package": "PandoraMediaInc.29680B314EFC2",
+   "publisher": "Pandora",
+   "group": "media",
+   "aboutEn": "Music streaming — pre-installed promotion"
+  },
+  {
+   "name": "iHeartRadio",
+   "package": "ClearChannelRadioDigital.iHeartRadio",
+   "publisher": "iHeartMedia",
+   "group": "media",
+   "aboutEn": "Radio streaming — pre-installed promotion"
+  },
+  {
+   "name": "TuneIn Radio",
+   "package": "TuneIn.TuneInRadio",
+   "publisher": "TuneIn",
+   "group": "media",
+   "aboutEn": "Radio streaming — pre-installed promotion"
+  },
+  {
+   "name": "Plex",
+   "package": "CAF9E577.Plex",
+   "publisher": "Plex",
+   "group": "media",
+   "aboutEn": "Media server client — pre-installed promotion"
+  },
+  {
+   "name": "Sling TV",
+   "package": "SlingTV.SlingTV",
+   "publisher": "Sling TV",
+   "group": "media",
+   "aboutEn": "Live TV streaming — pre-installed promotion"
+  },
+  {
+   "name": "Shazam",
+   "package": "ShazamEntertainmentLtd.Shazam",
+   "publisher": "Apple",
+   "group": "media",
+   "aboutEn": "Music recognition — pre-installed promotion"
+  },
+  {
+   "name": "Duolingo",
+   "package": "D5EA27B7.Duolingo-LearnLanguagesforFree",
+   "publisher": "Duolingo",
+   "group": "utility",
+   "aboutEn": "Language learning — pre-installed promotion"
+  },
+  {
+   "name": "Flipboard",
+   "package": "Flipboard.Flipboard",
+   "publisher": "Flipboard",
+   "group": "media",
+   "aboutEn": "News aggregator — pre-installed promotion"
+  },
+  {
+   "name": "Adobe Photoshop Express",
+   "package": "AdobeSystemsIncorporated.AdobePhotoshopExpress",
+   "publisher": "Adobe",
+   "group": "utility",
+   "aboutEn": "Photo editor — pre-installed promotion"
+  },
+  {
+   "name": "Autodesk SketchBook",
+   "package": "AutodeskSketchBook.SketchBook",
+   "publisher": "Autodesk",
+   "group": "utility",
+   "aboutEn": "Drawing app — pre-installed promotion"
+  },
+  {
+   "name": "Drawboard PDF",
+   "package": "Drawboard.DrawboardPDF",
+   "publisher": "Drawboard",
+   "group": "utility",
+   "aboutEn": "PDF editor — pre-installed promotion"
+  },
+  {
+   "name": "Fitbit",
+   "package": "Fitbit.FitbitCoach",
+   "publisher": "Fitbit",
+   "group": "utility",
+   "aboutEn": "Fitness tracker — pre-installed promotion"
+  },
+  {
+   "name": "PicsArt",
+   "package": "PicsArt-PhotoStudio.PicsArt-PhotoStudio",
+   "publisher": "PicsArt",
+   "group": "utility",
+   "aboutEn": "Photo editor — pre-installed promotion"
+  },
+  {
+   "name": "Amazon",
+   "package": "AmazonMobileLLC.AmazonShopping",
+   "publisher": "Amazon",
+   "group": "utility",
+   "aboutEn": "Shopping app — pre-installed promotion"
+  },
+  {
+   "name": "WinZip",
+   "package": "WinZipComputing.WinZipUniversal",
+   "publisher": "WinZip",
+   "group": "utility",
+   "aboutEn": "Archive tool — free alternatives available"
+  },
+  {
+   "name": "HP Desktop Support",
+   "package": "AD2F1837.HPDesktopSupportUtilities",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP desktop support utilities"
+  },
+  {
+   "name": "HP Quick Drop",
+   "package": "AD2F1837.HPQuickDrop",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP file transfer tool — runs background services"
+  },
+  {
+   "name": "HP System Information",
+   "package": "AD2F1837.HPSystemInformation",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP system info tool — redundant with Windows"
+  },
+  {
+   "name": "HP Privacy Settings",
+   "package": "AD2F1837.HPPrivacySettings",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP privacy configuration tool"
+  },
+  {
+   "name": "HP Support Assistant",
+   "package": "AD2F1837.HPSupportAssistant",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP support tool — heavy on resources and notifications"
+  },
+  {
+   "name": "HP Easy Clean",
+   "package": "AD2F1837.HPEasyClean",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP keyboard lock for cleaning"
+  },
+  {
+   "name": "HP Sure Shield AI",
+   "package": "AD2F1837.HPSureShieldAI",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP AI-based security — redundant with Windows Defender"
+  },
+  {
+   "name": "HP AI Experience Center",
+   "package": "AD2F1837.HPAIExperienceCenter",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP AI features hub"
+  },
+  {
+   "name": "HP WorkWell",
+   "package": "AD2F1837.HPWorkWell",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP wellness and productivity tracker"
+  },
+  {
+   "name": "HP Power Manager",
+   "package": "AD2F1837.HPPowerManager",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP battery management tool"
+  },
+  {
+   "name": "myHP",
+   "package": "AD2F1837.myHP",
+   "publisher": "HP",
+   "group": "oem",
+   "aboutEn": "HP account and device management"
+  },
+  {
+   "name": "Dell Mobile Connect",
+   "package": "DellInc.DellMobileConnect",
+   "publisher": "Dell",
+   "group": "oem",
+   "aboutEn": "Dell phone integration — runs background services"
+  },
+  {
+   "name": "Lenovo Vantage Service",
+   "package": "E046963F.LenovoSettingsforEnterprise",
+   "publisher": "Lenovo",
+   "group": "oem",
+   "aboutEn": "Lenovo enterprise settings service"
+  }
+ ]
+}

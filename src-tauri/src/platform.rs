@@ -120,3 +120,30 @@ pub fn drives() -> Vec<Drive> {
     out.dedup_by(|a, b| a.root == b.root);
     out
 }
+
+/// Runs a PowerShell script hidden and returns what it printed (UTF-8), or None if it failed.
+#[cfg(windows)]
+pub fn powershell(script: &str) -> Option<String> {
+    run_hidden("powershell.exe", &["-NoProfile", "-NonInteractive", "-ExecutionPolicy", "Bypass", "-Command", &format!("[Console]::OutputEncoding=[Text.Encoding]::UTF8; {script}")])
+        .and_then(|(ok, out)| ok.then_some(out))
+}
+
+#[cfg(not(windows))]
+pub fn powershell(_script: &str) -> Option<String> {
+    None
+}
+
+/// Runs a program without a console window: (exited fine, what it printed).
+#[cfg(windows)]
+pub fn run_hidden(program: &str, args: &[&str]) -> Option<(bool, String)> {
+    use std::os::windows::process::CommandExt;
+    const CREATE_NO_WINDOW: u32 = 0x0800_0000;
+    let out = std::process::Command::new(program).args(args).creation_flags(CREATE_NO_WINDOW).output().ok()?;
+    Some((out.status.success(), String::from_utf8_lossy(&out.stdout).to_string()))
+}
+
+#[cfg(not(windows))]
+pub fn run_hidden(program: &str, args: &[&str]) -> Option<(bool, String)> {
+    let out = std::process::Command::new(program).args(args).output().ok()?;
+    Some((out.status.success(), String::from_utf8_lossy(&out.stdout).to_string()))
+}
