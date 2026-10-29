@@ -32,6 +32,7 @@ struct Found {
     startup: HashMap<u64, tools::software::StartupKey>,
     programs: HashMap<u64, tools::software::Uninstall>,
     leftovers: HashMap<u64, PathBuf>,
+    orphans: HashMap<u64, tools::care::OrphanKey>,
 }
 
 struct App {
@@ -111,7 +112,12 @@ fn health(dirs: tauri::State<Dirs>) -> health::Health {
     }
 }
 
-/// Adds what a tool freed to what Tokkip has freed with you.
+/// Writes one line of the activity.
+fn act(data: &std::path::Path, kind: &str, detail: &str, bytes: u64, count: u64) {
+    tools::care::log(data, store::now_ms(), kind, detail, bytes, count);
+}
+
+/// Adds what a tool freed to what Tokkip has freed with you, and to the activity.
 fn freed(data: &std::path::Path, bytes: u64) {
     if bytes == 0 {
         return;
@@ -138,6 +144,7 @@ async fn cleaner_clean(dirs: tauri::State<'_, Dirs>, ids: Vec<String>) -> Result
         m.total_freed += report.freed;
         m.cleans += 1;
         store::save(&dirs.data, &m);
+        act(&dirs.data, "clean", "", report.freed, report.files);
     }
     Ok(report)
 }
@@ -200,6 +207,9 @@ async fn big_remove(app: tauri::AppHandle, dirs: tauri::State<'_, Dirs>, ids: Ve
     let r = blocking(move || trash_checked(list)).await?;
     app.state::<App>().found().big.retain(|id, _| !ids.contains(id) || r.kept.contains(id));
     freed(&dirs.data, r.freed);
+    if r.files > 0 {
+        act(&dirs.data, "trash", "", r.freed, r.files);
+    }
     Ok(r)
 }
 
@@ -235,6 +245,9 @@ async fn duplicates_remove(app: tauri::AppHandle, dirs: tauri::State<'_, Dirs>, 
     let p = progress(&app, "duplicates");
     let r = blocking(move || duplicates::remove(&ids, &found, &p, &|path| fsx::to_trash(path))).await?;
     freed(&dirs.data, r.freed);
+    if r.files > 0 {
+        act(&dirs.data, "trash", "", r.freed, r.files);
+    }
     Ok(r)
 }
 
@@ -257,13 +270,17 @@ async fn empty_find(app: tauri::AppHandle, root: String) -> Result<tools::empty:
 }
 
 #[tauri::command]
-async fn empty_remove(app: tauri::AppHandle, ids: Vec<u64>) -> Result<(u64, Vec<u64>), String> {
+async fn empty_remove(app: tauri::AppHandle, dirs: tauri::State<'_, Dirs>, ids: Vec<u64>) -> Result<(u64, Vec<u64>), String> {
     let chosen: Vec<(u64, PathBuf)> = {
         let state = app.state::<App>();
         let found = state.found();
         ids.iter().filter_map(|id| found.empty.get(id).map(|p| (*id, p.clone()))).collect()
     };
-    blocking(move || tools::empty::remove(&chosen, &fsx::home())).await
+    let r = blocking(move || tools::empty::remove(&chosen, &fsx::home())).await?;
+    if r.0 > 0 {
+        act(&dirs.data, "empty", "", 0, r.0);
+    }
+    Ok(r)
 }
 
 #[tauri::command]
@@ -291,6 +308,9 @@ async fn downloads_remove(app: tauri::AppHandle, dirs: tauri::State<'_, Dirs>, i
     };
     let r = blocking(move || trash_checked(list)).await?;
     freed(&dirs.data, r.freed);
+    if r.files > 0 {
+        act(&dirs.data, "trash", "", r.freed, r.files);
+    }
     Ok(r)
 }
 
@@ -320,10 +340,14 @@ async fn shred_describe(paths: Vec<String>) -> Result<Vec<tools::shredder::Chose
 }
 
 #[tauri::command]
-async fn shred(app: tauri::AppHandle, paths: Vec<String>) -> Result<tools::shredder::Shredded, String> {
+async fn shred(app: tauri::AppHandle, dirs: tauri::State<'_, Dirs>, paths: Vec<String>) -> Result<tools::shredder::Shredded, String> {
     let p = progress(&app, "shredder");
     let paths: Vec<PathBuf> = paths.into_iter().map(PathBuf::from).filter(|p| p.is_absolute()).collect();
-    blocking(move || tools::shredder::shred(&paths, &fsx::home(), &p)).await
+    let r = blocking(move || tools::shredder::shred(&paths, &fsx::home(), &p)).await?;
+    if r.files > 0 {
+        act(&dirs.data, "shred", "", r.bytes, r.files);
+    }
+    Ok(r)
 }
 
 // ── Software ──────────────────────────────────────────────────────────────
@@ -391,6 +415,7 @@ fn leftover_bases() -> Vec<PathBuf> {
 async fn program_uninstall(app: tauri::AppHandle, id: u64) -> Result<Uninstalled, String> {
     let u = app.state::<App>().found().programs.get(&id).cloned().ok_or("gone")?;
     let handle = app.clone();
+    let data = app.state::<Dirs>().data.clone();
     blocking(move || {
         tools::software::run_uninstaller(&u)?;
         if tools::software::still_installed(&u) {
@@ -414,6 +439,7 @@ async fn program_uninstall(app: tauri::AppHandle, id: u64) -> Result<Uninstalled
             })
             .collect();
         state.found().leftovers = kept;
+        act(&data, "uninstall", &u.name, 0, 1);
         Ok(Uninstalled { gone: true, leftovers })
     })
     .await?
@@ -421,7 +447,7 @@ async fn program_uninstall(app: tauri::AppHandle, id: u64) -> Result<Uninstalled
 
 /// Sends chosen leftover folders to the Recycle Bin.
 #[tauri::command]
-async fn leftovers_remove(app: tauri::AppHandle, ids: Vec<u64>) -> Result<Removed, String> {
+async fn leftovers_remove(app: tauri::AppHandle, dirs: tauri::State<'_, Dirs>, ids: Vec<u64>) -> Result<Removed, String> {
     let chosen: Vec<(u64, PathBuf)> = {
         let state = app.state::<App>();
         let found = state.found();
@@ -443,6 +469,11 @@ async fn leftovers_remove(app: tauri::AppHandle, ids: Vec<u64>) -> Result<Remove
         r
     })
     .await
+    .inspect(|r| {
+        if r.files > 0 {
+            act(&dirs.data, "trash", "", r.freed, r.files);
+        }
+    })
 }
 
 #[tauri::command]
@@ -466,13 +497,15 @@ async fn preinstalled_list() -> Result<Vec<tools::apps::Preinstalled>, String> {
 
 /// Removes these apps for you. Returns the ones removed.
 #[tauri::command]
-async fn preinstalled_remove(packages: Vec<String>) -> Result<Vec<String>, String> {
+async fn preinstalled_remove(dirs: tauri::State<'_, Dirs>, packages: Vec<String>) -> Result<Vec<String>, String> {
+    let data = dirs.data.clone();
     blocking(move || {
         let known = tools::apps::known_apps();
         packages
             .into_iter()
             .filter(|p| tools::apps::safe_package(p) && known.iter().any(|k| tools::apps::matches_known(p, &k.package)))
             .filter(|p| platform::powershell(&format!("Get-AppxPackage -Name '{p}' | Remove-AppxPackage -ErrorAction Stop")).is_some())
+            .inspect(|p| act(&data, "apps", p, 0, 1))
             .collect()
     })
     .await
@@ -577,6 +610,7 @@ async fn service_set(dirs: tauri::State<'_, Dirs>, name: String, start: String, 
             }
         }
         store::save_json(&data, SERVICES_FILE, &changed);
+        act(&data, "service", &format!("{name}:{start}"), 0, 1);
         Ok(())
     })
     .await?
@@ -662,6 +696,330 @@ async fn network_fix(what: String) -> Result<bool, String> {
     .await
 }
 
+// ── Protección ────────────────────────────────────────────────────────────
+
+const PRIVACY_FILE: &str = "privacidad.json";
+
+#[tauri::command]
+fn privacy_list(dirs: tauri::State<Dirs>) -> Vec<tools::protect::SwitchState> {
+    tools::protect::switch_states(&store::load_json(&dirs.data, PRIVACY_FILE))
+}
+
+/// Turns a privacy or safety switch on, or back to what it had. Err("admin") without rights.
+#[tauri::command]
+fn privacy_set(dirs: tauri::State<Dirs>, id: String, on: bool) -> Result<(), String> {
+    let s = tools::protect::switches().into_iter().find(|s| s.id == id).ok_or("unknown")?;
+    if s.admin && !platform::is_elevated() {
+        return Err("admin".into());
+    }
+    let mut before: tools::protect::Before = store::load_json(&dirs.data, PRIVACY_FILE);
+    tools::protect::set_switch(&id, on, &mut before)?;
+    store::save_json(&dirs.data, PRIVACY_FILE, &before);
+    act(&dirs.data, "privacy", &format!("{id}:{on}"), 0, 1);
+    Ok(())
+}
+
+#[tauri::command]
+async fn traces_list() -> Result<Vec<tools::protect::Trace>, String> {
+    blocking(tools::protect::traces).await
+}
+
+#[tauri::command]
+async fn traces_clear(dirs: tauri::State<'_, Dirs>, ids: Vec<String>) -> Result<u64, String> {
+    let n = blocking(move || tools::protect::clear_traces(&ids)).await?;
+    if n > 0 {
+        act(&dirs.data, "traces", "", 0, n);
+    }
+    Ok(n)
+}
+
+#[tauri::command]
+async fn defender_status() -> Result<tools::protect::Defender, String> {
+    blocking(|| {
+        let status = platform::powershell("Get-MpComputerStatus | Select-Object AMServiceEnabled, AntivirusEnabled, RealTimeProtectionEnabled, AntivirusSignatureLastUpdated, QuickScanEndTime, FullScanEndTime | ConvertTo-Json -Compress").unwrap_or_default();
+        let threats = platform::powershell("Get-MpThreat | Select-Object ThreatName, IsActive, SeverityID, Resources | ConvertTo-Json -Compress").unwrap_or_default();
+        tools::protect::parse_defender(&status, &threats)
+    })
+    .await
+}
+
+/// "scan" (quick scan) or "update" (new definitions). True if Defender did it.
+#[tauri::command]
+async fn defender_run(dirs: tauri::State<'_, Dirs>, what: String) -> Result<bool, String> {
+    let script = match what.as_str() {
+        "scan" => "Start-MpScan -ScanType QuickScan -ErrorAction Stop",
+        "update" => "Update-MpSignature -ErrorAction Stop",
+        _ => return Err("what".into()),
+    };
+    let ok = blocking(move || platform::powershell(script).is_some()).await?;
+    if ok && what == "scan" {
+        act(&dirs.data, "scan", "", 0, 1);
+    }
+    Ok(ok)
+}
+
+#[tauri::command]
+async fn firewall_review() -> Result<tools::protect::Firewall, String> {
+    blocking(|| {
+        let profiles = platform::powershell("Get-NetFirewallProfile | Select-Object Name, Enabled | ConvertTo-Json -Compress").unwrap_or_default();
+        let rules = platform::powershell(
+            "Get-NetFirewallRule -Direction Inbound -Action Allow -Enabled True | ForEach-Object { $p = ($_ | Get-NetFirewallApplicationFilter).Program; if ($p) { [pscustomobject]@{ Name = $_.Name; DisplayName = $_.DisplayName; Program = [Environment]::ExpandEnvironmentVariables($p) } } } | ConvertTo-Json -Compress",
+        )
+        .unwrap_or_default();
+        tools::protect::parse_firewall(&profiles, &rules, &|p| std::path::Path::new(p).exists())
+    })
+    .await
+}
+
+/// "on" turns every profile on; otherwise disables the rules named (as administrator).
+#[tauri::command]
+async fn firewall_fix(dirs: tauri::State<'_, Dirs>, what: String, rules: Vec<String>) -> Result<bool, String> {
+    if !platform::is_elevated() {
+        return Err("admin".into());
+    }
+    let data = dirs.data.clone();
+    blocking(move || {
+        let ok = if what == "on" {
+            platform::powershell("Set-NetFirewallProfile -Profile Domain,Private,Public -Enabled True -ErrorAction Stop").is_some()
+        } else {
+            rules.iter().all(|r| platform::powershell(&format!("Disable-NetFirewallRule -Name {} -ErrorAction Stop", tools::protect::ps_quote(r))).is_some())
+        };
+        if ok {
+            act(&data, "firewall", &what, 0, rules.len().max(1) as u64);
+        }
+        ok
+    })
+    .await
+}
+
+// ── Mantenimiento ─────────────────────────────────────────────────────────
+
+const BACKUPS_FILE: &str = "registro.json";
+
+#[tauri::command]
+async fn registry_scan(app: tauri::AppHandle) -> Result<Vec<tools::care::Orphan>, String> {
+    blocking(move || {
+        let state = app.state::<App>();
+        let mut kept = HashMap::new();
+        let list = tools::care::find_orphans(&mut |k| {
+            let id = state.id();
+            kept.insert(id, k);
+            id
+        });
+        state.found().orphans = kept;
+        list
+    })
+    .await
+}
+
+/// Backs up each chosen entry to a .reg file, then removes it. Returns the ids removed.
+#[tauri::command]
+async fn registry_fix(app: tauri::AppHandle, dirs: tauri::State<'_, Dirs>, ids: Vec<u64>) -> Result<Vec<u64>, String> {
+    let chosen: Vec<(u64, tools::care::OrphanKey)> = {
+        let state = app.state::<App>();
+        let found = state.found();
+        ids.iter().filter_map(|id| found.orphans.get(id).map(|k| (*id, k.clone()))).collect()
+    };
+    if chosen.iter().any(|(_, k)| k.machine) && !platform::is_elevated() {
+        return Err("admin".into());
+    }
+    let data = dirs.data.clone();
+    blocking(move || {
+        let folder = data.join("registro");
+        let _ = std::fs::create_dir_all(&folder);
+        let now = store::now_ms();
+        let mut done = Vec::new();
+        for (i, (id, k)) in chosen.iter().enumerate() {
+            let file = folder.join(format!("{now}-{i}.reg"));
+            if tools::care::remove_orphan(k, &file).is_ok() {
+                done.push(*id);
+                let mut list: Vec<tools::care::Backup> = store::load_json(&data, BACKUPS_FILE);
+                list.push(tools::care::Backup { at: now, file: file.display().to_string(), entries: 1 });
+                store::save_json(&data, BACKUPS_FILE, &list);
+            }
+        }
+        if !done.is_empty() {
+            act(&data, "registry", "", 0, done.len() as u64);
+        }
+        done
+    })
+    .await
+}
+
+#[tauri::command]
+fn registry_backups(dirs: tauri::State<Dirs>) -> Vec<tools::care::Backup> {
+    let mut list: Vec<tools::care::Backup> = store::load_json(&dirs.data, BACKUPS_FILE);
+    list.retain(|b| std::path::Path::new(&b.file).exists());
+    list.reverse();
+    list
+}
+
+/// Puts back a backed-up entry (reg import). Machine entries need administrator rights.
+#[tauri::command]
+async fn registry_restore(dirs: tauri::State<'_, Dirs>, file: String) -> Result<bool, String> {
+    let list: Vec<tools::care::Backup> = store::load_json(&dirs.data, BACKUPS_FILE);
+    if !list.iter().any(|b| b.file == file) {
+        return Err("unknown".into());
+    }
+    let data = dirs.data.clone();
+    blocking(move || {
+        let ok = platform::run_hidden("reg.exe", &["import", &file]).is_some_and(|(ok, _)| ok);
+        if ok {
+            let mut list: Vec<tools::care::Backup> = store::load_json(&data, BACKUPS_FILE);
+            list.retain(|b| b.file != file);
+            store::save_json(&data, BACKUPS_FILE, &list);
+            let _ = std::fs::remove_file(&file);
+        }
+        ok
+    })
+    .await
+}
+
+/// Windows' own repairs: "sfc", "dism", "chkdsk" (scan only) or "optimize" (TRIM or defragment the system drive).
+#[tauri::command]
+async fn repair_run(dirs: tauri::State<'_, Dirs>, what: String) -> Result<bool, String> {
+    if !platform::is_elevated() {
+        return Err("admin".into());
+    }
+    let drive = std::env::var("SystemDrive").unwrap_or_else(|_| "C:".into());
+    let data = dirs.data.clone();
+    blocking(move || {
+        let ok = match what.as_str() {
+            "sfc" => platform::run_hidden("sfc.exe", &["/scannow"]).is_some_and(|(ok, _)| ok),
+            "dism" => platform::run_hidden("DISM.exe", &["/Online", "/Cleanup-Image", "/RestoreHealth"]).is_some_and(|(ok, _)| ok),
+            "chkdsk" => platform::run_hidden("chkdsk.exe", &[&drive, "/scan"]).is_some_and(|(ok, _)| ok),
+            "optimize" => platform::run_hidden("defrag.exe", &[&drive, "/O"]).is_some_and(|(ok, _)| ok),
+            _ => false,
+        };
+        if ok {
+            act(&data, "repair", &what, 0, 1);
+        }
+        ok
+    })
+    .await
+}
+
+#[derive(serde::Serialize)]
+#[serde(rename_all = "camelCase")]
+struct RestorePoint {
+    number: u64,
+    description: String,
+    at: u64,
+}
+
+#[tauri::command]
+async fn restore_points() -> Result<Vec<RestorePoint>, String> {
+    blocking(|| {
+        let out = platform::powershell("Get-ComputerRestorePoint | Select-Object SequenceNumber, Description, @{n='At';e={[DateTimeOffset]::new($_.ConvertToDateTime($_.CreationTime)).ToUnixTimeMilliseconds()}} | ConvertTo-Json -Compress").unwrap_or_default();
+        let v: serde_json::Value = serde_json::from_str(out.trim()).unwrap_or(serde_json::Value::Null);
+        let items = match v {
+            serde_json::Value::Array(a) => a,
+            serde_json::Value::Null => Vec::new(),
+            one => vec![one],
+        };
+        let mut list: Vec<RestorePoint> = items
+            .iter()
+            .map(|i| RestorePoint {
+                number: i["SequenceNumber"].as_u64().unwrap_or(0),
+                description: i["Description"].as_str().unwrap_or_default().to_string(),
+                at: i["At"].as_u64().unwrap_or(0),
+            })
+            .collect();
+        list.sort_by(|a, b| b.at.cmp(&a.at));
+        list
+    })
+    .await
+}
+
+/// Makes a restore point now (administrator; Windows allows one a day unless told otherwise).
+#[tauri::command]
+async fn restore_point_create(dirs: tauri::State<'_, Dirs>) -> Result<bool, String> {
+    if !platform::is_elevated() {
+        return Err("admin".into());
+    }
+    let data = dirs.data.clone();
+    blocking(move || {
+        let ok = platform::powershell("Checkpoint-Computer -Description 'Tokkip Healthy PC' -RestorePointType MODIFY_SETTINGS -ErrorAction Stop").is_some();
+        if ok {
+            act(&data, "restorePoint", "", 0, 1);
+        }
+        ok
+    })
+    .await
+}
+
+/// Opens Windows' System Restore, where a point is chosen and applied.
+#[tauri::command]
+fn restore_open() {
+    let _ = std::process::Command::new("rstrui.exe").spawn();
+}
+
+#[tauri::command]
+fn activity_list(dirs: tauri::State<Dirs>) -> Vec<tools::care::Done> {
+    let mut list: Vec<tools::care::Done> = store::load_json(&dirs.data, tools::care::ACTIVITY_FILE);
+    list.reverse();
+    list
+}
+
+const ROUTINE_FILE: &str = "rutina.json";
+
+#[tauri::command]
+fn routine_get(dirs: tauri::State<Dirs>) -> tools::care::Routine {
+    let mut r: tools::care::Routine = store::load_json(&dirs.data, ROUTINE_FILE);
+    // Windows is the truth: a task deleted by hand means it's off.
+    if r.on && !platform::run_hidden("schtasks.exe", &["/Query", "/TN", tools::care::TASK]).is_some_and(|(ok, _)| ok) {
+        r.on = false;
+    }
+    r
+}
+
+/// Turns the weekly clean on (at that day and hour) or off.
+#[tauri::command]
+fn routine_set(dirs: tauri::State<Dirs>, routine: tools::care::Routine) -> Result<(), String> {
+    let ok = if routine.on {
+        let exe = std::env::current_exe().map_err(|e| e.to_string())?.display().to_string();
+        let args = tools::care::task_args(&routine, &exe);
+        let args: Vec<&str> = args.iter().map(String::as_str).collect();
+        platform::run_hidden("schtasks.exe", &args).is_some_and(|(ok, _)| ok)
+    } else {
+        platform::run_hidden("schtasks.exe", &["/Delete", "/TN", tools::care::TASK, "/F"]);
+        true
+    };
+    if !ok {
+        return Err("schtasks".into());
+    }
+    store::save_json(&dirs.data, ROUTINE_FILE, &routine);
+    act(&dirs.data, "routine", if routine.on { "on" } else { "off" }, 0, 1);
+    Ok(())
+}
+
+/// The weekly clean, run by Windows' Task Scheduler with --limpiar: no window.
+/// Cleans what's safe and needs no permission (not the Recycle Bin, not what's
+/// open), remembers it, and tells Tokkip PC.
+pub fn scheduled_clean() {
+    let Some(appdata) = std::env::var_os("APPDATA") else { return };
+    let data = PathBuf::from(appdata).join("mx.loperstack.tokkiphealthypc");
+    let scans = tools::cleaner::scan_all();
+    let ids: Vec<String> = scans.iter().filter(|r| !r.admin && !r.running && r.id != "recycle-bin" && r.bytes > 0).map(|r| r.id.clone()).collect();
+    let report = tools::cleaner::clean(&ids);
+    let mut m = store::load(&data);
+    if report.files > 0 {
+        m.last_clean = store::now_ms();
+        m.last_freed = report.freed;
+        m.total_freed += report.freed;
+        m.cleans += 1;
+        store::save(&data, &m);
+    }
+    act(&data, "clean", "routine", report.freed, report.files);
+    let (total, free) = platform::system_disk();
+    let (score, _, _) = health::assess(total, free, m.last_clean, store::now_ms());
+    if report.freed > 0 {
+        let gb = report.freed as f64 / 1024f64.powi(3);
+        let size = if gb >= 1.0 { format!("{gb:.1} GB") } else { format!("{:.0} MB", report.freed as f64 / 1024f64.powi(2)) };
+        notice::write(score, "party", "clean", &format!("Hice la limpieza de la semana: liberé {size}."), Some(report.freed));
+    }
+}
+
 // ── General ───────────────────────────────────────────────────────────────
 
 /// Opens the app again as administrator and closes this one. False if Windows said no.
@@ -734,6 +1092,25 @@ pub fn run() {
             game_on,
             game_off,
             network_fix,
+            privacy_list,
+            privacy_set,
+            traces_list,
+            traces_clear,
+            defender_status,
+            defender_run,
+            firewall_review,
+            firewall_fix,
+            registry_scan,
+            registry_fix,
+            registry_backups,
+            registry_restore,
+            repair_run,
+            restore_points,
+            restore_point_create,
+            restore_open,
+            activity_list,
+            routine_get,
+            routine_set,
             relaunch_admin,
             tokkip_notice
         ])

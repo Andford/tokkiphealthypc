@@ -1,0 +1,455 @@
+{
+ "_about": "Privacy and safety switches: each sets one registry DWORD to its private (or safer) value; Healthy PC remembers the value it had and puts it back. Telemetry, ads, search, sync, AI and browser entries come from Kudu's Privacy Shield (MIT, Advent Development); the security ones are ours.",
+ "switches": [
+  {
+   "id": "telemetry-level",
+   "group": "telemetry",
+   "name": "Telemetría de Windows al mínimo",
+   "nameEn": "Windows Telemetry",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DataCollection",
+   "value": "AllowTelemetry",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "activity-history",
+   "group": "telemetry",
+   "name": "Historial de actividad",
+   "nameEn": "Activity History",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+   "value": "EnableActivityFeed",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "publish-activity",
+   "group": "telemetry",
+   "name": "Publicar tu actividad",
+   "nameEn": "Publish User Activities",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+   "value": "PublishUserActivities",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "feedback-frequency",
+   "group": "telemetry",
+   "name": "Encuestas de opinión de Microsoft",
+   "nameEn": "Feedback Prompts",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Siuf\\Rules",
+   "value": "NumberOfSIUFInPeriod",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "handwriting-telemetry",
+   "group": "telemetry",
+   "name": "Datos de escritura a mano y teclado",
+   "nameEn": "Handwriting Data",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Input\\TIPC",
+   "value": "Enabled",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "input-personalization",
+   "group": "telemetry",
+   "name": "Personalización de escritura",
+   "nameEn": "Input Personalization",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Personalization\\Settings",
+   "value": "AcceptedPrivacyPolicy",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "tailored-experiences",
+   "group": "telemetry",
+   "name": "Experiencias según tus diagnósticos",
+   "nameEn": "Tailored Experiences",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Privacy",
+   "value": "TailoredExperiencesWithDiagnosticDataEnabled",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "app-launch-tracking",
+   "group": "telemetry",
+   "name": "Seguimiento de las apps que abres",
+   "nameEn": "App Launch Tracking",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+   "value": "Start_TrackProgs",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "advertising-id",
+   "group": "ads",
+   "name": "ID de publicidad",
+   "nameEn": "Advertising ID",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\AdvertisingInfo",
+   "value": "Enabled",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "suggested-content",
+   "group": "ads",
+   "name": "Contenido sugerido en Configuración",
+   "nameEn": "Suggested Content in Settings",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+   "value": "SubscribedContent-338393Enabled",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "tips-notifications",
+   "group": "ads",
+   "name": "Consejos y sugerencias",
+   "nameEn": "Tips & Suggestions",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+   "value": "SubscribedContent-338389Enabled",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "start-suggestions",
+   "group": "ads",
+   "name": "Sugerencias en el menú Inicio",
+   "nameEn": "Start Menu Suggestions",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+   "value": "SystemPaneSuggestionsEnabled",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "lock-screen-spotlight",
+   "group": "ads",
+   "name": "Anuncios en la pantalla de bloqueo",
+   "nameEn": "Lock Screen Spotlight",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+   "value": "RotatingLockScreenEnabled",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "silently-installed-apps",
+   "group": "ads",
+   "name": "Apps que se instalan solas",
+   "nameEn": "Silently Installed Apps",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+   "value": "SilentInstalledAppsEnabled",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "preinstalled-apps",
+   "group": "ads",
+   "name": "Sugerencias de apps preinstaladas",
+   "nameEn": "Pre-installed App Suggestions",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\ContentDeliveryManager",
+   "value": "PreInstalledAppsEnabled",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "bing-start-menu",
+   "group": "search",
+   "name": "Bing en el menú Inicio",
+   "nameEn": "Bing in Start Menu",
+   "key": "HKCU\\SOFTWARE\\Policies\\Microsoft\\Windows\\Explorer",
+   "value": "DisableSearchBoxSuggestions",
+   "private": 1,
+   "admin": false
+  },
+  {
+   "id": "bing-web-search",
+   "group": "search",
+   "name": "Resultados de la web en la búsqueda",
+   "nameEn": "Bing Web Results",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Search",
+   "value": "BingSearchEnabled",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "cortana",
+   "group": "search",
+   "name": "Cortana",
+   "nameEn": "Cortana",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\Windows Search",
+   "value": "AllowCortana",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "search-highlights",
+   "group": "search",
+   "name": "Destacados de la búsqueda",
+   "nameEn": "Search Highlights",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\SearchSettings",
+   "value": "IsDynamicSearchBoxEnabled",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "store-search-suggestions",
+   "group": "search",
+   "name": "Sugerencias de la Store al buscar",
+   "nameEn": "Store Search Suggestions",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\WindowsStore",
+   "value": "DisableStoreSearchSuggestions",
+   "private": 1,
+   "admin": true
+  },
+  {
+   "id": "clipboard-sync",
+   "group": "sync",
+   "name": "Portapapeles en la nube",
+   "nameEn": "Clipboard Cloud Sync",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\System",
+   "value": "AllowCrossDeviceClipboard",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "clipboard-history",
+   "group": "sync",
+   "name": "Historial del portapapeles",
+   "nameEn": "Clipboard History",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Clipboard",
+   "value": "EnableClipboardHistory",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "settings-sync",
+   "group": "sync",
+   "name": "Sincronizar tu configuración",
+   "nameEn": "Settings Sync",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\SettingSync",
+   "value": "DisableSettingSync",
+   "private": 2,
+   "admin": true
+  },
+  {
+   "id": "find-my-device",
+   "group": "sync",
+   "name": "Encontrar mi dispositivo",
+   "nameEn": "Find My Device",
+   "key": "HKLM\\SOFTWARE\\Microsoft\\MdmCommon\\SettingValues",
+   "value": "LocationSyncEnabled",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "delivery-optimization",
+   "group": "sync",
+   "name": "Compartir actualizaciones con otras PCs",
+   "nameEn": "Delivery Optimization",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\DeliveryOptimization",
+   "value": "DODownloadMode",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "copilot",
+   "group": "ai",
+   "name": "Microsoft Copilot",
+   "nameEn": "Microsoft Copilot",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsCopilot",
+   "value": "TurnOffWindowsCopilot",
+   "private": 1,
+   "admin": true
+  },
+  {
+   "id": "windows-recall",
+   "group": "ai",
+   "name": "Windows Recall",
+   "nameEn": "Windows Recall",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI",
+   "value": "DisableAIDataAnalysis",
+   "private": 1,
+   "admin": true
+  },
+  {
+   "id": "click-to-do",
+   "group": "ai",
+   "name": "Click To Do",
+   "nameEn": "Click To Do",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows\\WindowsAI",
+   "value": "DisableClickToDo",
+   "private": 1,
+   "admin": true
+  },
+  {
+   "id": "paint-ai",
+   "group": "ai",
+   "name": "IA en Paint",
+   "nameEn": "Paint AI Features",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Paint",
+   "value": "DisableCocreator",
+   "private": 1,
+   "admin": true
+  },
+  {
+   "id": "notepad-ai",
+   "group": "ai",
+   "name": "IA en el Bloc de notas",
+   "nameEn": "Notepad AI Features",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\WindowsNotepad",
+   "value": "DisableAIFeatures",
+   "private": 1,
+   "admin": true
+  },
+  {
+   "id": "edge-ai-features",
+   "group": "browsers",
+   "name": "Redacción con IA en Edge",
+   "nameEn": "Edge Compose AI",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge",
+   "value": "ComposeInlineEnabled",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "edge-metrics",
+   "group": "browsers",
+   "name": "Métricas de uso de Edge",
+   "nameEn": "Edge Metrics Reporting",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge",
+   "value": "MetricsReportingEnabled",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "edge-site-info",
+   "group": "browsers",
+   "name": "Edge manda los sitios que visitas",
+   "nameEn": "Edge Site Info Collection",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge",
+   "value": "SendSiteInfoToImproveServices",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "edge-personalization",
+   "group": "browsers",
+   "name": "Personalización de Edge",
+   "nameEn": "Edge Personalization Reporting",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge",
+   "value": "PersonalizationReportingEnabled",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "edge-copilot-page",
+   "group": "browsers",
+   "name": "Copilot lee la página en Edge",
+   "nameEn": "Edge Copilot Page Context",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge",
+   "value": "CopilotPageContext",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "edge-sidebar",
+   "group": "browsers",
+   "name": "Barra lateral de Edge",
+   "nameEn": "Edge Sidebar",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge",
+   "value": "HubsSidebarEnabled",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "edge-shopping",
+   "group": "browsers",
+   "name": "Asistente de compras de Edge",
+   "nameEn": "Edge Shopping Assistant",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Edge",
+   "value": "EdgeShoppingAssistantEnabled",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "chrome-metrics",
+   "group": "browsers",
+   "name": "Métricas de uso de Chrome",
+   "nameEn": "Chrome Metrics Reporting",
+   "key": "HKLM\\SOFTWARE\\Policies\\Google\\Chrome",
+   "value": "MetricsReportingEnabled",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "chrome-feedback",
+   "group": "browsers",
+   "name": "Opiniones de Chrome",
+   "nameEn": "Chrome User Feedback",
+   "key": "HKLM\\SOFTWARE\\Policies\\Google\\Chrome",
+   "value": "UserFeedbackAllowed",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "firefox-telemetry",
+   "group": "browsers",
+   "name": "Telemetría de Firefox",
+   "nameEn": "Firefox Telemetry",
+   "key": "HKLM\\SOFTWARE\\Policies\\Mozilla\\Firefox",
+   "value": "DisableTelemetry",
+   "private": 1,
+   "admin": true
+  },
+  {
+   "id": "show-extensions",
+   "group": "security",
+   "name": "Ver las extensiones de archivo",
+   "nameEn": "Show file extensions",
+   "key": "HKCU\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Advanced",
+   "value": "HideFileExt",
+   "private": 0,
+   "admin": false
+  },
+  {
+   "id": "autorun-off",
+   "group": "security",
+   "name": "Sin reproducción automática de USB y discos",
+   "nameEn": "No AutoRun from USB and discs",
+   "key": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\Explorer",
+   "value": "NoDriveTypeAutoRun",
+   "private": 255,
+   "admin": true
+  },
+  {
+   "id": "remote-assistance-off",
+   "group": "security",
+   "name": "Asistencia remota apagada",
+   "nameEn": "Remote Assistance off",
+   "key": "HKLM\\SYSTEM\\CurrentControlSet\\Control\\Remote Assistance",
+   "value": "fAllowToGetHelp",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "llmnr-off",
+   "group": "security",
+   "name": "Sin LLMNR (nombres de red inseguros)",
+   "nameEn": "LLMNR off",
+   "key": "HKLM\\SOFTWARE\\Policies\\Microsoft\\Windows NT\\DNSClient",
+   "value": "EnableMulticast",
+   "private": 0,
+   "admin": true
+  },
+  {
+   "id": "uac-secure-desktop",
+   "group": "security",
+   "name": "Permisos de administrador en pantalla segura",
+   "nameEn": "UAC on the secure desktop",
+   "key": "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Policies\\System",
+   "value": "PromptOnSecureDesktop",
+   "private": 1,
+   "admin": true
+  }
+ ]
+}

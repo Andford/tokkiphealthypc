@@ -85,18 +85,18 @@ Cada fase termina con una versión instalable.
 - [x] Red: caché DNS, reinicio de la pila de red.
 
 ### Fase 5 — Protección (0.9)
-- [ ] Escáner de malware: Windows Defender, heurísticas y tus reglas YARA.
-- [ ] Privacidad: rastros (recientes, historial de ejecución), telemetría de
+- [x] Antivirus con Windows Defender: estado, escaneo rápido, definiciones y lo que encontró.
+- [ ] Heurísticas propias y reglas YARA.
+- [x] Privacidad: rastros (recientes, historial de ejecución), telemetría de
       Windows con interruptores explicados.
-- [ ] Firewall: revisión de reglas.
-- [ ] Endurecimiento del sistema (opciones de seguridad recomendadas).
+- [x] Firewall: perfiles apagados y reglas de programas que ya no están.
+- [x] Endurecimiento del sistema (opciones de seguridad recomendadas).
 
 ### Fase 6 — Mantenimiento y paridad (1.0)
-- [ ] Registro: entradas huérfanas, con respaldo y restauración.
-- [ ] Reparación de Windows (SFC, DISM) y mantenimiento de disco (TRIM,
+- [x] Registro: entradas huérfanas (accesos, desinstalación, inicio), con respaldo y restauración.
+- [x] Reparación de Windows (SFC, DISM) y mantenimiento de disco (TRIM,
       desfragmentación en discos duros, CHKDSK programado).
-- [ ] Puntos de restauración, actividad (qué se hizo y cuándo) y centro de
-      recuperación.
-- [ ] Rutinas automáticas (limpiezas programadas).
-- [ ] Aviso a Tokkip PC (`%APPDATA%\Tokkip\shared\healthy-pc.json`).
+- [x] Puntos de restauración y actividad (qué se hizo y cuándo).
+- [x] Limpieza semanal (Programador de tareas de Windows).
+- [x] Aviso a Tokkip PC (`%APPDATA%\Tokkip\shared\healthy-pc.json`).
 - [ ] Pasar los ajustes de la versión anterior y reemplazarla.

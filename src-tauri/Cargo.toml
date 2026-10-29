@@ -2,7 +2,7 @@
 name = "tokkip-healthy"
 description = "Tokkip Healthy PC: limpia, cuida y optimiza tu PC con Tokkip"
 authors = ["Andy (LoperStack)"]
-version = "0.8.0"
+version = "0.9.0"
 edition = "2021"
 license = "MIT"
 

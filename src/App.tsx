@@ -6,11 +6,12 @@ import type { IconName } from "./ui/icons";
 import { N_, onLanguageChange, t } from "./i18n/i18n";
 import { Home } from "./pages/Home";
 import { Clean } from "./pages/Clean";
-import { Soon } from "./pages/Soon";
 import { Settings } from "./pages/Settings";
 import { Storage } from "./pages/storage/Storage";
 import { Software } from "./pages/Software";
 import { Performance } from "./pages/Performance";
+import { Protection } from "./pages/Protection";
+import { Care } from "./pages/Care";
 import { Sound } from "./core/sound";
 
 export type Page = "home" | "clean" | "storage" | "software" | "speed" | "protect" | "care" | "settings";
@@ -21,8 +22,8 @@ const NAV: readonly { id: Page; icon: IconName; label: string; soon?: boolean }[
   { id: "storage", icon: "storage", label: N_("Storage") },
   { id: "software", icon: "software", label: N_("Software") },
   { id: "speed", icon: "speed", label: N_("Performance") },
-  { id: "protect", icon: "shield", label: N_("Protection"), soon: true },
-  { id: "care", icon: "build", label: N_("Maintenance"), soon: true },
+  { id: "protect", icon: "shield", label: N_("Protection") },
+  { id: "care", icon: "build", label: N_("Maintenance") },
 ];
 
 export function App() {
@@ -67,7 +68,8 @@ export function App() {
         {page === "software" && <Software />}
         {page === "speed" && <Performance />}
         {page === "settings" && <Settings />}
-        {NAV.some((n) => n.id === page && n.soon) && <Soon page={page} />}
+        {page === "protect" && <Protection />}
+        {page === "care" && <Care />}
       </main>
     </div>
   );

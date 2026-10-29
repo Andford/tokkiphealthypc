@@ -399,6 +399,11 @@ button { font: inherit; color: inherit; }
 .safety-safe { background: color-mix(in srgb, var(--c-success) 18%, transparent); color: var(--c-success); }
 .safety-caution { background: color-mix(in srgb, var(--c-warn) 18%, transparent); color: var(--c-warn); }
 
+.actions.pad { padding: 4px 12px 8px; margin-top: 8px; }
+.routine-when { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+.routine-when label { display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--c-on-surface-variant); }
+.routine-when select { height: 40px; min-width: 140px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--c-outline-variant); background: var(--c-surface-container-high); color: var(--c-on-surface); font: inherit; }
+
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation-duration: 1ms !important; transition-duration: 1ms !important; }
 }

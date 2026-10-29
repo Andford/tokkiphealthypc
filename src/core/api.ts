@@ -732,3 +732,203 @@ export async function networkFix(what: "dns" | "arp" | "reset"): Promise<boolean
   }
   return invoke<boolean>("network_fix", { what });
 }
+
+// ── Protección ───────────────────────────────────────────────────────────
+
+export interface SwitchState {
+  id: string;
+  group: "telemetry" | "ads" | "search" | "sync" | "ai" | "browsers" | "security";
+  name: string;
+  nameEn: string;
+  admin: boolean;
+  on: boolean;
+  ours: boolean;
+}
+
+const demoSwitches: SwitchState[] = [
+  ["advertising-id", "ads", "ID de publicidad", "Advertising ID", false, false],
+  ["tips-notifications", "ads", "Consejos y sugerencias", "Tips & Suggestions", false, true],
+  ["telemetry-level", "telemetry", "Telemetría de Windows al mínimo", "Windows Telemetry", true, false],
+  ["bing-web-search", "search", "Resultados de la web en la búsqueda", "Bing Web Results", false, false],
+  ["copilot", "ai", "Microsoft Copilot", "Microsoft Copilot", true, false],
+  ["show-extensions", "security", "Ver las extensiones de archivo", "Show file extensions", false, false],
+].map(([id, group, name, nameEn, admin, on]) => ({ id, group, name, nameEn, admin, on, ours: false }) as SwitchState);
+
+export async function privacyList(): Promise<SwitchState[]> {
+  return inApp ? invoke<SwitchState[]>("privacy_list") : demoSwitches;
+}
+/** Throws "admin" without administrator rights. */
+export async function privacySet(id: string, on: boolean): Promise<void> {
+  if (!inApp) {
+    const s = demoSwitches.find((x) => x.id === id);
+    if (s?.admin) throw "admin";
+    if (s) Object.assign(s, { on, ours: on });
+    return;
+  }
+  await invoke("privacy_set", { id, on });
+}
+
+export interface Trace {
+  id: "recent" | "jumplists" | "run" | "typed";
+  items: number;
+  bytes: number;
+}
+export async function tracesList(): Promise<Trace[]> {
+  if (!inApp) return [{ id: "recent", items: 148, bytes: 210_000 }, { id: "jumplists", items: 37, bytes: 4.2 * MB }, { id: "run", items: 12, bytes: 0 }, { id: "typed", items: 6, bytes: 0 }];
+  return invoke<Trace[]>("traces_list");
+}
+export async function tracesClear(ids: string[]): Promise<number> {
+  if (!inApp) return 203;
+  return invoke<number>("traces_clear", { ids });
+}
+
+export interface Threat {
+  name: string;
+  active: boolean;
+  severity: number;
+  files: string[];
+}
+export interface Defender {
+  available: boolean;
+  realtime: boolean;
+  antivirus: boolean;
+  signatures: number;
+  quickScan: number;
+  fullScan: number;
+  threats: Threat[];
+}
+export async function defenderStatus(): Promise<Defender> {
+  if (!inApp) {
+    await wait(700);
+    return { available: true, realtime: true, antivirus: true, signatures: Date.now() - 2 * 3_600_000, quickScan: Date.now() - 9 * 86_400_000, fullScan: 0, threats: [] };
+  }
+  return invoke<Defender>("defender_status");
+}
+export async function defenderRun(what: "scan" | "update"): Promise<boolean> {
+  if (!inApp) {
+    await wait(2000);
+    return true;
+  }
+  return invoke<boolean>("defender_run", { what });
+}
+
+export interface StaleRule {
+  name: string;
+  display: string;
+  program: string;
+}
+export interface Firewall {
+  off: string[];
+  stale: StaleRule[];
+}
+export async function firewallReview(): Promise<Firewall> {
+  if (!inApp) {
+    await wait(900);
+    return { off: [], stale: [{ name: "a", display: "Juego viejo", program: "C:\\Games\\Viejo\\game.exe" }, { name: "b", display: "Servidor de prueba", program: "C:\\Users\\Andy\\Desktop\\srv\\srv.exe" }] };
+  }
+  return invoke<Firewall>("firewall_review");
+}
+/** Throws "admin" without administrator rights. */
+export async function firewallFix(what: "on" | "rules", rules: string[] = []): Promise<boolean> {
+  if (!inApp) throw "admin";
+  return invoke<boolean>("firewall_fix", { what, rules });
+}
+
+// ── Mantenimiento ────────────────────────────────────────────────────────
+
+export interface Orphan {
+  id: number;
+  kind: "appPath" | "uninstall" | "startup";
+  name: string;
+  target: string;
+  key: string;
+}
+export async function registryScan(): Promise<Orphan[]> {
+  if (!inApp) {
+    await wait(900);
+    return [
+      { id: 700, kind: "uninstall", name: "Juego de prueba 1.2", target: "C:\\Games\\Prueba\\unins000.exe", key: "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\Uninstall\\Prueba" },
+      { id: 701, kind: "appPath", name: "viejo.exe", target: "C:\\Program Files\\Viejo\\viejo.exe", key: "HKLM\\Software\\Microsoft\\Windows\\CurrentVersion\\App Paths\\viejo.exe" },
+      { id: 702, kind: "startup", name: "Updater", target: "C:\\Users\\Andy\\AppData\\Local\\Gone\\upd.exe", key: "HKCU\\Software\\Microsoft\\Windows\\CurrentVersion\\Run" },
+    ];
+  }
+  return invoke<Orphan[]>("registry_scan");
+}
+/** Throws "admin" when some entries need administrator rights. */
+export async function registryFix(ids: number[]): Promise<number[]> {
+  if (!inApp) return ids.filter((i) => i === 702);
+  return invoke<number[]>("registry_fix", { ids });
+}
+export interface Backup {
+  at: number;
+  file: string;
+  entries: number;
+}
+export async function registryBackups(): Promise<Backup[]> {
+  if (!inApp) return [{ at: Date.now() - 86_400_000, file: "C:\\…\\registro\\1.reg", entries: 1 }];
+  return invoke<Backup[]>("registry_backups");
+}
+export async function registryRestore(file: string): Promise<boolean> {
+  if (!inApp) return true;
+  return invoke<boolean>("registry_restore", { file });
+}
+
+export async function repairRun(what: "sfc" | "dism" | "chkdsk" | "optimize"): Promise<boolean> {
+  if (!inApp) throw "admin";
+  return invoke<boolean>("repair_run", { what });
+}
+
+export interface RestorePoint {
+  number: number;
+  description: string;
+  at: number;
+}
+export async function restorePoints(): Promise<RestorePoint[]> {
+  if (!inApp) return [{ number: 12, description: "Windows Update", at: Date.now() - 5 * 86_400_000 }, { number: 11, description: "Instalado Adobe Photoshop", at: Date.now() - 30 * 86_400_000 }];
+  return invoke<RestorePoint[]>("restore_points");
+}
+export async function restorePointCreate(): Promise<boolean> {
+  if (!inApp) throw "admin";
+  return invoke<boolean>("restore_point_create");
+}
+export async function restoreOpen() {
+  if (inApp) await invoke("restore_open");
+}
+
+export interface Done {
+  at: number;
+  kind: string;
+  detail: string;
+  bytes: number;
+  count: number;
+}
+export async function activityList(): Promise<Done[]> {
+  if (!inApp) {
+    const h = 3_600_000;
+    return [
+      { at: Date.now() - 2 * h, kind: "clean", detail: "", bytes: 1.9 * GB, count: 8169 },
+      { at: Date.now() - 5 * h, kind: "uninstall", detail: "McAfee LiveSafe", bytes: 0, count: 1 },
+      { at: Date.now() - 26 * h, kind: "trash", detail: "", bytes: 5.8 * GB, count: 1 },
+      { at: Date.now() - 50 * h, kind: "clean", detail: "routine", bytes: 640 * MB, count: 2100 },
+    ];
+  }
+  return invoke<Done[]>("activity_list");
+}
+
+export interface Routine {
+  on: boolean;
+  /** 0 = Monday … 6 = Sunday. */
+  day: number;
+  hour: number;
+}
+let demoRoutine: Routine = { on: false, day: 6, hour: 12 };
+export async function routineGet(): Promise<Routine> {
+  return inApp ? invoke<Routine>("routine_get") : demoRoutine;
+}
+export async function routineSet(routine: Routine): Promise<void> {
+  if (!inApp) {
+    demoRoutine = routine;
+    return;
+  }
+  await invoke("routine_set", { routine });
+}
