@@ -617,47 +617,104 @@ async fn service_set(dirs: tauri::State<'_, Dirs>, name: String, start: String, 
 }
 
 const GAME_FILE: &str = "modojuego.json";
+const GAME_CONFIG: &str = "modojuego-ajustes.json";
 
 #[tauri::command]
-fn game_status(dirs: tauri::State<Dirs>) -> tools::perf::GameSnapshot {
+fn game_status(dirs: tauri::State<Dirs>) -> tools::game::GameSnapshot {
     store::load_json(&dirs.data, GAME_FILE)
 }
 
-/// Game mode on: high performance power plan, no sleep, and (as administrator)
-/// Windows Search and Windows Update paused.
 #[tauri::command]
-async fn game_on(dirs: tauri::State<'_, Dirs>) -> Result<tools::perf::GameSnapshot, String> {
-    let data = dirs.data.clone();
-    blocking(move || {
-        let mut snap: tools::perf::GameSnapshot = store::load_json(&data, GAME_FILE);
-        if snap.on {
-            return snap;
+fn game_config(dirs: tauri::State<Dirs>) -> tools::game::GameConfig {
+    store::load_json(&dirs.data, GAME_CONFIG)
+}
+
+#[tauri::command]
+fn game_config_set(dirs: tauri::State<Dirs>, config: tools::game::GameConfig) {
+    let mut c = config;
+    c.options.retain(|o| tools::game::OPTIONS.contains(&o.as_str()));
+    c.games.retain(|g| !g.trim().is_empty() && g.len() < 80);
+    store::save_json(&dirs.data, GAME_CONFIG, &c);
+}
+
+/// Closes every running program with one of these names; returns the names closed.
+fn close_programs(names: &[&str]) -> Vec<String> {
+    use sysinfo::{ProcessRefreshKind, ProcessesToUpdate, RefreshKind, System};
+    let mut sys = System::new_with_specifics(RefreshKind::nothing().with_processes(ProcessRefreshKind::nothing()));
+    sys.refresh_processes(ProcessesToUpdate::All, true);
+    let mut closed = Vec::new();
+    for p in sys.processes().values() {
+        let n = p.name().to_string_lossy().to_string();
+        if names.iter().any(|x| x.eq_ignore_ascii_case(&n)) && p.kill() && !closed.contains(&n) {
+            closed.push(n);
         }
-        snap = tools::perf::GameSnapshot { on: true, since: store::now_ms(), ..Default::default() };
-        if let Some((_, out)) = platform::run_hidden("powercfg.exe", &["/getactivescheme"]) {
-            if let Some(g) = tools::perf::scheme_guid(&out) {
-                if platform::run_hidden("powercfg.exe", &["/setactive", "SCHEME_MIN"]).is_some_and(|(ok, _)| ok) {
-                    snap.scheme = g;
+    }
+    closed
+}
+
+/// Turns game mode on with the options chosen. `game` is set when a game started it.
+fn game_on_in(data: &std::path::Path, game: &str) -> tools::game::GameSnapshot {
+    use tools::game;
+    use tools::protect::reg;
+    let mut snap: game::GameSnapshot = store::load_json(data, GAME_FILE);
+    if snap.on {
+        return snap;
+    }
+    let config: game::GameConfig = store::load_json(data, GAME_CONFIG);
+    snap = game::GameSnapshot { on: true, since: store::now_ms(), game: game.to_string(), ..Default::default() };
+    let elevated = platform::is_elevated();
+    for o in &config.options {
+        let o = o.as_str();
+        if game::needs_admin(o) && !elevated {
+            snap.skipped.push(o.into());
+            continue;
+        }
+        match o {
+            "power" => {
+                let before = platform::run_hidden("powercfg.exe", &["/getactivescheme"]).and_then(|(_, out)| game::scheme_guid(&out));
+                match before {
+                    Some(g) if platform::run_hidden("powercfg.exe", &["/setactive", "SCHEME_MIN"]).is_some_and(|(ok, _)| ok) => snap.scheme = g,
+                    _ => snap.skipped.push(o.into()),
+                }
+            }
+            "awake" => platform::keep_awake(true),
+            "notifications" => {
+                snap.toasts = reg::get(false, game::TOASTS_KEY, game::TOASTS_VALUE);
+                if reg::set(false, game::TOASTS_KEY, game::TOASTS_VALUE, Some(0)).is_ok() {
+                    snap.silenced = true;
+                } else {
+                    snap.skipped.push(o.into());
+                }
+            }
+            "gamebar" => {
+                for (key, value) in game::GAMEBAR {
+                    let had = reg::get(false, key, value);
+                    if reg::set(false, key, value, Some(0)).is_ok() {
+                        snap.gamebar.push((key.to_string(), value.to_string(), had));
+                    }
+                }
+            }
+            _ => {
+                if let Some(svc) = game::service_of(o) {
+                    let running = platform::run_hidden("sc.exe", &["query", svc]).is_some_and(|(_, out)| out.contains("RUNNING"));
+                    if running && sc(&["stop", svc]) {
+                        snap.stopped.push(svc.to_string());
+                    }
+                } else {
+                    let names = game::closes(o);
+                    snap.closed.extend(close_programs(names));
                 }
             }
         }
-        if platform::is_elevated() {
-            for svc in tools::perf::GAME_PAUSES {
-                let running = platform::run_hidden("sc.exe", &["query", svc]).is_some_and(|(_, out)| out.contains("RUNNING"));
-                if running && sc(&["stop", svc]) {
-                    snap.stopped.push(svc.to_string());
-                }
-            }
-        }
-        platform::keep_awake(true);
-        store::save_json(&data, GAME_FILE, &snap);
-        snap
-    })
-    .await
+    }
+    store::save_json(data, GAME_FILE, &snap);
+    act(data, "game", game, 0, 1);
+    snap
 }
 
 fn game_off_in(data: &std::path::Path) {
-    let snap: tools::perf::GameSnapshot = store::load_json(data, GAME_FILE);
+    use tools::protect::reg;
+    let snap: tools::game::GameSnapshot = store::load_json(data, GAME_FILE);
     platform::keep_awake(false);
     if !snap.on {
         return;
@@ -668,13 +725,59 @@ fn game_off_in(data: &std::path::Path) {
     for svc in &snap.stopped {
         sc(&["start", svc]);
     }
-    store::save_json(data, GAME_FILE, &tools::perf::GameSnapshot::default());
+    if snap.silenced {
+        let _ = reg::set(false, tools::game::TOASTS_KEY, tools::game::TOASTS_VALUE, snap.toasts);
+    }
+    for (key, value, had) in &snap.gamebar {
+        let _ = reg::set(false, key, value, *had);
+    }
+    store::save_json(data, GAME_FILE, &tools::game::GameSnapshot::default());
+}
+
+#[tauri::command]
+async fn game_on(dirs: tauri::State<'_, Dirs>) -> Result<tools::game::GameSnapshot, String> {
+    let data = dirs.data.clone();
+    blocking(move || game_on_in(&data, "")).await
 }
 
 #[tauri::command]
 async fn game_off(dirs: tauri::State<'_, Dirs>) -> Result<(), String> {
     let data = dirs.data.clone();
     blocking(move || game_off_in(&data)).await
+}
+
+/// Watches for games while the app is open: turns game mode on when one starts
+/// (if you asked for that) and off when the game that started it closes.
+fn watch_games(app: tauri::AppHandle, data: PathBuf) {
+    use sysinfo::{ProcessRefreshKind, ProcessesToUpdate, RefreshKind, System, UpdateKind};
+    std::thread::spawn(move || {
+        let mut sys = System::new_with_specifics(RefreshKind::nothing());
+        loop {
+            std::thread::sleep(std::time::Duration::from_secs(8));
+            let config: tools::game::GameConfig = store::load_json(&data, GAME_CONFIG);
+            if !config.auto {
+                continue;
+            }
+            sys.refresh_processes_specifics(ProcessesToUpdate::All, true, ProcessRefreshKind::nothing().with_exe(UpdateKind::OnlyIfNotSet));
+            let playing = sys.processes().values().find_map(|p| {
+                let name = p.name().to_string_lossy().to_string();
+                let exe = p.exe().map(|e| e.display().to_string()).unwrap_or_default();
+                tools::game::is_game(&name, &exe, &config.games).then_some(name)
+            });
+            let snap: tools::game::GameSnapshot = store::load_json(&data, GAME_FILE);
+            match (playing, snap.on) {
+                (Some(game), false) => {
+                    let s = game_on_in(&data, &game);
+                    let _ = app.emit("game", s);
+                }
+                (None, true) if !snap.game.is_empty() => {
+                    game_off_in(&data);
+                    let _ = app.emit("game", tools::game::GameSnapshot::default());
+                }
+                _ => {}
+            }
+        }
+    });
 }
 
 /// Network fixes: "dns" (no rights needed), "arp" and "reset" (administrator; reset asks for a restart).
@@ -1054,6 +1157,7 @@ pub fn run() {
             let data = app.path().app_data_dir().unwrap_or_else(|_| std::env::temp_dir().join("tokkip-healthy"));
             // Game mode left on by a closed app: put things back.
             game_off_in(&data);
+            watch_games(app.handle().clone(), data.clone());
             app.manage(Dirs { data });
             Ok(())
         })
@@ -1089,6 +1193,8 @@ pub fn run() {
             services_list,
             service_set,
             game_status,
+            game_config,
+            game_config_set,
             game_on,
             game_off,
             network_fix,

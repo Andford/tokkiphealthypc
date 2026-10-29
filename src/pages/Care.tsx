@@ -18,6 +18,11 @@ import { age } from "./storage/common";
 type Tab = "registry" | "repair" | "restore" | "activity" | "routine";
 let lastTab: Tab = "registry";
 
+/** Opens this section on a given tab next time (the dashboard\'s links). */
+export function openTab(tab: Tab) {
+  lastTab = tab;
+}
+
 export function Care() {
   const [tab, setTab] = useState<Tab>(lastTab);
   const go = (x: Tab) => {
@@ -310,6 +315,7 @@ const DONE_TEXT: Record<string, [IconName, string]> = {
   uninstall: ["apps", N_("Uninstalled {detail}")],
   apps: ["installer", N_("Removed the app {detail}")],
   service: ["settings", N_("Changed the service {detail}")],
+  game: ["play", N_("Turned on game mode")],
   registry: ["build", N_("Removed {count} registry entries (backed up)")],
   privacy: ["lock", N_("Changed a privacy setting")],
   traces: ["history", N_("Cleared {count} traces")],
@@ -320,8 +326,12 @@ const DONE_TEXT: Record<string, [IconName, string]> = {
   routineSet: ["schedule", N_("Changed the weekly clean")],
 };
 
+const FREES = ["clean", "trash", "shred"];
+const DAY = 86_400_000;
+
 function Activity() {
   const [list, setList] = useState<Done[] | null>(null);
+  const [view, setView] = useState<"summary" | "timeline">("summary");
   useEffect(() => void activityList().then(setList), []);
   if (!list) return null;
   if (!list.length)
@@ -332,27 +342,147 @@ function Activity() {
         <p>{t("What you do with Healthy PC will show up here.")}</p>
       </section>
     );
+
+  const freed = list.filter((d) => FREES.includes(d.kind)).reduce((s, d) => s + d.bytes, 0);
+  const items = list.filter((d) => FREES.includes(d.kind) || d.kind === "empty" || d.kind === "traces").reduce((s, d) => s + d.count, 0);
+  const cleans = list.filter((d) => d.kind === "clean").length;
+
+  // Freed per day, last 30 days.
+  const today = Math.floor(Date.now() / DAY);
+  const days = Array.from({ length: 30 }, (_, i) => today - 29 + i);
+  const perDay = days.map((day) => list.filter((d) => FREES.includes(d.kind) && Math.floor(d.at / DAY) === day).reduce((s, d) => s + d.bytes, 0));
+  const maxDay = Math.max(...perDay, 1);
+
+  // By kind.
+  const byKind = new Map<string, number>();
+  for (const d of list) {
+    const k = d.kind === "clean" && d.detail === "routine" ? "routine" : d.kind;
+    byKind.set(k, (byKind.get(k) ?? 0) + 1);
+  }
+  const kinds = [...byKind.entries()].sort((a, b) => b[1] - a[1]).slice(0, 6);
+  const total = kinds.reduce((s, k) => s + k[1], 0);
+
+  // Weekday rhythm: Monday first.
+  const week = [0, 0, 0, 0, 0, 0, 0];
+  for (const d of list) week[(new Date(d.at).getDay() + 6) % 7]++;
+  const maxWeek = Math.max(...week, 1);
+
   return (
-    <section class="card list-card">
-      <ul class="files">
-        {list.map((d, i) => {
-          const key = d.kind === "clean" && d.detail === "routine" ? "routine" : d.kind === "routine" ? "routineSet" : d.kind;
-          const [icon, text] = DONE_TEXT[key] ?? ["info", d.kind];
-          return (
-            <li key={i} class="file">
-              <span class="file-icon">
-                <Icon name={icon} size={20} />
-              </span>
-              <span class="file-text">
-                <span class="file-name">{t(text, { count: count(d.count), size: bytes(d.bytes), detail: d.detail })}</span>
-                <span class="file-where">{new Date(d.at).toLocaleString()}</span>
-              </span>
-              <span class="file-age">{age(d.at)}</span>
-            </li>
-          );
-        })}
-      </ul>
-    </section>
+    <>
+      <div class="filters" role="radiogroup" aria-label={t("Show")}>
+        <button role="radio" aria-checked={view === "summary"} onClick={() => setView("summary")}>
+          {t("Summary")}
+        </button>
+        <button role="radio" aria-checked={view === "timeline"} onClick={() => setView("timeline")}>
+          {t("Timeline")}
+        </button>
+      </div>
+      {view === "summary" ? (
+        <>
+          <section class="meters">
+            <article class="card meter">
+              <p class="stat-label">{t("Things done")}</p>
+              <p class="stat-value">{count(list.length)}</p>
+            </article>
+            <article class="card meter">
+              <p class="stat-label">{t("Space recovered")}</p>
+              <p class="stat-value">{bytes(freed)}</p>
+            </article>
+            <article class="card meter">
+              <p class="stat-label">{t("Items handled")}</p>
+              <p class="stat-value">{count(items)}</p>
+            </article>
+            <article class="card meter">
+              <p class="stat-label">{t("Cleans")}</p>
+              <p class="stat-value">{count(cleans)}</p>
+            </article>
+          </section>
+          <section class="charts">
+            <article class="card">
+              <h2 class="section-title">{t("Space recovered, last 30 days")}</h2>
+              <div class="bars" role="img" aria-label={t("Space recovered, last 30 days")}>
+                {perDay.map((v, i) => (
+                  <span key={i} class="bar-col" title={`${new Date(days[i] * DAY).toLocaleDateString()} · ${bytes(v)}`}>
+                    <span style={{ height: `${Math.max(v ? 4 : 0, (v / maxDay) * 100)}%` }} />
+                  </span>
+                ))}
+              </div>
+              <p class="hint">{t("Most in one day: {size}", { size: bytes(maxDay === 1 ? 0 : maxDay) })}</p>
+            </article>
+            <article class="card">
+              <h2 class="section-title">{t("What you've done most")}</h2>
+              <Donut parts={kinds.map(([, n]) => n)} />
+              <ul class="legend">
+                {kinds.map(([k, n], i) => (
+                  <li key={k}>
+                    <span class={`dot kind-${i % 8}`} />
+                    <span>{t(DONE_SHORT[k] ?? k)}</span>
+                    <span class="hint">{Math.round((n / total) * 100)}%</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+            <article class="card">
+              <h2 class="section-title">{t("Your rhythm by day")}</h2>
+              <div class="bars week" role="img" aria-label={t("Your rhythm by day")}>
+                {week.map((v, i) => (
+                  <span key={i} class="bar-col" title={`${t(WEEK[i])} · ${v}`}>
+                    <span style={{ height: `${(v / maxWeek) * 100}%` }} />
+                    <em>{t(WEEK[i]).slice(0, 2)}</em>
+                  </span>
+                ))}
+              </div>
+            </article>
+          </section>
+        </>
+      ) : (
+        <section class="card list-card">
+          <ul class="files">
+            {list.map((d, i) => {
+              const key = d.kind === "clean" && d.detail === "routine" ? "routine" : d.kind === "routine" ? "routineSet" : d.kind;
+              const [icon, text] = DONE_TEXT[key] ?? ["info", d.kind];
+              return (
+                <li key={i} class="file">
+                  <span class="file-icon">
+                    <Icon name={icon} size={20} />
+                  </span>
+                  <span class="file-text">
+                    <span class="file-name">{t(text, { count: count(d.count), size: bytes(d.bytes), detail: d.detail })}</span>
+                    <span class="file-where">{new Date(d.at).toLocaleString()}</span>
+                  </span>
+                  <span class="file-age">{age(d.at)}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </section>
+      )}
+    </>
+  );
+}
+
+const DONE_SHORT: Record<string, string> = {
+  clean: N_("Cleans"), routine: N_("Weekly cleans"), trash: N_("To the Recycle Bin"), shred: N_("Shredded"), empty: N_("Empty folders"),
+  uninstall: N_("Uninstalls"), apps: N_("Preinstalled apps"), service: N_("Services"), registry: N_("Registry"), privacy: N_("Privacy"),
+  traces: N_("Traces"), firewall: N_("Firewall"), scan: N_("Defender scans"), repair: N_("Windows repairs"), restorePoint: N_("Restore points"),
+  routineSet: N_("Weekly clean"), game: N_("Game mode"),
+};
+
+/** A ring split in parts, in the kind colours. */
+function Donut({ parts }: { parts: number[] }) {
+  const total = parts.reduce((s, p) => s + p, 0) || 1;
+  const r = 40;
+  const c = 2 * Math.PI * r;
+  let at = 0;
+  return (
+    <svg class="donut" viewBox="0 0 100 100" width="140" height="140" aria-hidden="true">
+      {parts.map((p, i) => {
+        const len = (p / total) * c;
+        const el = <circle key={i} cx="50" cy="50" r={r} class={`donut-part kind-stroke-${i % 8}`} stroke-dasharray={`${Math.max(0, len - 2)} ${c}`} stroke-dashoffset={-at} />;
+        at += len;
+        return el;
+      })}
+    </svg>
   );
 }
 

@@ -3,8 +3,8 @@
 
 import { useEffect, useRef, useState } from "preact/hooks";
 import {
-  endProcess, gameOff, gameOn, gameStatus, health, networkFix, perfSample, relaunchAdmin, serviceSet, servicesList,
-  type GameSnapshot, type Sample, type Service,
+  endProcess, gameConfig, gameConfigSet, gameOff, gameOn, gameStatus, health, networkFix, onGame, perfSample, relaunchAdmin, serviceSet, servicesList,
+  type GameConfig, type GameOption, type GameSnapshot, type Sample, type Service,
 } from "../core/api";
 import { bytes } from "../core/format";
 import { language, N_, t, tn } from "../i18n/i18n";
@@ -12,9 +12,16 @@ import { Icon } from "../ui/Icon";
 import type { IconName } from "../ui/icons";
 import { Sound } from "../core/sound";
 import { Tokkip } from "../ui/Tokkip";
+import { AdminBanner } from "../ui/AdminBanner";
+import { Working } from "../ui/Working";
 
 type Tab = "now" | "services" | "game" | "network";
 let lastTab: Tab = "now";
+
+/** Opens this section on a given tab next time (the dashboard\'s links). */
+export function openTab(tab: Tab) {
+  lastTab = tab;
+}
 
 export function Performance() {
   const [tab, setTab] = useState<Tab>(lastTab);
@@ -99,7 +106,7 @@ function Now() {
       window.clearTimeout(timer);
     };
   }, []);
-  if (!s) return <section class="card"><p class="hint">{t("Looking…")}</p></section>;
+  if (!s) return <Working text={t("Looking…")} />;
 
   const memPct = (s.memoryUsed / s.memoryTotal) * 100;
   const level = (p: number) => (p > 90 ? "bad" : p > 75 ? "warn" : "ok");
@@ -238,7 +245,7 @@ function Services() {
     void health().then((h) => setAdmin(h.elevated));
   }, []);
   const [needAdmin, setNeedAdmin] = useState(false);
-  if (!list) return <section class="card"><p class="hint">{t("Looking…")}</p></section>;
+  if (!list) return <Working text={t("Looking…")} />;
 
   const set = async (s: Service, start: string) => {
     try {
@@ -303,18 +310,65 @@ function Services() {
 
 // ── Game mode ────────────────────────────────────────────────────────────
 
+const GAME_OPTIONS: { id: GameOption; group: string; title: string; about: string; admin?: boolean; closes?: boolean }[] = [
+  { id: "power", group: N_("System"), title: N_("High performance power plan"), about: N_("The processor stays at full speed instead of saving energy.") },
+  { id: "awake", group: N_("System"), title: N_("Don't let the PC sleep"), about: N_("No sleep or screen turning off while you play.") },
+  { id: "notifications", group: N_("System"), title: N_("Silence notifications"), about: N_("No pop-ups over your game.") },
+  { id: "gamebar", group: N_("System"), title: N_("Pause Game Bar's background recording"), about: N_("It records your last minutes all the time, which costs frames.") },
+  { id: "search", group: N_("Windows services"), title: N_("Pause Windows Search"), about: N_("Indexing files uses the disk while you play."), admin: true },
+  { id: "update", group: N_("Windows services"), title: N_("Pause Windows Update"), about: N_("No downloads or installs halfway through a match."), admin: true },
+  { id: "sysmain", group: N_("Windows services"), title: N_("Pause SysMain (Superfetch)"), about: N_("It preloads apps into memory; games want that memory."), admin: true },
+  { id: "spooler", group: N_("Windows services"), title: N_("Pause printing"), about: N_("Nobody prints mid-game."), admin: true },
+  { id: "telemetry", group: N_("Windows services"), title: N_("Pause Windows telemetry"), about: N_("Stops sending usage data while you play."), admin: true },
+  { id: "browsers", group: N_("Close programs"), title: N_("Close browsers"), about: N_("Chrome, Edge, Firefox, Brave, Opera, Vivaldi. Save what you have open first."), closes: true },
+  { id: "chat", group: N_("Close programs"), title: N_("Close chat apps"), about: N_("Discord, Teams, Slack, WhatsApp, Telegram… Leave it off if you talk while you play."), closes: true },
+  { id: "updaters", group: N_("Close programs"), title: N_("Close updaters"), about: N_("Google, Edge, Adobe, Java and others' updaters that wake up on their own."), closes: true },
+];
+
 function Game() {
   const [g, setG] = useState<GameSnapshot | null>(null);
+  const [cfg, setCfg] = useState<GameConfig | null>(null);
   const [busy, setBusy] = useState(false);
+  const [admin, setAdmin] = useState(false);
+  const [live, setLive] = useState<Sample | null>(null);
+  const [newGame, setNewGame] = useState("");
+  const [, tick] = useState(0);
   useEffect(() => {
     void gameStatus().then(setG);
+    void gameConfig().then(setCfg);
+    void health().then((h) => setAdmin(h.elevated));
+    let stop: (() => void) | null = null;
+    void onGame(setG).then((s) => (stop = s));
+    return () => stop?.();
   }, []);
-  if (!g) return null;
+  // While it's on: the PC live, and the time played.
+  useEffect(() => {
+    if (!g?.on) return;
+    let alive = true;
+    const poll = async () => {
+      if (!alive) return;
+      setLive(await perfSample());
+      tick((n) => n + 1);
+      if (alive) window.setTimeout(poll, 2000);
+    };
+    void poll();
+    return () => {
+      alive = false;
+    };
+  }, [g?.on]);
+  if (!g || !cfg) return null;
+
+  const save = (next: GameConfig) => {
+    setCfg(next);
+    void gameConfigSet(next);
+    Sound.play("tick");
+  };
+  const toggle = (id: GameOption) => save({ ...cfg, options: cfg.options.includes(id) ? cfg.options.filter((o) => o !== id) : [...cfg.options, id] });
   const flip = async () => {
     setBusy(true);
     if (g.on) {
       await gameOff();
-      setG({ on: false, since: 0, scheme: "", stopped: [] });
+      setG({ ...g, on: false });
       Sound.play("close");
     } else {
       setG(await gameOn());
@@ -322,13 +376,21 @@ function Game() {
     }
     setBusy(false);
   };
+  const minutes = g.on ? Math.floor((Date.now() - g.since) / 60_000) : 0;
+  const groups = [...new Set(GAME_OPTIONS.map((o) => o.group))];
+  const needAdmin = cfg.options.some((o) => GAME_OPTIONS.find((x) => x.id === o)?.admin) && !admin;
+
   return (
     <>
       <section class={`hero card compact ${g.on ? "" : "soon"}`}>
         <Tokkip size={110} state={g.on ? "working" : "idle"} dancing={g.on} label="Tokkip" />
         <div class="hero-text">
-          <h1 class="display">{g.on ? t("Game mode is on") : t("Game mode")}</h1>
-          <p class="lead">{t("While you play: the power plan for the most performance, the PC doesn't go to sleep, and (as administrator) Windows Search and Windows Update wait.")}</p>
+          <h1 class="display">{g.on ? (g.game ? t("Playing {game}", { game: g.game.replace(/\.exe$/i, "") }) : t("Game mode is on")) : t("Game mode")}</h1>
+          <p class="lead">
+            {g.on
+              ? tn("On for {n} minute. Turning it off puts everything back.", "On for {n} minutes. Turning it off puts everything back.", minutes)
+              : t("Choose below what to pause or close while you play. Everything goes back as it was when you turn it off or close Healthy PC.")}
+          </p>
           <div class="actions">
             <button class={`btn ${g.on ? "tonal" : "filled"}`} disabled={busy} onClick={flip}>
               <Icon name={g.on ? "stop" : "play"} size={20} />
@@ -337,16 +399,97 @@ function Game() {
           </div>
         </div>
       </section>
-      {g.on && (
-        <section class="card">
-          <ul class="soon-list">
-            <li>{g.scheme ? t("Power plan: high performance") : t("This PC has no high performance plan: the power plan stays as it was")}</li>
-            <li>{t("The PC won't go to sleep")}</li>
-            {g.stopped.length > 0 && <li>{t("Paused: {list}", { list: g.stopped.join(", ") })}</li>}
-          </ul>
-          <p class="hint">{t("Turning it off, or closing Healthy PC, puts everything back as it was.")}</p>
+
+      {g.on && live && (
+        <section class="meters">
+          <article class="card meter">
+            <p class="stat-label">{t("Processor")}</p>
+            <p class="stat-value">{Math.round(live.cpu)}%</p>
+          </article>
+          <article class="card meter">
+            <p class="stat-label">{t("Memory")}</p>
+            <p class="stat-value">{Math.round((live.memoryUsed / live.memoryTotal) * 100)}%</p>
+            <p class="stat-note">{t("{used} of {total}", { used: bytes(live.memoryUsed), total: bytes(live.memoryTotal) })}</p>
+          </article>
+          {live.temperature != null && (
+            <article class="card meter">
+              <p class="stat-label">{t("Temperature")}</p>
+              <p class="stat-value">{Math.round(live.temperature)}°C</p>
+            </article>
+          )}
+          <article class="card meter">
+            <p class="stat-label">{t("Done for you")}</p>
+            <p class="stat-note">
+              {[
+                g.scheme && t("High performance"),
+                g.silenced && t("Notifications silenced"),
+                g.stopped.length > 0 && t("Paused: {list}", { list: g.stopped.join(", ") }),
+                g.closed.length > 0 && t("Closed: {list}", { list: g.closed.join(", ") }),
+              ]
+                .filter(Boolean)
+                .join(" · ") || t("Nothing needed changing")}
+            </p>
+            {g.skipped.length > 0 && <p class="stat-note">{tn("{n} option needed administrator rights.", "{n} options needed administrator rights.", g.skipped.length)}</p>}
+          </article>
         </section>
       )}
+
+      {needAdmin && <AdminBanner text={t("Pausing Windows services needs administrator rights; without them, game mode does the rest.")} />}
+
+      <section class="card setting">
+        <h2>
+          <Icon name="play" /> {t("Turn on by itself")}
+        </h2>
+        <label class="switch-row">
+          <span>{t("When a game starts, and off when it closes")}</span>
+          <input type="checkbox" class="switch" checked={cfg.auto} onChange={() => save({ ...cfg, auto: !cfg.auto })} />
+        </label>
+        <p class="hint">{t("It recognizes games from Steam, Epic, Xbox, Riot, GOG, EA, Ubisoft, Battle.net and Rockstar, and popular ones by name. Add yours if it doesn't:")}</p>
+        <div class="chips-row">
+          {cfg.games.map((x) => (
+            <button key={x} class="chip-btn" onClick={() => save({ ...cfg, games: cfg.games.filter((y) => y !== x) })} title={t("Take off the list")}>
+              {x} <Icon name="close" size={16} />
+            </button>
+          ))}
+          <form
+            class="add-game"
+            onSubmit={(e) => {
+              e.preventDefault();
+              const v = newGame.trim();
+              if (!v) return;
+              save({ ...cfg, games: [...cfg.games, /\.exe$/i.test(v) ? v : `${v}.exe`] });
+              setNewGame("");
+            }}
+          >
+            <input class="search small" placeholder={t("game.exe")} value={newGame} onInput={(e) => setNewGame((e.target as HTMLInputElement).value)} />
+            <button class="btn tonal small" type="submit">
+              {t("Add")}
+            </button>
+          </form>
+        </div>
+      </section>
+
+      {groups.map((grp) => (
+        <section class="card list-card" key={grp}>
+          <header class="list-head">
+            <h2 class="section-title">{t(grp)}</h2>
+          </header>
+          <ul class="files">
+            {GAME_OPTIONS.filter((o) => o.group === grp).map((o) => (
+              <li key={o.id} class="file">
+                <span class="file-text">
+                  <span class="file-name">
+                    {t(o.title)} {o.admin && <span class="chip">{t("Administrator")}</span>}
+                    {o.closes && <span class="chip warn">{t("Closes programs")}</span>}
+                  </span>
+                  <span class="file-where wrap">{t(o.about)}</span>
+                </span>
+                <input type="checkbox" class="switch" checked={cfg.options.includes(o.id)} disabled={g.on} aria-label={t(o.title)} onChange={() => toggle(o.id)} />
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
     </>
   );
 }

@@ -59,7 +59,7 @@ pub fn split_key(key: &str) -> Option<(bool, &str)> {
 pub type Before = HashMap<String, Option<u32>>;
 
 #[cfg(windows)]
-mod reg {
+pub mod reg {
     use winreg::enums::*;
     use winreg::RegKey;
 
@@ -83,7 +83,7 @@ mod reg {
 }
 
 #[cfg(not(windows))]
-mod reg {
+pub mod reg {
     pub fn get(_m: bool, _k: &str, _v: &str) -> Option<u32> {
         None
     }

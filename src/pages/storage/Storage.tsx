@@ -27,6 +27,11 @@ const TABS: readonly { id: Tab; icon: IconName; label: string }[] = [
 ];
 
 let lastTab: Tab = "map";
+
+/** Opens this section on a given tab next time (the dashboard\'s links). */
+export function openTab(tab: Tab) {
+  lastTab = tab;
+}
 let lastDrive = "";
 
 export function Storage() {

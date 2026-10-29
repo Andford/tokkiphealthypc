@@ -14,9 +14,15 @@ import { Sound } from "../core/sound";
 import { Tokkip } from "../ui/Tokkip";
 import { AdminBanner, needsAdmin } from "../ui/AdminBanner";
 import { age } from "./storage/common";
+import { Working } from "../ui/Working";
 
 type Tab = "antivirus" | "privacy" | "traces" | "firewall";
 let lastTab: Tab = "antivirus";
+
+/** Opens this section on a given tab next time (the dashboard\'s links). */
+export function openTab(tab: Tab) {
+  lastTab = tab;
+}
 
 export function Protection() {
   const [tab, setTab] = useState<Tab>(lastTab);
@@ -58,7 +64,7 @@ function Antivirus() {
   const [admin, setAdmin] = useState(false);
   const load = () => void defenderStatus().then(setD);
   useEffect(load, []);
-  if (!d) return <section class="card"><p class="hint">{t("Asking Windows Defender…")}</p></section>;
+  if (!d) return <Working text={t("Asking Windows Defender…")} />;
   if (!d.available)
     return (
       <section class="card empty-state">
@@ -155,7 +161,7 @@ function Switches({ groups }: { groups: SwitchState["group"][] }) {
   const [admin, setAdmin] = useState(false);
   const load = () => void privacyList().then(setList);
   useEffect(load, []);
-  if (!list) return <section class="card"><p class="hint">{t("Looking…")}</p></section>;
+  if (!list) return <Working text={t("Looking…")} />;
   const flip = async (s: SwitchState) => {
     try {
       await privacySet(s.id, !s.on);
@@ -221,7 +227,7 @@ function Traces() {
   const [done, setDone] = useState<number | null>(null);
   const load = () => void tracesList().then(setList);
   useEffect(load, []);
-  if (!list) return <section class="card"><p class="hint">{t("Looking…")}</p></section>;
+  if (!list) return <Working text={t("Looking…")} />;
   const toggle = (id: string) => {
     const n = new Set(chosen);
     n.has(id) ? n.delete(id) : n.add(id);
@@ -295,7 +301,7 @@ function FirewallTab() {
     <>
       {admin && <AdminBanner />}
       {!f ? (
-        <section class="card"><p class="hint">{t("Reviewing the firewall…")}</p></section>
+        <Working text={t("Reviewing the firewall…")} />
       ) : (
         <>
           <section class={`card tool-head`}>

@@ -4,7 +4,7 @@
 // Advent Development): its list of services and how safe each is to switch
 // off (rules/services.json), what its game mode pauses, and its network
 // fixes. Every change here can be undone: a service gets back the start type
-// it had, and game mode puts back the power plan and the services it paused.
+// it had. Game mode lives in game.rs.
 
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -228,31 +228,6 @@ pub fn safe_service_name(n: &str) -> bool {
     !n.is_empty() && n.len() < 100 && n.chars().all(|c| c.is_ascii_alphanumeric() || "_-.".contains(c))
 }
 
-// ── Game mode ─────────────────────────────────────────────────────────────
-
-/// What game mode changed, to put back.
-#[derive(Debug, Clone, Default, Serialize, Deserialize, PartialEq)]
-#[serde(rename_all = "camelCase", default)]
-pub struct GameSnapshot {
-    pub on: bool,
-    pub since: u64,
-    /// The power plan before (GUID).
-    pub scheme: String,
-    /// Services it stopped, to start again.
-    pub stopped: Vec<String>,
-}
-
-/// The GUID in `powercfg /getactivescheme`'s line, in any language.
-pub fn scheme_guid(out: &str) -> Option<String> {
-    out.split(|c: char| c.is_whitespace() || c == '(' || c == ')')
-        .find(|w| w.len() == 36 && w.chars().filter(|c| *c == '-').count() == 4 && w.chars().all(|c| c.is_ascii_hexdigit() || c == '-'))
-        .map(|s| s.to_lowercase())
-}
-
-/// The services game mode pauses (if running and the app is administrator):
-/// Windows Search indexing and Windows Update, which both use the disk.
-pub const GAME_PAUSES: &[&str] = &["WSearch", "wuauserv"];
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -284,14 +259,6 @@ mod tests {
         assert_eq!(sc_start("manual"), Some("demand"));
     }
 
-    #[test]
-    fn reads_the_power_plan() {
-        assert_eq!(
-            scheme_guid("GUID del plan de energía: 381b4222-f694-41f0-9685-ff5bb260df2e  (Equilibrado)").as_deref(),
-            Some("381b4222-f694-41f0-9685-ff5bb260df2e")
-        );
-        assert_eq!(scheme_guid("nothing"), None);
-    }
 
     #[test]
     fn samples_this_pc() {

@@ -11,9 +11,15 @@ import { language, N_, t, tn } from "../i18n/i18n";
 import { Check, Dock, Outcome, useChoice } from "./storage/common";
 import { Icon } from "../ui/Icon";
 import { Sound } from "../core/sound";
+import { Working } from "../ui/Working";
 
 type Tab = "startup" | "programs" | "preinstalled" | "updates";
 let lastTab: Tab = "startup";
+
+/** Opens this section on a given tab next time (the dashboard\'s links). */
+export function openTab(tab: Tab) {
+  lastTab = tab;
+}
 
 export function Software() {
   const [tab, setTab] = useState<Tab>(lastTab);
@@ -57,7 +63,7 @@ function Startup() {
   useEffect(() => {
     void startupList().then(setList);
   }, []);
-  if (!list) return <section class="card"><p class="hint">{t("Looking…")}</p></section>;
+  if (!list) return <Working text={t("Looking…")} />;
 
   const flip = async (it: StartupItem) => {
     try {
@@ -139,7 +145,7 @@ function Programs() {
     return l;
   }, [list, q, sort]);
 
-  if (!list) return <section class="card"><p class="hint">{t("Looking…")}</p></section>;
+  if (!list) return <Working text={t("Looking…")} />;
 
   const remove = async (p: Program) => {
     setAsking(null);
@@ -280,7 +286,7 @@ function PreinstalledApps() {
   useEffect(() => {
     void preinstalledList().then(setList);
   }, []);
-  if (!list) return <section class="card"><p class="hint">{t("Looking…")}</p></section>;
+  if (!list) return <Working text={t("Looking…")} />;
 
   const toggle = (p: string) => {
     const n = new Set(chosen);
@@ -362,7 +368,7 @@ function Updates() {
     void updatesList().then(setList);
   };
   useEffect(load, []);
-  if (list === undefined) return <section class="card"><p class="hint">{t("Asking winget what has updates… this takes a moment.")}</p></section>;
+  if (list === undefined) return <Working text={t("Asking winget what has updates… this takes a moment.")} />;
   if (list === null)
     return (
       <section class="card empty-state">

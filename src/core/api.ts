@@ -700,27 +700,61 @@ export async function serviceSet(s: Service, start: string): Promise<void> {
   await invoke("service_set", { name: s.name, start, was: s.start });
 }
 
+export type GameOption = "power" | "awake" | "notifications" | "gamebar" | "search" | "update" | "sysmain" | "spooler" | "telemetry" | "browsers" | "chat" | "updaters";
+
 export interface GameSnapshot {
   on: boolean;
   since: number;
+  game: string;
   scheme: string;
   stopped: string[];
+  closed: string[];
+  silenced: boolean;
+  skipped: string[];
 }
 
-let demoGame: GameSnapshot = { on: false, since: 0, scheme: "", stopped: [] };
+export interface GameConfig {
+  options: GameOption[];
+  auto: boolean;
+  games: string[];
+}
+
+const offGame: GameSnapshot = { on: false, since: 0, game: "", scheme: "", stopped: [], closed: [], silenced: false, skipped: [] };
+let demoGame: GameSnapshot = offGame;
+let demoGameConfig: GameConfig = { options: ["power", "awake", "notifications", "gamebar", "search", "update", "updaters"], auto: false, games: [] };
+
 export async function gameStatus(): Promise<GameSnapshot> {
   return inApp ? invoke<GameSnapshot>("game_status") : demoGame;
 }
+export async function gameConfig(): Promise<GameConfig> {
+  return inApp ? invoke<GameConfig>("game_config") : demoGameConfig;
+}
+export async function gameConfigSet(config: GameConfig): Promise<void> {
+  if (!inApp) {
+    demoGameConfig = config;
+    return;
+  }
+  await invoke("game_config_set", { config });
+}
 export async function gameOn(): Promise<GameSnapshot> {
-  if (!inApp) return (demoGame = { on: true, since: Date.now(), scheme: "381b4222-f694-41f0-9685-ff5bb260df2e", stopped: [] });
+  if (!inApp) {
+    await wait(900);
+    return (demoGame = { ...offGame, on: true, since: Date.now(), scheme: "x", closed: ["GoogleUpdate.exe"], silenced: true, skipped: demoGameConfig.options.filter((o) => ["search", "update", "sysmain", "spooler", "telemetry"].includes(o)) });
+  }
   return invoke<GameSnapshot>("game_on");
 }
 export async function gameOff(): Promise<void> {
   if (!inApp) {
-    demoGame = { on: false, since: 0, scheme: "", stopped: [] };
+    demoGame = offGame;
     return;
   }
   await invoke("game_off");
+}
+/** Hears game mode turning on or off by itself (a game started or closed). */
+export async function onGame(cb: (s: GameSnapshot) => void): Promise<() => void> {
+  if (!inApp) return () => {};
+  const { listen } = await import("@tauri-apps/api/event");
+  return listen<GameSnapshot>("game", (e) => cb(e.payload));
 }
 
 /** "dns", "arp" or "reset". Throws "admin" when it needs administrator rights. */

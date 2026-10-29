@@ -10,6 +10,7 @@ import type { IconName } from "../../ui/icons";
 import { Sound } from "../../core/sound";
 import { age, Check, Dock, Outcome, useChoice } from "./common";
 import { found } from "./state";
+import { Working } from "../../ui/Working";
 
 const KIND: Record<DownloadKind, { icon: IconName; label: string }> = {
   installer: { icon: "installer", label: N_("Installers") },
@@ -37,7 +38,7 @@ export function DownloadsTab() {
   }, []);
 
   const data = found.downloads;
-  if (busy || !data) return <section class="card"><p class="hint">{t("Looking at your Downloads…")}</p></section>;
+  if (busy || !data) return <Working text={t("Looking at your Downloads…")} />;
 
   const list = data.files.filter((f) => filter === "all" || f.kind === filter);
   const picked = data.files.filter((f) => choice.has(f.id));

@@ -8,6 +8,7 @@ import { N_, t, tn } from "../../i18n/i18n";
 import { Icon } from "../../ui/Icon";
 import type { IconName } from "../../ui/icons";
 import { Sound } from "../../core/sound";
+import { Tokkip } from "../../ui/Tokkip";
 
 export const KINDS: Record<FileKind, { icon: IconName; label: string }> = {
   video: { icon: "video", label: N_("Videos") },
@@ -44,6 +45,7 @@ export function Busy({ title, note }: { title: string; note?: string }) {
   return (
     <section class="card busy-card" aria-live="polite">
       <div class="busy-head">
+        <Tokkip size={72} state="searching" label={title} />
         <div>
           <h2>{title}</h2>
           <p class="busy-count">

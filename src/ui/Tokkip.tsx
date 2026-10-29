@@ -7,6 +7,7 @@ import { TokkipMotion } from "../tokkip/motion";
 import { loadLook, onLookChange } from "../tokkip/tokkip";
 import type { BotStateName } from "../core/layout";
 import { seasonalOutfit } from "../tokkip/wardrobe";
+import { STATE_SHAPES, shapePath, type ShapeSpec } from "../tokkip/shapes";
 
 const ASPECT = 190 / 150;
 const OVERHANG = 40 / 150;
@@ -19,10 +20,14 @@ interface Props {
   /** Called once with the engine, for one-off moments (greet, emotes). */
   onReady?: (e: TokkipMotion) => void;
   label: string;
+  /** The Material Expressive shape behind him (as on the island): it melts into
+   * another with what he's doing and spins while he works. On by default. */
+  shape?: boolean;
 }
 
-export function Tokkip({ size, state, dancing = false, onReady, label }: Props) {
+export function Tokkip({ size, state, dancing = false, onReady, label, shape = true }: Props) {
   const canvas = useRef<HTMLCanvasElement>(null);
+  const backdrop = useRef<SVGPathElement>(null);
   const engine = useRef<TokkipMotion | null>(null);
 
   useEffect(() => {
@@ -47,9 +52,23 @@ export function Tokkip({ size, state, dancing = false, onReady, label }: Props) 
 
     let last = performance.now();
     let raf = 0;
+    // The shape behind: melting from one state's shape to the next, turning as it goes.
+    let from: ShapeSpec = STATE_SHAPES[stateRef.current] ?? STATE_SHAPES.idle;
+    let to = from;
+    let k = 1;
+    let turn = 0;
     const frame = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
+      const target = STATE_SHAPES[stateRef.current] ?? STATE_SHAPES.idle;
+      if (target !== to) {
+        from = k >= 1 ? to : from;
+        to = target;
+        k = 0;
+      }
+      k = Math.min(1, k + dt * 2.2);
+      turn += (REDUCED ? 0 : to.spin * k + from.spin * (1 - k)) * dt;
+      backdrop.current?.setAttribute("d", shapePath(50, from, to, 1 - Math.pow(1 - k, 3), turn));
       const w = c.clientWidth;
       const h = w * ASPECT;
       const dpr = Math.min(2, window.devicePixelRatio || 1);
@@ -90,6 +109,12 @@ export function Tokkip({ size, state, dancing = false, onReady, label }: Props) 
 
   const poke = () => engine.current?.slap();
   return (
+    <span class="tokkip-wrap" style={{ width: `${size}px`, height: `${size * ASPECT}px` }}>
+      {shape && (
+        <svg class="tokkip-shape" viewBox="0 0 100 100" aria-hidden="true">
+          <path ref={backdrop} />
+        </svg>
+      )}
     <canvas
       ref={canvas}
       class="tokkip"
@@ -105,5 +130,6 @@ export function Tokkip({ size, state, dancing = false, onReady, label }: Props) 
         }
       }}
     />
+    </span>
   );
 }
