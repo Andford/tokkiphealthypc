@@ -182,7 +182,7 @@ export function Clean() {
             <p>
               {selected.length === 0
                 ? t("Nothing chosen")
-                : tn("{n} chosen · {size}", "{n} chosen · {size}", selected.length, { size: bytes(selectedBytes) })}
+                : tn("{n} clean chosen · {size}", "{n} cleans chosen · {size}", selected.length, { size: bytes(selectedBytes) })}
             </p>
             <button class="btn filled" disabled={selected.length === 0} onClick={go}>
               <Icon name="sweep" size={20} />

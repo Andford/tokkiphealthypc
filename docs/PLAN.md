@@ -40,6 +40,14 @@ pasa a ser `main`.
 - Crates principales: `windows` (Win32), `winreg`, `sysinfo`, `wmi`,
   `walkdir`/`jwalk`, `trash`, `yara-x` (YARA en Rust puro), `serde`.
 
+## De dónde sale cada herramienta
+
+Kudu (MIT, Advent Development) es la referencia de *qué* hace cada
+herramienta y de los cuidados que necesita en Windows: antes de escribir una,
+se lee la suya, sus listas y sus pruebas, y se rehace en Rust con nuestra
+interfaz. Lo que se toma de Kudu se dice en el archivo y en
+THIRD-PARTY-NOTICES.md. De Kudu no se toma nada de su nube.
+
 ## Las herramientas, por fases
 
 Cada fase termina con una versión instalable.
@@ -55,11 +63,11 @@ Cada fase termina con una versión instalable.
 - [x] Apps y juegos: cachés de Discord, Spotify, Teams, Steam, launchers…
 
 ### Fase 2 — Almacenamiento (0.6)
-- [ ] Análisis de disco (mapa de carpetas), espacio por app.
-- [ ] Archivos grandes, duplicados (por tamaño y luego hash), carpetas vacías.
-- [ ] Revisión de Descargas (lo viejo y lo repetido).
-- [ ] Historial de almacenamiento (cómo cambia tu espacio con el tiempo).
-- [ ] Destructor de archivos (sobrescritura; avisa que no se recupera).
+- [x] Análisis de disco (mapa de carpetas), espacio por app.
+- [x] Archivos grandes, duplicados (por tamaño y luego hash), carpetas vacías.
+- [x] Revisión de Descargas (lo viejo y lo repetido).
+- [x] Historial de almacenamiento (cómo cambia tu espacio con el tiempo).
+- [x] Destructor de archivos (sobrescritura; avisa que no se recupera).
 
 ### Fase 3 — Software (0.7)
 - [ ] Programas de inicio (registro, carpeta Inicio, tareas programadas).

@@ -79,3 +79,44 @@ pub fn system_disk() -> (u64, u64) {
         .or_else(|| disks.list().iter().max_by_key(|d| d.total_space()));
     pick.map(|d| (d.total_space(), d.available_space())).unwrap_or((0, 0))
 }
+
+#[derive(Debug, Clone, serde::Serialize, PartialEq)]
+#[serde(rename_all = "camelCase")]
+pub struct Drive {
+    /// Where it is mounted: "C:\\", "D:\\" (or "/" elsewhere).
+    pub root: String,
+    pub label: String,
+    pub total: u64,
+    pub free: u64,
+    pub system: bool,
+    pub removable: bool,
+}
+
+/// The drives you can analyze: fixed and removable, not network ones.
+pub fn drives() -> Vec<Drive> {
+    let disks = sysinfo::Disks::new_with_refreshed_list();
+    let system = std::env::var("SystemDrive").map(|d| format!("{d}\\")).unwrap_or_else(|_| "/".into());
+    let mut out: Vec<Drive> = disks
+        .list()
+        .iter()
+        .filter(|d| d.total_space() > 0)
+        .filter(|d| {
+            let fs = d.file_system().to_string_lossy().to_lowercase();
+            !["nfs", "cifs", "smb", "smbfs", "fuse.sshfs", "tmpfs", "overlay", "squashfs"].iter().any(|n| fs.starts_with(n))
+        })
+        .map(|d| {
+            let root = d.mount_point().to_string_lossy().to_string();
+            Drive {
+                system: root.eq_ignore_ascii_case(&system),
+                label: d.name().to_string_lossy().to_string(),
+                root,
+                total: d.total_space(),
+                free: d.available_space(),
+                removable: d.is_removable(),
+            }
+        })
+        .collect();
+    out.sort_by(|a, b| b.system.cmp(&a.system).then_with(|| a.root.cmp(&b.root)));
+    out.dedup_by(|a, b| a.root == b.root);
+    out
+}

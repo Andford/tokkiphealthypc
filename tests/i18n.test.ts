@@ -12,10 +12,14 @@ describe("i18n", () => {
     expect(missing).toEqual([]);
   });
 
-  it("keeps the same {variables} in Spanish", () => {
+  it("uses only the English text's {variables} in Spanish (a singular may leave {n} out)", () => {
+    const vars = (s: string) => new Set([...s.matchAll(/\{(\w+)\}/g)].map((m) => m[1]));
     for (const [k, v] of Object.entries(es as Record<string, string>)) {
-      const vars = (s: string) => [...s.matchAll(/\{(\w+)\}/g)].map((m) => m[1]).sort();
-      expect(vars(v), k).toEqual(vars(k));
+      const en = vars(k);
+      const extra = [...vars(v)].filter((x) => !en.has(x));
+      expect(extra, k).toEqual([]);
+      const missing = [...en].filter((x) => !vars(v).has(x) && x !== "n");
+      expect(missing, k).toEqual([]);
     }
   });
 

@@ -4,7 +4,7 @@
 // its `files` are patterns for the file names (`*`, `*.dmp`, `thumbcache_*.db`).
 
 use serde::{Deserialize, Serialize};
-use std::path::{Path, PathBuf};
+use std::path::PathBuf;
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 #[serde(rename_all = "camelCase")]
@@ -144,10 +144,6 @@ pub fn matches(pattern: &str, name: &str) -> bool {
 /// The process environment, as rules read it.
 pub fn system_env(name: &str) -> Option<String> {
     std::env::var(name).ok()
-}
-
-pub fn is_inside(path: &Path, root: &Path) -> bool {
-    path.starts_with(root)
 }
 
 #[cfg(test)]

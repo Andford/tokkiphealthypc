@@ -3,5 +3,5 @@
   "identifier": "default",
   "description": "The window only reaches the system through Healthy PC's own commands.",
   "windows": ["main"],
-  "permissions": ["core:default"]
+  "permissions": ["core:default", "dialog:allow-open"]
 }

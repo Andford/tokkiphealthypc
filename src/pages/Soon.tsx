@@ -5,10 +5,6 @@ import { Tokkip } from "../ui/Tokkip";
 import type { Page } from "../App";
 
 const COMING: Partial<Record<Page, { title: string; items: string[] }>> = {
-  storage: {
-    title: N_("Storage"),
-    items: [N_("A map of what fills your disk"), N_("Big files, duplicates and empty folders"), N_("A look at your Downloads"), N_("File shredder")],
-  },
   software: {
     title: N_("Software"),
     items: [N_("Startup programs"), N_("Uninstaller that finds leftovers"), N_("Preinstalled apps you don't use"), N_("Program and driver updates")],

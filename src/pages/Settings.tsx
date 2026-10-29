@@ -138,7 +138,7 @@ export function Settings() {
           <b>Tokkip Healthy PC</b> {__APP_VERSION__}
         </p>
         <p>{t("Made by Andy (LoperStack). Everything stays on your PC: no account, no cloud, no telemetry.")}</p>
-        <p class="hint">{t("MIT License. Icons: Material Symbols (Apache 2.0). Fonts: Roboto Flex and Fredoka (SIL OFL).")}</p>
+        <p class="hint">{t("MIT License. Some tools follow Kudu (MIT, Advent Development). Icons: Material Symbols (Apache 2.0). Fonts: Roboto Flex and Fredoka (SIL OFL).")}</p>
       </section>
     </>
   );

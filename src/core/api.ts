@@ -111,3 +111,347 @@ export async function tokkipNotice(n: { score: number; mood: string; kind: "clea
   if (!inApp) return;
   await invoke("tokkip_notice", { score: n.score, mood: n.mood, kind: n.kind, message: n.message, bytes: n.bytes ?? null }).catch(() => {});
 }
+
+// ── Almacenamiento ───────────────────────────────────────────────────────
+
+export interface Drive {
+  root: string;
+  label: string;
+  total: number;
+  free: number;
+  system: boolean;
+  removable: boolean;
+}
+
+export interface SpaceDay {
+  /** Days since 1970. */
+  day: number;
+  free: number;
+  total: number;
+}
+
+export interface MapNode {
+  name: string;
+  /** Empty for "the rest" (loose files and small folders). */
+  path: string;
+  bytes: number;
+  files: number;
+  children: MapNode[];
+}
+
+export type FileKind = "video" | "image" | "music" | "document" | "archive" | "installer" | "app" | "other";
+
+export interface KindTotal {
+  kind: FileKind;
+  bytes: number;
+  files: number;
+}
+
+export interface BigFile {
+  id: number;
+  name: string;
+  folder: string;
+  bytes: number;
+  modified: number;
+  kind: FileKind;
+}
+
+export interface Analysis {
+  root: MapNode;
+  kinds: KindTotal[];
+  big: BigFile[];
+  unreadable: number;
+  cancelled: boolean;
+}
+
+export interface Removed {
+  freed: number;
+  files: number;
+  kept: number[];
+}
+
+export interface DupCopy {
+  id: number;
+  path: string;
+  modified: number;
+}
+
+export interface DupGroup {
+  bytes: number;
+  kind: FileKind;
+  /** The first is the one to keep. */
+  copies: DupCopy[];
+}
+
+export interface DupFound {
+  groups: DupGroup[];
+  files: number;
+  cancelled: boolean;
+}
+
+export interface EmptyFolder {
+  id: number;
+  path: string;
+  depth: number;
+}
+
+export interface EmptyFound {
+  folders: EmptyFolder[];
+  scanned: number;
+  cancelled: boolean;
+}
+
+export type DownloadKind = "installer" | "archive" | "diskImage" | "other";
+
+export interface Download {
+  id: number;
+  name: string;
+  bytes: number;
+  modified: number;
+  kind: DownloadKind;
+}
+
+export interface DownloadsFound {
+  folder: string;
+  files: Download[];
+}
+
+export interface ShredChoice {
+  path: string;
+  name: string;
+  bytes: number;
+  files: number;
+  folder: boolean;
+  protected: boolean;
+}
+
+export interface Shredded {
+  files: number;
+  bytes: number;
+  failed: number;
+  cancelled: boolean;
+}
+
+export interface Report {
+  tool: string;
+  files: number;
+  bytes: number;
+  path: string;
+}
+
+/** Hears how a long walk goes. Returns how to stop listening. */
+export async function onProgress(cb: (r: Report) => void): Promise<() => void> {
+  if (!inApp) {
+    let files = 0;
+    const timer = window.setInterval(() => {
+      files += 1873;
+      cb({ tool: "demo", files, bytes: files * 412_000, path: "C:\\Users\\Andy\\Videos\\Viajes\\2025\\clip_" + files + ".mp4" });
+    }, 150);
+    return () => window.clearInterval(timer);
+  }
+  const { listen } = await import("@tauri-apps/api/event");
+  return listen<Report>("progress", (e) => cb(e.payload));
+}
+
+export async function cancel() {
+  if (inApp) await invoke("cancel");
+}
+
+export async function homeDir(): Promise<string> {
+  if (!inApp) return "C:\\Users\\Andy";
+  const { homeDir } = await import("@tauri-apps/api/path");
+  return homeDir();
+}
+
+/** Asks for a folder (or files, or folders) with Windows' own window. */
+export async function pickPaths(opts: { directory: boolean; multiple: boolean; title: string }): Promise<string[]> {
+  if (!inApp) return opts.directory ? ["C:\\Users\\Andy\\Documents\\Viejo"] : ["C:\\Users\\Andy\\Desktop\\contraseñas viejas.txt"];
+  const { open } = await import("@tauri-apps/plugin-dialog");
+  const r = await open({ directory: opts.directory, multiple: opts.multiple, title: opts.title });
+  if (!r) return [];
+  return Array.isArray(r) ? r : [r];
+}
+
+export async function revealFound(id: number) {
+  if (inApp) await invoke("reveal", { id });
+}
+
+const D = 86_400_000;
+const today = Math.floor(Date.now() / D);
+
+const demoStorage = {
+  drives: [
+    { root: "C:\\", label: "Windows", total: 476 * GB, free: 61 * GB, system: true, removable: false },
+    { root: "D:\\", label: "Datos", total: 931 * GB, free: 402 * GB, system: false, removable: false },
+  ] as Drive[],
+  history: Array.from({ length: 90 }, (_, i) => {
+    const day = today - 89 + i;
+    const free = 92 * GB - i * 0.42 * GB + (i % 9 === 0 ? 6 * GB : 0) + Math.sin(i / 4) * GB;
+    return { day, free, total: 476 * GB };
+  }) as SpaceDay[],
+  analysis(): Analysis {
+    const n = (name: string, gb: number, children: MapNode[] = []): MapNode => ({
+      name, path: name ? `C:\\${name}` : "", bytes: gb * GB, files: Math.round(gb * 900), children,
+    });
+    const users = n("Users", 212, [
+      n("Andy", 205, [n("Videos", 74), n("AppData", 48), n("Documents", 31), n("Downloads", 22), n("Pictures", 18), n("OneDrive", 9), n("", 3)]),
+      n("Public", 4), n("", 3),
+    ]);
+    const root = n("C:", 415, [
+      users,
+      n("Windows", 38, [n("WinSxS", 11), n("System32", 9), n("SoftwareDistribution", 6), n("Installer", 5), n("", 7)]),
+      n("Program Files", 61, [n("Steam", 34), n("Adobe", 12), n("Microsoft Office", 6), n("", 9)]),
+      n("Program Files (x86)", 22), n("ProgramData", 14), n("XboxGames", 52), n("pagefile.sys", 0), n("", 16),
+    ]);
+    root.path = "C:\\";
+    return {
+      root,
+      kinds: [
+        ["video", 96], ["app", 88], ["other", 71], ["installer", 52], ["image", 38], ["document", 21], ["archive", 19], ["music", 12],
+      ].map(([kind, gb]) => ({ kind, bytes: (gb as number) * GB, files: (gb as number) * 410 }) as KindTotal),
+      big: [
+        ["Viaje Mazatlán 4K.mp4", "C:\\Users\\Andy\\Videos\\Viajes", 14.2, "video", 400],
+        ["Win11_24H2_Spanish_x64.iso", "C:\\Users\\Andy\\Downloads", 5.8, "installer", 230],
+        ["Respaldo celular 2024.zip", "C:\\Users\\Andy\\Documents\\Respaldos", 4.1, "archive", 310],
+        ["boda-prima-editado.mov", "C:\\Users\\Andy\\Videos", 3.6, "video", 120],
+        ["Ubuntu-24.04-desktop.iso", "C:\\Users\\Andy\\Downloads", 2.9, "installer", 520],
+        ["proyecto final.psd", "C:\\Users\\Andy\\Documents\\Diseño", 1.2, "image", 80],
+        ["Steam_setup_old.exe", "C:\\Users\\Andy\\Downloads", 0.9, "installer", 700],
+        ["podcast ep 12 crudo.wav", "C:\\Users\\Andy\\Music\\Podcast", 0.7, "music", 40],
+      ].map(([name, folder, gb, kind, days], i) => ({ id: i + 1, name, folder, bytes: (gb as number) * GB, modified: Date.now() - (days as number) * D, kind }) as BigFile),
+      unreadable: 214,
+      cancelled: false,
+    };
+  },
+  dups: {
+    files: 48_210,
+    cancelled: false,
+    groups: [
+      { bytes: 2.1 * GB, kind: "video", copies: [
+        { id: 101, path: "C:\\Users\\Andy\\Videos\\graduación.mp4", modified: Date.now() - 300 * D },
+        { id: 102, path: "C:\\Users\\Andy\\Downloads\\graduación (1).mp4", modified: Date.now() - 200 * D },
+      ] },
+      { bytes: 640 * MB, kind: "archive", copies: [
+        { id: 103, path: "C:\\Users\\Andy\\Documents\\fotos 2023.zip", modified: Date.now() - 400 * D },
+        { id: 104, path: "C:\\Users\\Andy\\Desktop\\fotos 2023.zip", modified: Date.now() - 390 * D },
+        { id: 105, path: "C:\\Users\\Andy\\Downloads\\fotos 2023 (2).zip", modified: Date.now() - 380 * D },
+      ] },
+      { bytes: 12 * MB, kind: "document", copies: [
+        { id: 106, path: "C:\\Users\\Andy\\Documents\\factura.pdf", modified: Date.now() - 30 * D },
+        { id: 107, path: "C:\\Users\\Andy\\Downloads\\factura.pdf", modified: Date.now() - 31 * D },
+      ] },
+    ],
+  } as DupFound,
+  empty: {
+    scanned: 8_412,
+    cancelled: false,
+    folders: [
+      "C:\\Users\\Andy\\Documents\\Proyecto viejo\\assets\\temp",
+      "C:\\Users\\Andy\\Documents\\Proyecto viejo\\assets",
+      "C:\\Users\\Andy\\Pictures\\Capturas\\2021",
+      "C:\\Users\\Andy\\Desktop\\Nueva carpeta",
+      "C:\\Users\\Andy\\Desktop\\Nueva carpeta (2)",
+    ].map((path, i) => ({ id: 200 + i, path, depth: 3 - Math.min(i, 2) })),
+  } as EmptyFound,
+  downloads: {
+    folder: "C:\\Users\\Andy\\Downloads",
+    files: [
+      ["Win11_24H2_Spanish_x64.iso", 5.8 * GB, 230, "diskImage"],
+      ["Ubuntu-24.04-desktop.iso", 2.9 * GB, 520, "diskImage"],
+      ["Steam_setup_old.exe", 0.9 * GB, 700, "installer"],
+      ["fotos boda.zip", 820 * MB, 60, "archive"],
+      ["ChromeSetup.exe", 9 * MB, 410, "installer"],
+      ["factura-octubre.pdf", 2 * MB, 12, "other"],
+      ["Cotización Sumo.docx", 0.4 * MB, 3, "other"],
+    ].map(([name, bytes, days, kind], i) => ({ id: 300 + i, name, bytes, modified: Date.now() - (days as number) * D, kind }) as Download),
+  } as DownloadsFound,
+};
+
+export async function drives(): Promise<Drive[]> {
+  return inApp ? invoke<Drive[]>("drives") : demoStorage.drives;
+}
+
+export async function spaceHistory(): Promise<SpaceDay[]> {
+  return inApp ? invoke<SpaceDay[]>("space_history") : demoStorage.history;
+}
+
+export async function analyze(root: string): Promise<Analysis> {
+  if (!inApp) {
+    await wait(2600);
+    return demoStorage.analysis();
+  }
+  return invoke<Analysis>("storage_analyze", { root });
+}
+
+export async function removeBig(ids: number[]): Promise<Removed> {
+  if (!inApp) {
+    await wait(900);
+    return { freed: ids.length * 3.1 * GB, files: ids.length, kept: [] };
+  }
+  return invoke<Removed>("big_remove", { ids });
+}
+
+export async function findDuplicates(root: string): Promise<DupFound> {
+  if (!inApp) {
+    await wait(2400);
+    return demoStorage.dups;
+  }
+  return invoke<DupFound>("duplicates_find", { root });
+}
+
+export async function removeDuplicates(ids: number[]): Promise<Removed> {
+  if (!inApp) {
+    await wait(900);
+    return { freed: ids.length * 700 * MB, files: ids.length, kept: [] };
+  }
+  return invoke<Removed>("duplicates_remove", { ids });
+}
+
+export async function findEmpty(root: string): Promise<EmptyFound> {
+  if (!inApp) {
+    await wait(1400);
+    return demoStorage.empty;
+  }
+  return invoke<EmptyFound>("empty_find", { root });
+}
+
+export async function removeEmpty(ids: number[]): Promise<{ removed: number; kept: number[] }> {
+  if (!inApp) {
+    await wait(500);
+    return { removed: ids.length, kept: [] };
+  }
+  const [removed, kept] = await invoke<[number, number[]]>("empty_remove", { ids });
+  return { removed, kept };
+}
+
+export async function findDownloads(): Promise<DownloadsFound> {
+  if (!inApp) {
+    await wait(500);
+    return demoStorage.downloads;
+  }
+  return invoke<DownloadsFound>("downloads_find");
+}
+
+export async function removeDownloads(ids: number[]): Promise<Removed> {
+  if (!inApp) {
+    await wait(700);
+    const files = demoStorage.downloads.files.filter((f) => ids.includes(f.id));
+    return { freed: files.reduce((s, f) => s + f.bytes, 0), files: files.length, kept: [] };
+  }
+  return invoke<Removed>("downloads_remove", { ids });
+}
+
+export async function describeShred(paths: string[]): Promise<ShredChoice[]> {
+  if (!inApp) {
+    return paths.map((path) => ({ path, name: path.split("\\").pop() ?? path, bytes: path.endsWith(".txt") ? 18_000 : 240 * MB, files: path.endsWith(".txt") ? 1 : 38, folder: !path.endsWith(".txt"), protected: false }));
+  }
+  return invoke<ShredChoice[]>("shred_describe", { paths });
+}
+
+export async function shred(paths: string[]): Promise<Shredded> {
+  if (!inApp) {
+    await wait(1600);
+    return { files: 39, bytes: 240 * MB, failed: 0, cancelled: false };
+  }
+  return invoke<Shredded>("shred", { paths });
+}

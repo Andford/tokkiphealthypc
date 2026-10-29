@@ -11,6 +11,9 @@ does everything it did; the plan and its progress are in `docs/PLAN.md`.
 
 ## Where things are
 - `src-tauri/src/tools/` — one module per tool (the cleaner is `cleaner.rs`), each with its tests.
+- `src-tauri/src/fsx.rs` — what every tool touching files shares: a file's identity (checked again right before deleting), the protected folders, the Recycle Bin, "show in folder".
+- Scans keep what they found in `lib.rs` (`Found`), by id; the page sends ids back, never paths to delete.
+- Kudu (MIT) is the reference for what each tool does and its Windows care: read its version (old app, branch `tokkip`) before writing one, rewrite it in Rust, and credit it in the file and THIRD-PARTY-NOTICES.md.
 - `src-tauri/src/platform.rs` — what asks Windows (processes, disk, recycle bin, admin). Other systems get quiet stubs, so the logic tests run on Linux.
 - `rules/*.json` — our cleaning rules: paths with `%VARIABLES%` and `*` folders, file patterns, minimum age, admin, the program that keeps them open.
 - `src-tauri/src/health.rs` — the health score and mood; `notice.rs` writes `%APPDATA%\Tokkip\shared\healthy-pc.json` for Tokkip PC (moods and kinds are a contract with it).

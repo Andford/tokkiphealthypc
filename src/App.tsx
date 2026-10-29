@@ -8,6 +8,7 @@ import { Home } from "./pages/Home";
 import { Clean } from "./pages/Clean";
 import { Soon } from "./pages/Soon";
 import { Settings } from "./pages/Settings";
+import { Storage } from "./pages/storage/Storage";
 import { Sound } from "./core/sound";
 
 export type Page = "home" | "clean" | "storage" | "software" | "speed" | "protect" | "care" | "settings";
@@ -15,7 +16,7 @@ export type Page = "home" | "clean" | "storage" | "software" | "speed" | "protec
 const NAV: readonly { id: Page; icon: IconName; label: string; soon?: boolean }[] = [
   { id: "home", icon: "home", label: N_("Home") },
   { id: "clean", icon: "clean", label: N_("Clean") },
-  { id: "storage", icon: "storage", label: N_("Storage"), soon: true },
+  { id: "storage", icon: "storage", label: N_("Storage") },
   { id: "software", icon: "software", label: N_("Software"), soon: true },
   { id: "speed", icon: "speed", label: N_("Performance"), soon: true },
   { id: "protect", icon: "shield", label: N_("Protection"), soon: true },
@@ -60,6 +61,7 @@ export function App() {
       <main class="page" key={page}>
         {page === "home" && <Home go={go} />}
         {page === "clean" && <Clean />}
+        {page === "storage" && <Storage />}
         {page === "settings" && <Settings />}
         {NAV.some((n) => n.id === page && n.soon) && <Soon page={page} />}
       </main>
