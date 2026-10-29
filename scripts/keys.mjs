@@ -3,6 +3,7 @@
 
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 export function keysIn(dir) {
   const out = new Set();
@@ -24,5 +25,5 @@ export function keysIn(dir) {
 }
 
 if (process.argv[1]?.endsWith("keys.mjs")) {
-  for (const k of [...keysIn(new URL("../src", import.meta.url).pathname)].sort()) console.log(k);
+  for (const k of [...keysIn(fileURLToPath(new URL("../src", import.meta.url)))].sort()) console.log(k);
 }
