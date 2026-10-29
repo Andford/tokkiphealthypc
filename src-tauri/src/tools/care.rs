@@ -218,8 +218,10 @@ mod tests {
 
     #[test]
     fn tells_what_program_an_entry_names() {
-        let env = |n: &str| (n == "ProgramFiles").then(|| "/opt".to_string());
-        assert_eq!(program_of(r#""%ProgramFiles%/App/app.exe" --x"#, &env).as_deref(), Some("/opt/App/app.exe"));
+        // An absolute folder on either system.
+        let base = if cfg!(windows) { r"C:\PF" } else { "/opt" };
+        let env = move |n: &str| (n == "ProgramFiles").then(|| base.to_string());
+        assert_eq!(program_of(r#""%ProgramFiles%/App/app.exe" --x"#, &env), Some(format!("{base}/App/app.exe")));
         assert_eq!(program_of("rundll32.exe shell32.dll", &env), None, "not a full path");
         assert_eq!(program_of("", &env), None);
         assert_eq!(program_of("%NOPE%/x.exe", &env), None);
